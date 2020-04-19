@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Veiculos" android:icon="@drawable/ic_menuitem_veiculos">
+        <menu>
+            <item
+                android:id="@+id/menuItemAdicionar"
+                android:icon="@drawable/ic_menuitem_adicionar"
+                android:title="Adicionar"/>
+            <item
+                android:id="@+id/menuItemAlterar"
+                android:icon="@drawable/ic_menuteim_alterar"
+                android:title="Alterar"/>
+            <item
+                android:id="@+id/menuItemInactivos"
+                android:icon="@drawable/ic_menuitem_inactivos"
+                android:title="Inactivos"/>
+        </menu>
+    </item>
+    <item android:title="Consultas" android:icon="@drawable/ic_menuitem_consultas">
+        <menu>
+            <item
+                android:id="@+id/menuItemEstacionamentos"
+                android:icon="@drawable/ic_menuitem_estacionamentos"
+                android:title="Estacionamentos"/>
+            <item
+                android:id="@+id/menuItemPagamentos"
+                android:icon="@drawable/ic_menuitem_pagamentos"
+                android:title="Pagamentos"/>
+        </menu>
+    </item>
+
+</menu>
