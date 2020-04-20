@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -45,16 +46,43 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        drawerLayout.closeDrawer(GravityCompat.START);
         switch(item.getItemId()){
+            case R.id.menuItemDashboard:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.containerFragment, new dashboardFragment());
+                fragmentTransaction.commit();
+            break;
             case R.id.menuItemAdicionar:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.containerFragment, new adicionarFragment());
+                fragmentTransaction.commit();
             break;
             case R.id.menuItemAlterar:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.containerFragment, new alterarFragment());
+                fragmentTransaction.commit();
             break;
             case R.id.menuItemEstacionamentos:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.containerFragment, new estacionamentosFragment());
+                fragmentTransaction.commit();
             break;
             case R.id.menuItemInactivos:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.containerFragment, new inactivosFragment());
+                fragmentTransaction.commit();
             break;
             case R.id.menuItemPagamentos:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.containerFragment, new pagamentosFragment());
+                fragmentTransaction.commit();
             break;
         }
         return true;
