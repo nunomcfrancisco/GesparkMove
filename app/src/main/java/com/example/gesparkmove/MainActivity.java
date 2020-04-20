@@ -6,25 +6,34 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
-
-    Button btn;
+    EditText editTextMainUtilizador;
+    EditText editTextMainPassword;
+    Button buttonMainLogin;
+    Button buttonMainRegistar;
+    Button buttonMainRecuperar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btn = (Button) findViewById(R.id.button);
+        editTextMainUtilizador = (EditText) findViewById(R.id.editTextMainUtilizador);
+        editTextMainPassword = (EditText) findViewById(R.id.editTextMainPassword);
+        buttonMainLogin = (Button) findViewById(R.id.buttonMainLogin);
+        buttonMainRegistar = (Button) findViewById(R.id.buttonMainRegistar);
+        buttonMainRecuperar = (Button) findViewById(R.id.buttonMainRecuperar);
 
-        btn.setOnClickListener(new View.OnClickListener(){
+        buttonMainLogin.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
-                startActivity(new Intent(MainActivity.this, UtilizadorActivity.class));
-                finish();
+            public void onClick(View view){
+                if(editTextMainUtilizador.getText().toString().equals("xxx") && editTextMainPassword.getText().toString().equals("xxx")){
+                    startActivity(new Intent(MainActivity.this, UtilizadorActivity.class));
+                    finish();
+                }
             }
-
         });
     }
 }

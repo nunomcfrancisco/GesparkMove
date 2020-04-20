@@ -9,6 +9,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
+import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -83,6 +86,11 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerFragment, new pagamentosFragment());
                 fragmentTransaction.commit();
+            break;
+            case R.id.menuItemLogout:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
             break;
         }
         return true;

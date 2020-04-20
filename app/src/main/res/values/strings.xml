@@ -2,4 +2,17 @@
     <string name="app_name">GesparkMove</string>
     <string name="openDrawer">Open Drawer</string>
     <string name="closeDrawer">Close Drawer</string>
+    <string name="utilizador">Utilizador</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="gespark_move">GesPark Move</string>
+    <string name="recuperar">Recuperar</string>
+    <string name="registar">Registar</string>
+    <string name="pagamentos">Pagamentos</string>
+    <string name="estacionamentos">Estacionamentos</string>
+    <string name="inactivos">Inactivos</string>
+    <string name="alterar">Alterar</string>
+    <string name="adicionar">Adicionar</string>
+    <string name="veiculos">Veículos</string>
+    <string name="consultas">Consultas</string>
 </resources>
