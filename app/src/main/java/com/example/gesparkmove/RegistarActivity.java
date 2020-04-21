@@ -1,15 +1,17 @@
 package com.example.gesparkmove;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
-import com.jcraft.jsch.*;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -49,6 +51,8 @@ public class RegistarActivity extends AppCompatActivity {
                 JSch jsch = new JSch();
                 Session session = jsch.getSession("gpark", "92.222.70.24", 58022);
                 session.setPassword("GespPW01");
+                session.setPortForwardingL(3306, "127.0.0.1", 3306);
+
                 Properties prop = new Properties();
                 prop.put("StrictHostKeyChecking", "no");
                 session.setConfig(prop);
