@@ -20,10 +20,11 @@ import java.util.Properties;
 
 public class RegistarActivity extends AppCompatActivity {
 
-    TextView text, errorText;
+    TextView text, errorText, textmd5, textresultado;
     Button show;
     Button query;
     String records = "";
+    Globals g = new Globals();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,8 @@ public class RegistarActivity extends AppCompatActivity {
         errorText = findViewById(R.id.textViewNoError);
         show = findViewById(R.id.buttonShowRecords);
         query = findViewById(R.id.buttonBD);
+        textmd5 = findViewById(R.id.textViewTesteMD5);
+        textresultado = findViewById(R.id.textViewTesteIguais);
 
         show.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +52,7 @@ public class RegistarActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids){
             try {
                 JSch jsch = new JSch();
-                Session session = jsch.getSession("gpark", "92.222.70.24", 58022);
+                Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), 58022);
                 session.setPassword("GespPW01");
                 session.setPortForwardingL(3306, "127.0.0.1", 3306);
 
@@ -61,9 +64,9 @@ public class RegistarActivity extends AppCompatActivity {
                     Class.forName("com.mysql.jdbc.Driver");
                     Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cgs_gespark", "gremote", "GespPW01");
                     Statement statement = (Statement) connection.createStatement();
-                    ResultSet resultSet = statement.executeQuery("SELECT * FROM utilizadores LIMIT 1");
+                    ResultSet resultSet = statement.executeQuery("SELECT password FROM utilizadores WHERE id = 40");
                     while (resultSet.next()){
-                        records += " " + resultSet.getString(3);
+                        records += resultSet.getString(1);
                     }
                     connection.close();
                 } catch (SQLException | ClassNotFoundException e){}
@@ -77,12 +80,20 @@ public class RegistarActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(Void aVoid){
-            if(error != "") {
-                errorText.setText(error);
-            } else {
-                text.setText("Ligado!");
-                text.setText(records);
+            text.setText(records);
+            textmd5.setText(new md5Tools().encode("Carapau33!"));
+
+            if(records.equals(new md5Tools().encode("Carapau33!"))){
+                textresultado.setText("São iguais!");
+            }else{
+                textresultado.setText("Não são iguais!");
             }
+
+//            if(records.equals(new md5Tools().encode("Carapau33!"))) {
+//                text.setText("FIXE!");
+//            } else {
+//                text.setText(new md5Tools().encode("Carapau33!"));
+//            }
             super.onPostExecute(aVoid);
         }
     }
