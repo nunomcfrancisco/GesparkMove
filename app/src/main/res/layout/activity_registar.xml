@@ -6,44 +6,96 @@
     android:layout_height="match_parent"
     tools:context=".RegistarActivity">
 
-    <TextView
-        android:id="@+id/textViewTesteDB"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/editTextRegistarNome"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="TESTE DB"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="80dp"
+        android:ems="10"
+        android:hint="@string/nome"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonShowRecords"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/editTextRegistarMorada"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Show Records"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:ems="10"
+        android:hint="@string/morada"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTesteDB" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegistarNome" />
 
-    <TextView
-        android:id="@+id/textViewNoError"
-        android:layout_width="350dp"
+    <EditText
+        android:id="@+id/editTextRegistarCodigoPostal"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="No Error"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:ems="10"
+        android:hint="@string/codigopostal"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonShowRecords" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegistarMorada" />
 
-    <Button
-        android:id="@+id/buttonBD"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/editTextRegistarContato"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/textViewTesteDB"
+        android:ems="10"
+        android:hint="@string/contato"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegistarCodigoPostal" />
+
+    <EditText
+        android:id="@+id/editTextRegistarNumeroFiscal"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/numerofiscal"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegistarContato" />
+
+    <EditText
+        android:id="@+id/editTextRegistarMail"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegistarNumeroFiscal" />
+
+    <EditText
+        android:id="@+id/editTextRegistarPassword1"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegistarMail" />
+
+    <EditText
+        android:id="@+id/editTextRegistarPassword02"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRegistarPassword1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

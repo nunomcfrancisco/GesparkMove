@@ -15,4 +15,10 @@
     <string name="adicionar">Adicionar</string>
     <string name="veiculos">Veículos</string>
     <string name="consultas">Consultas</string>
+    <string name="nome">Nome</string>
+    <string name="morada">Morada</string>
+    <string name="codigopostal">Código Postal</string>
+    <string name="contato">Contato</string>
+    <string name="numerofiscal">Número Fiscal</string>
+    <string name="email">Email</string>
 </resources>
