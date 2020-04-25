@@ -82,18 +82,11 @@ public class RegistarActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid){
             text.setText(records);
             textmd5.setText(new md5Tools().encode("Carapau33!"));
-
             if(records.equals(new md5Tools().encode("Carapau33!"))){
                 textresultado.setText("São iguais!");
             }else{
                 textresultado.setText("Não são iguais!");
             }
-
-//            if(records.equals(new md5Tools().encode("Carapau33!"))) {
-//                text.setText("FIXE!");
-//            } else {
-//                text.setText(new md5Tools().encode("Carapau33!"));
-//            }
             super.onPostExecute(aVoid);
         }
     }
