@@ -47,6 +47,7 @@
         android:id="@+id/buttonMainLogin"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:text="@string/login"
         app:layout_constraintBottom_toTopOf="@+id/buttonMainRecuperar"
         app:layout_constraintEnd_toEndOf="parent"

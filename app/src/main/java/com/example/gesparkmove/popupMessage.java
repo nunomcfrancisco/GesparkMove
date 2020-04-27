@@ -10,8 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 public class popupMessage extends AppCompatDialogFragment {
-    public String title;
-    public String msg;
+    private String title;
+    private String msg;
 
     public popupMessage(String title, String msg){
         this.title = title;
@@ -29,4 +29,6 @@ public class popupMessage extends AppCompatDialogFragment {
         });
         return builder.create();
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.example.gesparkmove;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -12,10 +13,26 @@ import androidx.fragment.app.FragmentTransaction;
 import android.app.Activity;
 import android.content.Intent;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+
+import org.w3c.dom.Text;
+
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Properties;
 
 public class UtilizadorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
@@ -24,6 +41,13 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
     NavigationView navigationView;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    Globals g = new Globals();
+    private Handler utilizadorHandler = new Handler();
+    Utilizador user;
+    /*View headerView = navigationView.getHeaderView(0);
+    TextView navUsername = (TextView) headerView.findViewById(R.id.textViewDrawerHeadName);
+    TextView navUsermail = (TextView) headerView.findViewById(R.id.textViewDrawerHeadMail);*/
+    Bundle bundle = getIntent().getExtras();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +69,12 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.containerFragment, new dashboardFragment());
         fragmentTransaction.commit();
+
+        //String ss = String.valueOf(bundle.getInt("id"));
+        //navUsername.setText(ss);
+
+        user.setId(bundle.getInt("id"));
+        //new loadUserTask().execute("SELECT * FROM utilizadores WHERE id = " + String.valueOf(bundle.getInt("id")));
     }
 
     @Override
@@ -94,5 +124,68 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
             break;
         }
         return true;
+    }
+
+    private class loadUserTask extends AsyncTask<String, Integer, Void>{
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                JSch jsch = new JSch();
+                Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
+                session.setPassword(g.getSshPass());
+                session.setPortForwardingL(g.getSshPFLPort(), g.getSshPFHost(), g.getSshPFRPort());
+                Properties prop = new Properties();
+                prop.put("StrictHostKeyChecking", "no");
+                session.setConfig(prop);
+                session.connect();
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
+                    Statement statement = (Statement) connection.createStatement();
+                    ResultSet rs = statement.executeQuery(params[0]);
+                    while(rs.next()){
+                        user.setNif(rs.getInt(1));
+                        user.setNome(rs.getString(2));
+                        user.setMorada(rs.getString(3));
+                        user.setCp(rs.getString(4));
+                        user.setMail(rs.getString(5));
+                    }
+                    connection.close();
+                } catch (ClassNotFoundException | SQLException e) {
+                    e.printStackTrace();
+                }
+                session.disconnect();
+            } catch (JSchException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+           /* utilizadorHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    AlertDialog ppm = new AlertDialog.Builder(UtilizadorActivity.this)
+                            .setMessage("Loading")
+                            .setCancelable(false)
+                            .show();
+                }
+            });*/
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            utilizadorHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    View headerView = navigationView.getHeaderView(0);
+                    TextView navUsername = (TextView) headerView.findViewById(R.id.textViewDrawerHeadName);
+                    TextView navUsermail = (TextView) headerView.findViewById(R.id.textViewDrawerHeadMail);
+                    navUsername.setText(user.getNome());
+                    navUsermail.setText(user.getMail());
+                }
+            });
+        }
     }
 }
