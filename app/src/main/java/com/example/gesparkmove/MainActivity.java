@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     Button buttonMainRegistar;
     Button buttonMainRecuperar;
     Globals g = new Globals();
-    Utilizador user;
     private Handler mainHandler = new Handler();
 
     @Override
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 closeKeyboard();
-                new loginTask().execute("SELECT * FROM utilizadores WHERE email = \""
+                new loginTask().execute("SELECT id, nif, nome, email, password FROM utilizadores WHERE email = \""
                         + editTextMainUtilizador.getText().toString() + "\"",
                         editTextMainPassword.getText().toString());
             }
@@ -97,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     private class loginTask extends AsyncTask<String, Integer, String>{
         Bundle bundle = new Bundle();
         AlertDialog ppm;
+        Utilizador user;
         @Override
         protected void onPreExecute(){
         }
@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
                     Statement statement = (Statement) connection.createStatement();
                     ResultSet rs = statement.executeQuery(params[0]);
                     while (rs.next()){
-                        bundle.putInt("id", rs.getInt(1));
-                        queryResult += rs.getString(2);
+                        user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5);
+                        queryResult += rs.getString(5);
                     }
                     connection.close();
                 }catch (ClassNotFoundException | SQLException e){}
@@ -190,7 +190,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Intent intent = new Intent(MainActivity.this, UtilizadorActivity.class);
-                        intent.putExtras(bundle);
+                        intent.putExtra("USER", user);
+
                         startActivity(intent);
                         finish();
                     }

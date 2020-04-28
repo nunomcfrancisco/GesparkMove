@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -43,11 +44,6 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
     FragmentTransaction fragmentTransaction;
     Globals g = new Globals();
     private Handler utilizadorHandler = new Handler();
-    Utilizador user;
-    /*View headerView = navigationView.getHeaderView(0);
-    TextView navUsername = (TextView) headerView.findViewById(R.id.textViewDrawerHeadName);
-    TextView navUsermail = (TextView) headerView.findViewById(R.id.textViewDrawerHeadMail);*/
-    Bundle bundle = getIntent().getExtras();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +66,15 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
         fragmentTransaction.add(R.id.containerFragment, new dashboardFragment());
         fragmentTransaction.commit();
 
-        //String ss = String.valueOf(bundle.getInt("id"));
-        //navUsername.setText(ss);
+        Bundle data = getIntent().getExtras();
+        Utilizador user = data.getParcelable("USER");
+        View headerView = navigationView.getHeaderView(0);
+        TextView navusername = headerView.findViewById(R.id.textViewDrawerHeadName);
+        TextView navusermail = headerView.findViewById(R.id.textViewDrawerHeadMail);
+        navusername.setText(user.getNome());
+        navusermail.setText(user.getMail());
+        Fragment frag = (Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentDashboard);
 
-        user.setId(bundle.getInt("id"));
-        //new loadUserTask().execute("SELECT * FROM utilizadores WHERE id = " + String.valueOf(bundle.getInt("id")));
     }
 
     @Override
@@ -144,11 +144,11 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
                     Statement statement = (Statement) connection.createStatement();
                     ResultSet rs = statement.executeQuery(params[0]);
                     while(rs.next()){
-                        user.setNif(rs.getInt(1));
-                        user.setNome(rs.getString(2));
-                        user.setMorada(rs.getString(3));
-                        user.setCp(rs.getString(4));
-                        user.setMail(rs.getString(5));
+                        //user.setNif(rs.getInt(1));
+                        //user.setNome(rs.getString(2));
+                        //user.setMorada(rs.getString(3));
+                        //user.setCp(rs.getString(4));
+                        //user.setMail(rs.getString(5));
                     }
                     connection.close();
                 } catch (ClassNotFoundException | SQLException e) {
@@ -163,29 +163,10 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-           /* utilizadorHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    AlertDialog ppm = new AlertDialog.Builder(UtilizadorActivity.this)
-                            .setMessage("Loading")
-                            .setCancelable(false)
-                            .show();
-                }
-            });*/
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            utilizadorHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    View headerView = navigationView.getHeaderView(0);
-                    TextView navUsername = (TextView) headerView.findViewById(R.id.textViewDrawerHeadName);
-                    TextView navUsermail = (TextView) headerView.findViewById(R.id.textViewDrawerHeadMail);
-                    navUsername.setText(user.getNome());
-                    navUsermail.setText(user.getMail());
-                }
-            });
         }
     }
 }

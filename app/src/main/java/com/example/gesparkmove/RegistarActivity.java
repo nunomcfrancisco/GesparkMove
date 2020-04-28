@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
+import com.squareup.picasso.Picasso;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -21,6 +23,8 @@ import java.util.Properties;
 public class RegistarActivity extends AppCompatActivity {
 
     TextView text, errorText, textmd5, textresultado;
+    String url = "https://gespark.pt/imgs/users/1587122670.JPG";
+    ImageView iv;
     Button show;
     Button query;
     String records = "";
@@ -31,19 +35,19 @@ public class RegistarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registar);
 
+        iv = findViewById(R.id.imageViewTesteURL);
         text = findViewById(R.id.textViewTesteDB);
         errorText = findViewById(R.id.textViewNoError);
         show = findViewById(R.id.buttonShowRecords);
         query = findViewById(R.id.buttonBD);
         textmd5 = findViewById(R.id.textViewTesteMD5);
         textresultado = findViewById(R.id.textViewTesteIguais);
+        loadImageFromUrl(url);
 
-        show.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Task().execute();
-            }
-        });
+    }
+
+    private void loadImageFromUrl(String url) {
+        Picasso.get().load(url).into(iv);
     }
 
     class Task extends AsyncTask<Void, Void, Void>{
@@ -53,7 +57,7 @@ public class RegistarActivity extends AppCompatActivity {
             try {
                 JSch jsch = new JSch();
                 Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), 58022);
-                session.setPassword("GespPW01");
+                session.setPassword(g.getSshPass());
                 session.setPortForwardingL(3306, "127.0.0.1", 3306);
 
                 Properties prop = new Properties();

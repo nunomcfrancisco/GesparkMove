@@ -1,20 +1,34 @@
 package com.example.gesparkmove;
 
-public class Utilizador {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Utilizador implements Parcelable {
+
+    public static final Creator<Utilizador> CREATOR = new Creator<Utilizador>() {
+        @Override
+        public Utilizador createFromParcel(Parcel in) {
+            return new Utilizador(in);
+        }
+
+        @Override
+        public Utilizador[] newArray(int size) {
+            return new Utilizador[size];
+        }
+    };
+
     private int id;
     private int nif;
     private String nome;
-    private String morada;
-    private String cp;
     private String mail;
+    private int carros;
 
-    public Utilizador(int id, int nif, String nome, String morada, String cp, String mail) {
+    public Utilizador(int id, int nif, String nome, String mail, int carros){
         this.id = id;
         this.nif = nif;
         this.nome = nome;
-        this.morada = morada;
-        this.cp = cp;
         this.mail = mail;
+        this.carros = carros;
     }
 
     public int getId() {
@@ -41,27 +55,41 @@ public class Utilizador {
         this.nome = nome;
     }
 
-    public String getMorada() {
-        return morada;
-    }
-
-    public void setMorada(String morada) {
-        this.morada = morada;
-    }
-
-    public String getCp() {
-        return cp;
-    }
-
-    public void setCp(String cp) {
-        this.cp = cp;
-    }
-
-    public String getMail() {
+    public String getMail(){
         return mail;
     }
 
-    public void setMail(String mail) {
+    public void setMail(){
         this.mail = mail;
+    }
+
+    public int getCarros(){
+        return carros;
+    }
+
+    public void setCarros(){
+        this.carros = carros;
+    }
+
+    protected Utilizador(Parcel in) {
+        this.id = in.readInt();
+        this.nif = in.readInt();
+        this.nome = in.readString();
+        this.mail = in.readString();
+        this.carros = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeInt(this.nif);
+        dest.writeString(this.nome);
+        dest.writeString(this.mail);
+        dest.writeInt(this.carros);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 }

@@ -33,4 +33,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation files('libs/mysql-connector-java-5.1.48.jar')
     implementation files('libs/jsch-0.1.55.jar')
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
