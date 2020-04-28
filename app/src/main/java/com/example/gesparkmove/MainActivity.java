@@ -50,16 +50,17 @@ public class MainActivity extends AppCompatActivity {
         editTextMainUtilizador.addTextChangedListener(loginTextWatcher);
         editTextMainPassword.addTextChangedListener(loginTextWatcher);
 
+        //ação do botão de login
         buttonMainLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 closeKeyboard();
                 new loginTask().execute("SELECT id, nif, nome, email, password, avatar FROM utilizadores WHERE email = \""
                         + editTextMainUtilizador.getText().toString() + "\"",
-                        editTextMainPassword.getText().toString());
+                        editTextMainPassword.getText().toString(), "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \"" + editTextMainUtilizador.getText().toString() + "\")");
             }
         });
-
+        //ação do botão de registar
         buttonMainRegistar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -122,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
                     while (rs.next()){
                         user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6));
                         queryResult += rs.getString(5);
+                    }
+                    rs = statement.executeQuery(params[2]);
+                    while(rs.next()){
+                        user.setCarros(rs.getInt(1));
                     }
                     connection.close();
                 }catch (ClassNotFoundException | SQLException e){}

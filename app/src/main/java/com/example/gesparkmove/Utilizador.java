@@ -61,7 +61,7 @@ public class Utilizador implements Parcelable {
         return mail;
     }
 
-    public void setMail(){
+    public void setMail(String mail){
         this.mail = mail;
     }
 
@@ -69,7 +69,7 @@ public class Utilizador implements Parcelable {
         return carros;
     }
 
-    public void setCarros(){
+    public void setCarros(int carros){
         this.carros = carros;
     }
 
@@ -77,7 +77,7 @@ public class Utilizador implements Parcelable {
         return avatar;
     }
 
-    public void setAvatar(){
+    public void setAvatar(String avatar){
         this.avatar = avatar;
     }
 
