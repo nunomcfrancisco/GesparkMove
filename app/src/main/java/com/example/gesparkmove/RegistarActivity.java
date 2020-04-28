@@ -23,7 +23,7 @@ import java.util.Properties;
 public class RegistarActivity extends AppCompatActivity {
 
     TextView text, errorText, textmd5, textresultado;
-    String url = "https://gespark.pt/imgs/users/1587122670.JPG";
+    String url = "https://gespark.pt/imgs/users/1588092624.png";
     ImageView iv;
     Button show;
     Button query;
@@ -35,7 +35,7 @@ public class RegistarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registar);
 
-        iv = findViewById(R.id.imageViewTesteURL);
+        iv = findViewById(R.id.imageViewTesteCircular);
         text = findViewById(R.id.textViewTesteDB);
         errorText = findViewById(R.id.textViewNoError);
         show = findViewById(R.id.buttonShowRecords);

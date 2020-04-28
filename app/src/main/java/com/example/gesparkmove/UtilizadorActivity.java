@@ -27,6 +27,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -34,6 +35,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UtilizadorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
@@ -68,12 +71,14 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
 
         Bundle data = getIntent().getExtras();
         Utilizador user = data.getParcelable("USER");
+        String avatar = "https://gespark.pt/" + user.getAvatar();
         View headerView = navigationView.getHeaderView(0);
         TextView navusername = headerView.findViewById(R.id.textViewDrawerHeadName);
         TextView navusermail = headerView.findViewById(R.id.textViewDrawerHeadMail);
+        CircleImageView civ = headerView.findViewById(R.id.imageViewAvatar);
         navusername.setText(user.getNome());
         navusermail.setText(user.getMail());
-        Fragment frag = (Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentDashboard);
+        Picasso.get().load(avatar).into(civ);
 
     }
 

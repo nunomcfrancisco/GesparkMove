@@ -22,13 +22,15 @@ public class Utilizador implements Parcelable {
     private String nome;
     private String mail;
     private int carros;
+    private String avatar;
 
-    public Utilizador(int id, int nif, String nome, String mail, int carros){
+    public Utilizador(int id, int nif, String nome, String mail, int carros, String avatar){
         this.id = id;
         this.nif = nif;
         this.nome = nome;
         this.mail = mail;
         this.carros = carros;
+        this.avatar = avatar;
     }
 
     public int getId() {
@@ -71,12 +73,21 @@ public class Utilizador implements Parcelable {
         this.carros = carros;
     }
 
+    public String getAvatar(){
+        return avatar;
+    }
+
+    public void setAvatar(){
+        this.avatar = avatar;
+    }
+
     protected Utilizador(Parcel in) {
         this.id = in.readInt();
         this.nif = in.readInt();
         this.nome = in.readString();
         this.mail = in.readString();
         this.carros = in.readInt();
+        this.avatar = in.readString();
     }
 
     @Override
@@ -86,6 +97,7 @@ public class Utilizador implements Parcelable {
         dest.writeString(this.nome);
         dest.writeString(this.mail);
         dest.writeInt(this.carros);
+        dest.writeString(this.avatar);
     }
 
     @Override
