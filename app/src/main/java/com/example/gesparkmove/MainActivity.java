@@ -42,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        editTextMainUtilizador = (EditText) findViewById(R.id.editTextMainUtilizador);
-        editTextMainPassword = (EditText) findViewById(R.id.editTextMainPassword);
-        buttonMainLogin = (Button) findViewById(R.id.buttonMainLogin);
-        buttonMainRegistar = (Button) findViewById(R.id.buttonMainRegistar);
-        buttonMainRecuperar = (Button) findViewById(R.id.buttonMainRecuperar);
+        editTextMainUtilizador = findViewById(R.id.editTextMainUtilizador);
+        editTextMainPassword = findViewById(R.id.editTextMainPassword);
+        buttonMainLogin = findViewById(R.id.buttonMainLogin);
+        buttonMainRegistar = findViewById(R.id.buttonMainRegistar);
+        buttonMainRecuperar = findViewById(R.id.buttonMainRecuperar);
         editTextMainUtilizador.addTextChangedListener(loginTextWatcher);
         editTextMainPassword.addTextChangedListener(loginTextWatcher);
 
@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
                 closeKeyboard();
                 new loginTask().execute("SELECT id, nif, nome, email, password, avatar FROM utilizadores WHERE email = \""
                         + editTextMainUtilizador.getText().toString() + "\"",
-                        editTextMainPassword.getText().toString(), "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \"" + editTextMainUtilizador.getText().toString() + "\")");
+                        editTextMainPassword.getText().toString(),
+                        "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \""
+                                + editTextMainUtilizador.getText().toString() + "\")");
             }
         });
         //ação do botão de registar
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             else if(queryResult.equals(new md5Tools().encode(params[1]))){
                 return "y";
             }else{
-                return "n";
+                return "p";
             }
         }
 
@@ -158,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final String result){
             if(result.equals("u")){
-                ppm.dismiss();
+                if(ppm.isShowing())
+                    ppm.dismiss();
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -173,8 +176,9 @@ public class MainActivity extends AppCompatActivity {
                                 .show();
                     }
                 });
-            }else if(result.equals("n")){
-                ppm.dismiss();
+            }else if(result.equals("p")){
+                if(ppm.isShowing())
+                    ppm.dismiss();
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -190,7 +194,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }else if(result.equals("y")){
-                ppm.dismiss();
+                if(ppm.isShowing())
+                    ppm.dismiss();
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
