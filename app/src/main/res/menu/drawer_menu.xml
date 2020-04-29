@@ -13,9 +13,9 @@
                 android:icon="@drawable/ic_menuitem_adicionar"
                 android:title="@string/adicionar"/>
             <item
-                android:id="@+id/menuItemAlterar"
+                android:id="@+id/menuItemConsultar"
                 android:icon="@drawable/ic_menuteim_alterar"
-                android:title="@string/alterar"/>
+                android:title="@string/consultar"/>
             <item
                 android:id="@+id/menuItemInactivos"
                 android:icon="@drawable/ic_menuitem_inactivos"

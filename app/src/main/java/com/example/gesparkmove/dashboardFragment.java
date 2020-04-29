@@ -8,20 +8,33 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class dashboardFragment extends Fragment {
-    TextView carros;
+    TextView textViewDashboardFragmentVeiculos;
+    CardView cardViewDashboardFragmentVeiculos;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        carros = view.findViewById(R.id.textViewDashboardVeiculos);
+        textViewDashboardFragmentVeiculos = view.findViewById(R.id.textViewDashboardVeiculos);
         Bundle bundle = getActivity().getIntent().getExtras();
         Utilizador user = bundle.getParcelable("USER");
-        carros.setText(String.valueOf(user.getCarros()));
-
+        textViewDashboardFragmentVeiculos.setText(String.valueOf(user.getCarros()));
+        cardViewDashboardFragmentVeiculos = view.findViewById(R.id.fragmentDashboardCardViewVeiculos);
+        cardViewDashboardFragmentVeiculos.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                consultarFragment cFragment = new consultarFragment();
+                FragmentManager manager = getFragmentManager();
+                manager.beginTransaction()
+                        .replace(R.id.containerFragment, cFragment, cFragment.getTag())
+                        .commit();
+            }
+        });
         return view;
     }
 }

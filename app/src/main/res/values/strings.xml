@@ -16,4 +16,5 @@
     <string name="veiculos">Veículos</string>
     <string name="consultas">Consultas</string>
     <string name="drawer_header">Drawer Header</string>
+    <string name="consultar">Consultar</string>
 </resources>
