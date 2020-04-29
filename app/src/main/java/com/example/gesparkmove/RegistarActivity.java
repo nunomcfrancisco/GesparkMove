@@ -35,14 +35,6 @@ public class RegistarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registar);
 
-        iv = findViewById(R.id.imageViewTesteCircular);
-        text = findViewById(R.id.textViewTesteDB);
-        errorText = findViewById(R.id.textViewNoError);
-        show = findViewById(R.id.buttonShowRecords);
-        query = findViewById(R.id.buttonBD);
-        textmd5 = findViewById(R.id.textViewTesteMD5);
-        textresultado = findViewById(R.id.textViewTesteIguais);
-        loadImageFromUrl(url);
 
     }
 
