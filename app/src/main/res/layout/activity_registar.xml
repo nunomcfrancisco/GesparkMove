@@ -14,64 +14,81 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/gpmlogo" />
+
         <EditText
             android:id="@+id/editTextRegistarNome"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="Nome Completo"
-            android:inputType="textPersonName" />
+            android:inputType="text" />
+
         <EditText
             android:id="@+id/editTextRegistarMorada"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Morada"
-            android:inputType="textPersonName" />
+            android:inputType="text" />
+
         <EditText
             android:id="@+id/editTextRegistarCodigoPostal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Código Postal"
-            android:inputType="textPersonName" />
+            android:inputType="text" />
+
         <EditText
             android:id="@+id/editTextRegistarContato"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Contato"
-            android:inputType="textPersonName" />
+            android:inputType="number" />
+
         <EditText
             android:id="@+id/editTextRegistarNumeroFiscal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Número Fiscal"
-            android:inputType="textPersonName" />
+            android:inputType="number" />
+
         <EditText
             android:id="@+id/editTextRegistarMail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Mail"
-            android:inputType="textPersonName" />
+            android:inputType="textEmailAddress" />
+
         <EditText
             android:id="@+id/editTextRegistarPassword01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPersonName" />
+            android:inputType="textPassword" />
+
         <EditText
             android:id="@+id/editTextRegistarPassword02"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPersonName" />
+            android:inputType="textPassword" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal">
+
             <Button
                 android:id="@+id/buttonRegistarRegistar"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
+                android:enabled="false"
                 android:text="Registar" />
             <Button
                 android:id="@+id/buttonRegistarVoltar"
