@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -29,7 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     EditText editTextMainUtilizador;
     EditText editTextMainPassword;
     Button buttonMainLogin;
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 closeKeyboard();
-                new GPMTasks(MainActivity.this, mainHandler).execute("SELECT id, nif, nome, email, password, avatar FROM utilizadores WHERE email = \""
+                new loginTask().execute("SELECT id, nif, nome, email, password, avatar FROM utilizadores WHERE email = \""
                         + editTextMainUtilizador.getText().toString() + "\"",
                         editTextMainPassword.getText().toString(),
                         "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \""
@@ -96,12 +99,9 @@ public class MainActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {}
     };
     //loginTask abre tunel SSH e abre ligação à base de dados para verificar as credenciais do utilizador
-    /*private class loginTask extends AsyncTask<String, Integer, String>{
+    private class loginTask extends AsyncTask<String, Integer, String>{
         AlertDialog ppm;
         Utilizador user;
-        @Override
-        protected void onPreExecute(){
-        }
 
         @Override
         protected String doInBackground(String... params){
@@ -125,9 +125,11 @@ public class MainActivity extends AppCompatActivity {
                         user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6),0);
                         queryResult += rs.getString(5);
                     }
-                    rs = statement.executeQuery(params[2]);
-                    while(rs.next()){
-                        user.setCarros(rs.getInt(1));
+                    if(!queryResult.isEmpty()){
+                        rs = statement.executeQuery(params[2]);
+                        while(rs.next()){
+                            user.setCarros(rs.getInt(1));
+                        }
                     }
                     connection.close();
                 }catch (ClassNotFoundException | SQLException e){}
@@ -137,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 return "u";
             }
             else if(queryResult.equals(new md5Tools().encode(params[1]))){
+
                 return "y";
             }else{
                 return "p";
@@ -159,8 +162,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final String result){
             if(result.equals("u")){
-                if(ppm.isShowing())
-                    ppm.dismiss();
+                if(ppm.isShowing()) ppm.dismiss();
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -176,8 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }else if(result.equals("p")){
-                if(ppm.isShowing())
-                    ppm.dismiss();
+                if(ppm.isShowing()) ppm.dismiss();
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -193,19 +194,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }else if(result.equals("y")){
-                if(ppm.isShowing())
-                    ppm.dismiss();
+                if(ppm.isShowing()) ppm.dismiss();
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         Intent intent = new Intent(MainActivity.this, UtilizadorActivity.class);
                         intent.putExtra("USER", user);
-
                         startActivity(intent);
                         finish();
                     }
                 });
             }
         }
-    }*/
+    }
 }
