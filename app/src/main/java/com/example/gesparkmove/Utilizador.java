@@ -23,14 +23,16 @@ public class Utilizador implements Parcelable {
     private String mail;
     private int carros;
     private String avatar;
+    private int ativo;
 
-    public Utilizador(int id, int nif, String nome, String mail, int carros, String avatar){
+    public Utilizador(int id, int nif, String nome, String mail, int carros, String avatar, int ativo){
         this.id = id;
         this.nif = nif;
         this.nome = nome;
         this.mail = mail;
         this.carros = carros;
         this.avatar = avatar;
+        this.ativo = ativo;
     }
 
     public int getId() {
@@ -81,6 +83,14 @@ public class Utilizador implements Parcelable {
         this.avatar = avatar;
     }
 
+    public int getAtivo(){
+        return ativo;
+    }
+
+    public void setAtivo(int ativo){
+        this.ativo = ativo;
+    }
+
     protected Utilizador(Parcel in) {
         this.id = in.readInt();
         this.nif = in.readInt();
@@ -88,6 +98,7 @@ public class Utilizador implements Parcelable {
         this.mail = in.readString();
         this.carros = in.readInt();
         this.avatar = in.readString();
+        this.ativo = in.readInt();
     }
 
     @Override
@@ -98,6 +109,7 @@ public class Utilizador implements Parcelable {
         dest.writeString(this.mail);
         dest.writeInt(this.carros);
         dest.writeString(this.avatar);
+        dest.writeInt(this.ativo);
     }
 
     @Override

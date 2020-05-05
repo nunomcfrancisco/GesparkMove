@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 closeKeyboard();
-                new loginTask().execute("SELECT id, nif, nome, email, password, avatar FROM utilizadores WHERE email = \""
+                new GPMTasks(MainActivity.this, mainHandler).execute("SELECT id, nif, nome, email, password, avatar FROM utilizadores WHERE email = \""
                         + editTextMainUtilizador.getText().toString() + "\"",
                         editTextMainPassword.getText().toString(),
                         "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \""
@@ -96,8 +96,7 @@ public class MainActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {}
     };
     //loginTask abre tunel SSH e abre ligação à base de dados para verificar as credenciais do utilizador
-    private class loginTask extends AsyncTask<String, Integer, String>{
-        Bundle bundle = new Bundle();
+    /*private class loginTask extends AsyncTask<String, Integer, String>{
         AlertDialog ppm;
         Utilizador user;
         @Override
@@ -123,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     Statement statement = (Statement) connection.createStatement();
                     ResultSet rs = statement.executeQuery(params[0]);
                     while (rs.next()){
-                        user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6));
+                        user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6),0);
                         queryResult += rs.getString(5);
                     }
                     rs = statement.executeQuery(params[2]);
@@ -208,5 +207,5 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }
-    }
+    }*/
 }
