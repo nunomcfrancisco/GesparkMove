@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity{
                     public void run() {
                         ppm = new AlertDialog.Builder(MainActivity.this)
                                 .setTitle("Erro!")
-                                .setMessage("Password Inválida!")
+                                .setMessage(new md5Tools().encode("123"))
                                 .setCancelable(false)
                                 .setPositiveButton("Ok", new DialogInterface.OnClickListener(){
                                     @Override
