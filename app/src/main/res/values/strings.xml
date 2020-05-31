@@ -11,10 +11,8 @@
     <string name="pagamentos">Pagamentos</string>
     <string name="estacionamentos">Estacionamentos</string>
     <string name="inactivos">Inactivos</string>
-    <string name="alterar">Alterar</string>
     <string name="adicionar">Adicionar</string>
     <string name="veiculos">Veículos</string>
     <string name="consultas">Consultas</string>
-    <string name="drawer_header">Drawer Header</string>
     <string name="consultar">Consultar</string>
 </resources>
