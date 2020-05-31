@@ -64,16 +64,27 @@ public class MailSender extends Authenticator {
         message.setDataHandler(handler);
 
         BodyPart messageBodyPart = new MimeBodyPart();
-        InputStream is = context.getAssets().open("mail.html");
-        int size = is.available();
-        byte[] buffer = new byte[size];
-        is.read(buffer);
-        is.close();
-        String str = new String(buffer);
-        str.replace("$$nome$$", user);
-        str.replace("$$mail$$", mail);
-        str.replace("$$codigoActivacao$$", ativacao);
-        messageBodyPart.setContent(str,"text/html; charset=utf-8");
+        //InputStream is = context.getAssets().open("mail_1.html");
+        String teste = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+                        "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n" +
+                        "<head>\n" +
+                        "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />\n" +
+                        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n" +
+                        "</head>\n" +
+                        "<title></title>\n" +
+                        "<body>\n" +
+                        "%nome%\n" +
+                        "</body>\n" +
+                        "</html>";
+        //int size = is.available();
+        //byte[] buffer = new byte[size];
+        //is.read(buffer);
+        //is.close();
+        //String str = new String(buffer);
+        teste.replace("%nome%", "TESTE");
+        //str.replace("$$mail$$", mail);
+        //str.replace("$$codigoActivacao$$", ativacao);
+        messageBodyPart.setContent(teste,"text/html; charset=utf-8");
 
         _multipart.addBodyPart(messageBodyPart);
 
