@@ -14,6 +14,10 @@ public class consultarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_consultar, container, false);
+        Utilizador user = this.getArguments().getParcelable("USER");
+        for(int i = 0 ; i < 5 ; i++ ){
+
+        }
         return view;
     }
 }

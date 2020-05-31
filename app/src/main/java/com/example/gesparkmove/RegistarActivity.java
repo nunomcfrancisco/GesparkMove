@@ -118,7 +118,6 @@ public class RegistarActivity extends AppCompatActivity {
     public class MailCreator extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... params) {
-
             try {
 
                 MailSender sender = new MailSender(getBaseContext(), g.getMailUsername(),g.getMailPass());
@@ -129,7 +128,6 @@ public class RegistarActivity extends AppCompatActivity {
             }
             return null;
         }
-
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -181,7 +179,8 @@ public class RegistarActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(Void aVoid){
-            new MailCreator().execute(mh.mail, mh.user, mh.mail, Integer.toString(codAtiv));
+            new MailCreator().execute(mh.mail, mh.user, Integer.toString(codAtiv));
+            Log.println(Log.INFO, "3", Integer.toString(codAtiv));
             registarHandler.post(new Runnable() {
                 @Override
                 public void run() {

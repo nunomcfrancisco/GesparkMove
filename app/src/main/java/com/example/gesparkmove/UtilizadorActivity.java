@@ -58,11 +58,6 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
 
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.containerFragment, new dashboardFragment());
-        fragmentTransaction.commit();
-
         Bundle data = getIntent().getExtras();
         Utilizador user = data.getParcelable("USER");
         String avatar = "https://gespark.pt/" + user.getAvatar();
@@ -72,8 +67,17 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
         CircleImageView civ = headerView.findViewById(R.id.imageViewAvatar);
         navusername.setText(user.getNome());
         navusermail.setText(user.getMail());
+
+        Bundle toFrag = new Bundle();
+        toFrag.putParcelable("USER", user);
         Picasso.get().load(avatar).into(civ);
 
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        dashboardFragment dashFrag = new dashboardFragment();
+        dashFrag.setArguments(toFrag);
+        fragmentTransaction.add(R.id.containerFragment, dashFrag);
+        fragmentTransaction.commit();
     }
 
     @Override
