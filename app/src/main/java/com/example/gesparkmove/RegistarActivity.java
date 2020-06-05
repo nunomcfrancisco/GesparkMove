@@ -22,7 +22,6 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Random;
@@ -33,7 +32,6 @@ public class RegistarActivity extends AppCompatActivity {
             editTextRegistarNumeroFiscal, editTextRegistarMail,
             editTextRegistarPassword01, editTextRegistarPassword02;
     Button buttonRegistarRegistar, buttonRegistarVoltar;
-    String records = "";
     Globals g = new Globals();
     int codAtiv;
     mailHelper mh = new mailHelper();
@@ -185,8 +183,16 @@ public class RegistarActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     ppm = new AlertDialog.Builder(RegistarActivity.this)
-                            .setMessage("Feito!")
+                            .setMessage("Consulte o seu email para ativar a conta.")
                             .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(RegistarActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            })
                             .show();
                 }
             });

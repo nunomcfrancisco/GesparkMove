@@ -20,6 +20,8 @@ public class dashboardFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+
         textViewDashboardFragmentVeiculos = view.findViewById(R.id.textViewDashboardVeiculos);
         Bundle bundle = getActivity().getIntent().getExtras();
         Utilizador user = bundle.getParcelable("USER");

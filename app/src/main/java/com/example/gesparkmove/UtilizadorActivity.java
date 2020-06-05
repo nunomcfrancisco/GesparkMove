@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
     FragmentTransaction fragmentTransaction;
     Globals g = new Globals();
     private Handler utilizadorHandler = new Handler();
+    private Bundle toFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,8 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
         navusermail.setText(user.getMail());
 
         Bundle toFrag = new Bundle();
-        toFrag.putParcelable("USER", user);
+        toFrag.putParcelable("USER", data.getParcelable("USER"));
+        Log.println(Log.INFO, "NOME DO UTILIZADOR", user.getNome());
         Picasso.get().load(avatar).into(civ);
 
         fragmentManager = getSupportFragmentManager();
@@ -87,12 +90,17 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
             case R.id.menuItemDashboard:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
+                //dashboardFragment dashFrag = new dashboardFragment();
+                //dashFrag.setArguments(toFrag);
                 fragmentTransaction.replace(R.id.containerFragment, new dashboardFragment());
+
                 fragmentTransaction.commit();
             break;
             case R.id.menuItemAdicionar:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
+                adicionarFragment adicFrag = new adicionarFragment();
+                adicFrag.setArguments(toFrag);
                 fragmentTransaction.replace(R.id.containerFragment, new adicionarFragment());
                 fragmentTransaction.commit();
             break;
