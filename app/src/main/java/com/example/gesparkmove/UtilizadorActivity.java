@@ -90,8 +90,6 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
             case R.id.menuItemDashboard:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                //dashboardFragment dashFrag = new dashboardFragment();
-                //dashFrag.setArguments(toFrag);
                 fragmentTransaction.replace(R.id.containerFragment, new dashboardFragment());
 
                 fragmentTransaction.commit();
@@ -99,8 +97,8 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
             case R.id.menuItemAdicionar:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                adicionarFragment adicFrag = new adicionarFragment();
-                adicFrag.setArguments(toFrag);
+                //adicionarFragment adicFrag = new adicionarFragment();
+                //nunomcadicFrag.setArguments(toFrag);
                 fragmentTransaction.replace(R.id.containerFragment, new adicionarFragment());
                 fragmentTransaction.commit();
             break;

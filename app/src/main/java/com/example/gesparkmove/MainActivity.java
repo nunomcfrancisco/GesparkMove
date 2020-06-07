@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -25,6 +26,8 @@ import com.mysql.jdbc.Statement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class MainActivity extends AppCompatActivity{
@@ -97,6 +100,9 @@ public class MainActivity extends AppCompatActivity{
     private class loginTask extends AsyncTask<String, Integer, String>{
         AlertDialog ppm;
         Utilizador user;
+        //List<Marcas> marcasAl;
+        ArrayList<Marcas> marcasAl = new ArrayList<>();
+        ArrayList<Modelos> modeloAl = new ArrayList<>();
 
         @Override
         protected String doInBackground(String... params){
@@ -125,6 +131,15 @@ public class MainActivity extends AppCompatActivity{
                         while(rs.next()){
                             user.setCarros(rs.getInt(1));
                         }
+                    }
+                    rs = statement.executeQuery("SELECT * FROM marcas");
+                    while(rs.next()){
+                        Log.println(Log.INFO, "MARCAS - ", String.valueOf(rs.getInt(1)) + " " + rs.getString(2));
+                        marcasAl.add(new Marcas(rs.getInt(1), rs.getString(2)));
+                    }
+                    rs = statement.executeQuery("SELECT * FROM modelo");
+                    while(rs.next()){
+                        modeloAl.add(new Modelos(rs.getInt(1), rs.getInt(3), rs.getString(2)));
                     }
                     connection.close();
                 }catch (ClassNotFoundException | SQLException e){}
@@ -235,6 +250,8 @@ public class MainActivity extends AppCompatActivity{
                     public void run() {
                         Intent intent = new Intent(MainActivity.this, UtilizadorActivity.class);
                         intent.putExtra("USER", user);
+                        intent.putExtra("MARCAS", marcasAl);
+                        intent.putExtra("MODELOS", modeloAl);
                         startActivity(intent);
                         finish();
                     }
