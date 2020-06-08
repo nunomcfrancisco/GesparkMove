@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity{
     Button buttonMainRecuperar;
     Globals g = new Globals();
     private Handler mainHandler = new Handler();
+    public static boolean taskFinish = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 closeKeyboard();
+
+                //taskData td = new taskData(intent, taskFinish);
+                //td.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,null);
                 taskLogin tl = new taskLogin(MainActivity.this, mainHandler);
                 tl.execute("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = \""
                             + editTextMainUtilizador.getText().toString() + "\"",

@@ -33,6 +33,11 @@ public class Marcas implements Parcelable{
     }
 
     @Override
+    public String toString(){
+        return marca;
+    }
+
+    @Override
     public void writeToParcel(Parcel dest, int flags){
         dest.writeInt(this.id);
         dest.writeString(this.marca);

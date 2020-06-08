@@ -18,21 +18,21 @@ public class Modelos implements Parcelable {
     };
 
     private int id;
-    private int idModelo;
+    private int idMarca;
     private String modelo;
 
-    public Modelos(int id, int idModelo, String modelo) {
+    public Modelos(int id, String modelo, int idMarca) {
         this.id = id;
-        this.idModelo = idModelo;
         this.modelo = modelo;
+        this.idMarca = idMarca;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getIdModelo(){
-        return idModelo;
+    public int getIdMarca(){
+        return idMarca;
     }
 
     public String getModelo() {
@@ -41,15 +41,20 @@ public class Modelos implements Parcelable {
 
     protected Modelos(Parcel in){
         this.id = in.readInt();
-        this.idModelo = in.readInt();
         this.modelo = in.readString();
+        this.idMarca = in.readInt();
+    }
+
+    @Override
+    public String toString(){
+        return modelo;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags){
         dest.writeInt(this.id);
-        dest.writeInt(this.idModelo);
         dest.writeString(this.modelo);
+        dest.writeInt(this.idMarca);
     }
 
     @Override
