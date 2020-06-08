@@ -32,9 +32,6 @@ public class RegistarActivity extends AppCompatActivity {
             editTextRegistarNumeroFiscal, editTextRegistarMail,
             editTextRegistarPassword01, editTextRegistarPassword02;
     Button buttonRegistarRegistar, buttonRegistarVoltar;
-    Globals g = new Globals();
-    int codAtiv;
-    mailHelper mh = new mailHelper();
 
     private Handler registarHandler = new Handler();
 
@@ -74,7 +71,8 @@ public class RegistarActivity extends AppCompatActivity {
                                 }
                             }).show();
                 }else {
-                    new registarTask().execute(editTextRegistarNumeroFiscal.getText().toString(), editTextRegistarNome.getText().toString(),
+                    taskRegistar tr = new taskRegistar(RegistarActivity.this, registarHandler);
+                    tr.execute(editTextRegistarNumeroFiscal.getText().toString(), editTextRegistarNome.getText().toString(),
                             editTextRegistarMorada.getText().toString(), editTextRegistarCodigoPostal.getText().toString(),
                             editTextRegistarMail.getText().toString(), editTextRegistarPassword01.getText().toString());
                 }
@@ -112,90 +110,4 @@ public class RegistarActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable s) {}
     };
-
-    public class MailCreator extends AsyncTask<String, String, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-
-                MailSender sender = new MailSender(getBaseContext(), g.getMailUsername(),g.getMailPass());
-                sender.sendActivateMail(params[0], params[1], params[0], params[2]);
-
-            } catch (Exception e) {
-                Log.e("SendMail", e.getMessage(), e);
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-    }
-
-    class registarTask extends AsyncTask<String, Integer, Void>{
-        AlertDialog ppm;
-        @Override
-        protected Void doInBackground(String... params){
-            publishProgress(0);
-            codAtiv = new Random().nextInt(99999999) + 10000001;
-            try {
-                JSch jsch = new JSch();
-                Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
-                session.setPassword(g.getSshPass());
-                session.setPortForwardingL(g.getSshPFLPort(), g.getSshPFHost(), g.getSshPFRPort());
-                Properties prop = new Properties();
-                prop.put("StrictHostKeyChecking", "no");
-                session.setConfig(prop);
-                session.connect();
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
-                    Statement statement = (Statement) connection.createStatement();
-                    statement.executeUpdate("INSERT INTO utilizadores (nif, nome, morada, codigoPostal, email, password, dataRegisto, nivelAcesso, activo, codigoActivacao) VALUES ("
-                            + params[0] + ", '" + params[1] + "', '" + params[2] + "', " + params[3] + ", '" + params[4] + "', '" + new md5Tools().encode(params[5])
-                            + "', NOW(), 0, 0, " + codAtiv + ")");
-                    connection.close();
-                    mh.mail = params[4];
-                    mh.user = params[1];
-                }catch (ClassNotFoundException | SQLException e){}
-
-                session.disconnect();
-            } catch (JSchException e){}
-            return null;
-        }
-        @Override
-        protected void onProgressUpdate(Integer... values){
-            registarHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    ppm = new AlertDialog.Builder(RegistarActivity.this)
-                            .setMessage("A registar!")
-                            .setCancelable(false)
-                            .show();
-                }
-            });
-        }
-        @Override
-        protected void onPostExecute(Void aVoid){
-            new MailCreator().execute(mh.mail, mh.user, Integer.toString(codAtiv));
-            Log.println(Log.INFO, "3", Integer.toString(codAtiv));
-            registarHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    ppm = new AlertDialog.Builder(RegistarActivity.this)
-                            .setMessage("Consulte o seu email para ativar a conta.")
-                            .setCancelable(false)
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(RegistarActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            })
-                            .show();
-                }
-            });
-        }
-    }
 }

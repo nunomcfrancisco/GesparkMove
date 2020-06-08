@@ -28,6 +28,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 public class MainActivity extends AppCompatActivity{
@@ -56,11 +57,12 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 closeKeyboard();
-                new loginTask().execute("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = \""
-                        + editTextMainUtilizador.getText().toString() + "\"",
-                        editTextMainPassword.getText().toString(),
-                        "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \""
-                                + editTextMainUtilizador.getText().toString() + "\")");
+                taskLogin tl = new taskLogin(MainActivity.this, mainHandler);
+                tl.execute("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = \""
+                            + editTextMainUtilizador.getText().toString() + "\"",
+                            editTextMainPassword.getText().toString(),
+                            "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \""
+                            + editTextMainUtilizador.getText().toString() + "\")");
             }
         });
         //ação do botão de registar
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity{
         View view = this.getCurrentFocus();
         if(view != null){
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
     //TextWatcher faz enable ao botão de login quando ambas as text box tiverem texto.
@@ -96,167 +98,4 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void afterTextChanged(Editable s) {}
     };
-    //loginTask abre tunel SSH e abre ligação à base de dados para verificar as credenciais do utilizador
-    private class loginTask extends AsyncTask<String, Integer, String>{
-        AlertDialog ppm;
-        Utilizador user;
-        //List<Marcas> marcasAl;
-        ArrayList<Marcas> marcasAl = new ArrayList<>();
-        ArrayList<Modelos> modeloAl = new ArrayList<>();
-
-        @Override
-        protected String doInBackground(String... params){
-            String queryResult = "";
-            publishProgress(0);
-            try {
-                JSch jsch = new JSch();
-                Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
-                session.setPassword(g.getSshPass());
-                session.setPortForwardingL(g.getSshPFLPort(), g.getSshPFHost(), g.getSshPFRPort());
-                Properties prop = new Properties();
-                prop.put("StrictHostKeyChecking", "no");
-                session.setConfig(prop);
-                session.connect();
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
-                    Statement statement = (Statement) connection.createStatement();
-                    ResultSet rs = statement.executeQuery(params[0]);
-                    while (rs.next()){
-                        user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6), rs.getInt(7));
-                        queryResult += rs.getString(5);
-                    }
-                    if(!queryResult.isEmpty()){
-                        rs = statement.executeQuery(params[2]);
-                        while(rs.next()){
-                            user.setCarros(rs.getInt(1));
-                        }
-                    }
-                    rs = statement.executeQuery("SELECT * FROM marcas");
-                    while(rs.next()){
-                        Log.println(Log.INFO, "MARCAS - ", String.valueOf(rs.getInt(1)) + " " + rs.getString(2));
-                        marcasAl.add(new Marcas(rs.getInt(1), rs.getString(2)));
-                    }
-                    rs = statement.executeQuery("SELECT * FROM modelo");
-                    while(rs.next()){
-                        modeloAl.add(new Modelos(rs.getInt(1), rs.getInt(3), rs.getString(2)));
-                    }
-                    connection.close();
-                }catch (ClassNotFoundException | SQLException e){}
-                session.disconnect();
-            } catch (JSchException e){}
-            if(queryResult.equals(""))
-                return "u";
-            else if(user.getAtivo() == 0)
-                return "a";
-            else if(queryResult.equals(new md5Tools().encode(params[1]))){
-                try {
-                    JSch jsch = new JSch();
-                    Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
-                    session.setPassword(g.getSshPass());
-                    session.setPortForwardingL(g.getSshPFLPort(), g.getSshPFHost(), g.getSshPFRPort());
-                    Properties prop = new Properties();
-                    prop.put("StrictHostKeyChecking", "no");
-                    session.setConfig(prop);
-                    session.connect();
-                    try {
-                        Class.forName("com.mysql.jdbc.Driver");
-                        Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
-                        Statement statement = (Statement) connection.createStatement();
-                        statement.executeUpdate("UPDATE utilizadores SET dataUltimoAcesso = NOW() WHERE id = " + user.getId());
-                        connection.close();
-                    } catch (ClassNotFoundException | SQLException e) {
-                        e.printStackTrace();
-                    }
-                    session.disconnect();
-                } catch (JSchException e) {
-                    e.printStackTrace();
-                }
-                return "y";
-            }else{
-                return "p";
-            }
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values){
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    ppm = new AlertDialog.Builder(MainActivity.this)
-                            .setMessage("Loading")
-                            .setCancelable(false)
-                            .show();
-                }
-            });
-        }
-
-        @Override
-        protected void onPostExecute(final String result){
-            if(result.equals("u")) {
-                if (ppm.isShowing()) ppm.dismiss();
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ppm = new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Erro!")
-                                .setMessage("Utilizador inválido!")
-                                .setCancelable(false)
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                })
-                                .show();
-                    }
-                });
-            }else if(result.equals("a")){
-                if (ppm.isShowing()) ppm.dismiss();
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ppm = new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Erro!")
-                                .setMessage("Conta não ativa.")
-                                .setCancelable(false)
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                })
-                                .show();
-                    }
-                });
-            }else if(result.equals("p")){
-                if(ppm.isShowing()) ppm.dismiss();
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ppm = new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Erro!")
-                                .setMessage("Password inválida!")
-                                .setCancelable(false)
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener(){
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {}
-                                })
-                                .show();
-                    }
-                });
-            }else if(result.equals("y")){
-                if(ppm.isShowing()) ppm.dismiss();
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(MainActivity.this, UtilizadorActivity.class);
-                        intent.putExtra("USER", user);
-                        intent.putExtra("MARCAS", marcasAl);
-                        intent.putExtra("MODELOS", modeloAl);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-            }
-        }
-    }
 }
