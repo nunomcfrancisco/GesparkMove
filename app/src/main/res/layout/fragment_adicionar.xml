@@ -21,6 +21,8 @@
             android:layout_marginBottom="20dp"
             android:ems="10"
             android:hint="Matricula"
+            android:maxLength="8"
+
             android:inputType="textPersonName" />
 
         <Spinner
@@ -50,10 +52,5 @@
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:text="Adicionar" />
-        <Button
-            android:id="@+id/buttonAdicionarVoltar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Voltar" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

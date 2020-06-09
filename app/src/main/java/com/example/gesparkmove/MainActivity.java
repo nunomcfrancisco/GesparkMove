@@ -58,9 +58,6 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 closeKeyboard();
-
-                //taskData td = new taskData(intent, taskFinish);
-                //td.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,null);
                 taskLogin tl = new taskLogin(MainActivity.this, mainHandler);
                 tl.execute("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = \""
                             + editTextMainUtilizador.getText().toString() + "\"",
@@ -96,7 +93,7 @@ public class MainActivity extends AppCompatActivity{
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String usernameInput = editTextMainUtilizador.getText().toString().trim();
             String passwordInput = editTextMainPassword.getText().toString().trim();
-            buttonMainLogin.setEnabled(!usernameInput.isEmpty() && !passwordInput.isEmpty());
+            buttonMainLogin.setEnabled(!usernameInput.isEmpty() && !passwordInput.isEmpty() && s.length() > 7);
         }
 
         @Override

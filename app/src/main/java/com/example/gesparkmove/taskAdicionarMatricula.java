@@ -15,34 +15,22 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
 
-public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
+public class taskAdicionarMatricula extends AsyncTask<String, Integer, Void> {
     AlertDialog ppm;
     Context ctx;
     Handler handler;
     Globals g = new Globals();
-    ArrayList<ArrayList> data = new ArrayList<>();
-    ArrayList<Marcas> tempMarcas = new ArrayList<>();
-    ArrayList<Modelos> tempModelos = new ArrayList<>();
-    private final onDataListener mListener;
 
-    taskData(Context ctx, onDataListener listener, Handler handler){
+    taskAdicionarMatricula(Context ctx, Handler handler){
         this.ctx = ctx;
-        mListener = listener;
         this.handler = handler;
     }
 
     @Override
-    protected void onPreExecute(){
-        super.onPreExecute();
-    }
-
-    @Override
-    protected ArrayList<ArrayList> doInBackground(Void... voids) {
+    protected Void doInBackground(String... params) {
         publishProgress(0);
         try {
             JSch jsch = new JSch();
@@ -57,40 +45,39 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                ResultSet rsMarcas = statement.executeQuery("SELECT * FROM marcas");
-                while (rsMarcas.next()){
-                    tempMarcas.add(new Marcas(rsMarcas.getInt(1), rsMarcas.getString(2)));
-                }
-                data.add(tempMarcas);
-                ResultSet rsModelo = statement.executeQuery("SELECT * FROM modelo");
-                while(rsModelo.next()){
-                    tempModelos.add(new Modelos(rsModelo.getInt(1), rsModelo.getString(2), rsModelo.getInt(3)));
-                }
-                data.add(tempModelos);
+                statement.execute("INSERT INTO veiculos (matricula, id_utilizador, id_marca, id_modelo, cor, activo, imagem) VALUES(" + params[0] +  ", " + params[1] + "," + params[2] + ", " + params[3] +  ", " + params[4] + ", 0, NULL)");
                 connection.close();
-            }catch (ClassNotFoundException | SQLException e){
-                Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
+            } catch (ClassNotFoundException | SQLException e) {
+                Log.println(Log.INFO, "SQL Exception: ", e.toString());
             }
             session.disconnect();
-        } catch (JSchException e){
-            Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
+        }catch (JSchException e){
+            Log.println(Log.INFO, "JSch Exception: ", e.toString());
         }
-        return data;
+        return null;
     }
 
     @Override
-    protected void onProgressUpdate(Integer... values) {
+    protected void onProgressUpdate(Integer... values){
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ppm = new AlertDialog.Builder(ctx).setMessage("Loading").setCancelable(false).show();
+                ppm = new AlertDialog.Builder(ctx)
+                        .setMessage("A adicionar...")
+                        .setCancelable(false)
+                        .show();
             }
         });
     }
 
     @Override
-    protected void onPostExecute(ArrayList<ArrayList> data) {
-        mListener.onMarcasCompleted(data);
+    protected void onPostExecute(Void aVoid) {
         ppm.dismiss();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ctx, "Matricula adicionada", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
