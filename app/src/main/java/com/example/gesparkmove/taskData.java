@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -26,11 +25,11 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
     Handler handler;
     Globals g = new Globals();
     ArrayList<ArrayList> data = new ArrayList<>();
-    ArrayList<Marcas> tempMarcas = new ArrayList<>();
-    ArrayList<Modelos> tempModelos = new ArrayList<>();
-    private final onDataListener mListener;
+    ArrayList<Marca> tempMarcas = new ArrayList<>();
+    ArrayList<Modelo> tempModelos = new ArrayList<>();
+    private final onMarcasModelosListener mListener;
 
-    taskData(Context ctx, onDataListener listener, Handler handler){
+    taskData(Context ctx, onMarcasModelosListener listener, Handler handler){
         this.ctx = ctx;
         mListener = listener;
         this.handler = handler;
@@ -59,12 +58,12 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
                 Statement statement = (Statement) connection.createStatement();
                 ResultSet rsMarcas = statement.executeQuery("SELECT * FROM marcas");
                 while (rsMarcas.next()){
-                    tempMarcas.add(new Marcas(rsMarcas.getInt(1), rsMarcas.getString(2)));
+                    tempMarcas.add(new Marca(rsMarcas.getInt(1), rsMarcas.getString(2)));
                 }
                 data.add(tempMarcas);
                 ResultSet rsModelo = statement.executeQuery("SELECT * FROM modelo");
                 while(rsModelo.next()){
-                    tempModelos.add(new Modelos(rsModelo.getInt(1), rsModelo.getString(2), rsModelo.getInt(3)));
+                    tempModelos.add(new Modelo(rsModelo.getInt(1), rsModelo.getString(2), rsModelo.getInt(3)));
                 }
                 data.add(tempModelos);
                 connection.close();
@@ -90,7 +89,7 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
 
     @Override
     protected void onPostExecute(ArrayList<ArrayList> data) {
-        mListener.onMarcasCompleted(data);
+        mListener.onMarcasModelosCompleted(data);
         ppm.dismiss();
     }
 }

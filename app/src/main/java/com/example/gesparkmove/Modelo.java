@@ -3,17 +3,17 @@ package com.example.gesparkmove;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Modelos implements Parcelable {
+public class Modelo implements Parcelable {
 
-    public static final Creator<Modelos> CREATOR = new Creator<Modelos>() {
+    public static final Creator<Modelo> CREATOR = new Creator<Modelo>() {
         @Override
-        public Modelos createFromParcel(Parcel in) {
-            return new Modelos(in);
+        public Modelo createFromParcel(Parcel in) {
+            return new Modelo(in);
         }
 
         @Override
-        public Modelos[] newArray(int size) {
-            return new Modelos[size];
+        public Modelo[] newArray(int size) {
+            return new Modelo[size];
         }
     };
 
@@ -21,7 +21,7 @@ public class Modelos implements Parcelable {
     private int idMarca;
     private String modelo;
 
-    public Modelos(int id, String modelo, int idMarca) {
+    public Modelo(int id, String modelo, int idMarca) {
         this.id = id;
         this.modelo = modelo;
         this.idMarca = idMarca;
@@ -39,7 +39,7 @@ public class Modelos implements Parcelable {
         return modelo;
     }
 
-    protected Modelos(Parcel in){
+    protected Modelo(Parcel in){
         this.id = in.readInt();
         this.modelo = in.readString();
         this.idMarca = in.readInt();

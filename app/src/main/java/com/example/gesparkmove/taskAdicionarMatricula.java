@@ -45,10 +45,11 @@ public class taskAdicionarMatricula extends AsyncTask<String, Integer, Void> {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                statement.execute("INSERT INTO veiculos (matricula, id_utilizador, id_marca, id_modelo, cor, activo, imagem) VALUES(" + params[0] +  ", " + params[1] + "," + params[2] + ", " + params[3] +  ", " + params[4] + ", 0, NULL)");
+                statement.execute("INSERT INTO veiculos (matricula, id_utilizador, id_marca, id_modelo, cor, activo, imagem) VALUES('"
+                        + params[0] +  "', " + params[1] + "," + params[2] + ", " + params[3] +  ", '" + params[4] + "', 0, NULL)");
                 connection.close();
             } catch (ClassNotFoundException | SQLException e) {
-                Log.println(Log.INFO, "SQL Exception: ", e.toString());
+                Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
             session.disconnect();
         }catch (JSchException e){

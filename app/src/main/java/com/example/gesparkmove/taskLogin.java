@@ -16,19 +16,22 @@ import com.jcraft.jsch.Session;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
+import java.sql.Array;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class taskLogin extends AsyncTask<String, Integer, String> {
     @SuppressLint("StaticFieldLeak")
     Context ctx;
     Handler handler;
-    Intent intent;
     Globals g = new Globals();
     Utilizador user;
     AlertDialog ppm;
+    ArrayList<Marca> marcas = new ArrayList<>();
+    ArrayList<Modelo> modelos = new ArrayList<>();
 
     taskLogin(Context ctx, Handler handler){
         this.ctx = ctx;
@@ -64,10 +67,15 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                     }
                     if (queryResult.length() > 0) {
                         rs = statement.executeQuery(params[2]);
-                        while (rs.next()) {
+                        while (rs.next())
                             user.setCarros(rs.getInt(1));
-                        }
                     }
+                    rs = statement.executeQuery("SELECT * FROM marcas");
+                    while(rs.next())
+                        marcas.add(new Marca(rs.getInt(1), rs.getString(2)));
+                    rs = statement.executeQuery("SELECT * FROM modelos");
+                    while(rs.next())
+                        modelos.add(new Modelo(rs.getInt(1), rs.getString(2), rs.getInt(3)));
                     connection.close();
                 } catch (ClassNotFoundException | SQLException e) {
                     Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
@@ -186,6 +194,8 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                     public void run() {
                         Intent intent = new Intent(ctx, UtilizadorActivity.class);
                         intent.putExtra("USER", user);
+                        intent.putExtra("MARCA", marcas);
+                        intent.putExtra("MODELO", modelos);
                         ctx.startActivity(intent);
                     }
                 });

@@ -72,7 +72,6 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
 
         Bundle toFrag = new Bundle();
         toFrag.putParcelable("USER", data.getParcelable("USER"));
-        Log.println(Log.INFO, "NOME DO UTILIZADOR", user.getNome());
         Picasso.get().load(avatar).into(civ);
 
         fragmentManager = getSupportFragmentManager();
@@ -91,14 +90,11 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerFragment, new dashboardFragment());
-
                 fragmentTransaction.commit();
             break;
             case R.id.menuItemAdicionar:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                //adicionarFragment adicFrag = new adicionarFragment();
-                //nunomcadicFrag.setArguments(toFrag);
                 fragmentTransaction.replace(R.id.containerFragment, new adicionarFragment());
                 fragmentTransaction.commit();
             break;

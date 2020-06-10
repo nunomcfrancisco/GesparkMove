@@ -13,7 +13,7 @@ public class Globals extends Application {
     private String sshHost = "92.222.70.24";
     private String mySqlPass = "GespPW01";
     private String mySqlUsername = "gremote";
-    private String mySqlUrl = "jdbc:mysql://127.0.0.1:3306/cgs_gespark";
+    private String mySqlUrl = "jdbc:mysql://127.0.0.1:3306/cgs_gespark?autoReconnect=true&useSSL=false";
     private String mailUsername = "info.gespark@gespark.pt";
     private String mailPass = "3xSMg8nSgUNB";
 

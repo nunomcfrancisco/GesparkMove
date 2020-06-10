@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +21,17 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class adicionarFragment extends Fragment implements onDataListener {
+public class adicionarFragment extends Fragment implements onMarcasModelosListener {
     EditText editTextAdicionarMatricula, editTextAdicionarCor;
+    Button buttonAdicionarAdicionar;
     Handler adicionarHandler = new Handler();
     Utilizador user;
-    ArrayList<Marcas> marcasItems = new ArrayList<>();
-    ArrayList<Modelos> modelosItems = new ArrayList<>();
+    ArrayList<Marca> marcasItems = new ArrayList<>();
+    ArrayList<Modelo> modelosItems = new ArrayList<>();
     private List<String> marcaModelo = new ArrayList<>();
     int idMarca;
     Spinner spinnerMarcas, spinnerModelos;
+    int myCount = 0;
 
     @Nullable
     @Override
@@ -49,26 +50,18 @@ public class adicionarFragment extends Fragment implements onDataListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button buttonAdicionarAdicionar = view.findViewById(R.id.buttonAdicionarAdicionar);
+        buttonAdicionarAdicionar = view.findViewById(R.id.buttonAdicionarAdicionar);
         buttonAdicionarAdicionar.setOnClickListener(new View.OnClickListener(){
             int idMa, idMo;
             @Override
             public void onClick(View view){
 
-                for(Marcas marca : marcasItems)
+                for(Marca marca : marcasItems)
                     if(marca.getMarca().equals(spinnerMarcas.getSelectedItem().toString()))
                         idMa = marca.getId();
-                for(Modelos modelo : modelosItems)
+                for(Modelo modelo : modelosItems)
                     if(modelo.getModelo().equals(spinnerModelos.getSelectedItem().toString()))
                         idMo = modelo.getId();
-
-                Log.println(Log.INFO, "SELECTED MARCA", spinnerMarcas.getSelectedItem().toString());
-                Log.println(Log.INFO, "SELECTED MODELO", spinnerModelos.getSelectedItem().toString());
-                Log.println(Log.INFO, "MATRICULA: ", editTextAdicionarMatricula.getText().toString());
-                Log.println(Log.INFO, "USER ID: ", String.valueOf(user.getId()));
-                Log.println(Log.INFO, "MARCA ID: ",String.valueOf(idMa));
-                Log.println(Log.INFO, "MODELO ID: ",String.valueOf(idMo));
-                Log.println(Log.INFO, "COR: ",editTextAdicionarCor.getText().toString());
 
                 taskAdicionarMatricula tam = new taskAdicionarMatricula(getActivity(), adicionarHandler);
                 tam.execute(editTextAdicionarMatricula.getText().toString(),
@@ -76,18 +69,23 @@ public class adicionarFragment extends Fragment implements onDataListener {
                         String.valueOf(idMa),
                         String.valueOf(idMo),
                         editTextAdicionarCor.getText().toString());
+                editTextAdicionarMatricula.setText("");
+                editTextAdicionarCor.setText("");
+                spinnerMarcas.setSelection(0);
+                spinnerModelos.setSelection(0);
+
             }
         });
     }
 
     @Override
-    public void onMarcasCompleted(ArrayList<ArrayList> data) {
+    public void onMarcasModelosCompleted(ArrayList<ArrayList> data) {
         marcasItems = data.get(0);
         modelosItems = data.get(1);
         spinnerMarcas = this.getView().findViewById(R.id.spinnerAdicionarMarca);
         spinnerModelos = this.getView().findViewById(R.id.spinnerAdicionarModelo);
-        ArrayAdapter<Marcas> adapterMarcas = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, marcasItems);
-        ArrayAdapter<Modelos> adapterModelos = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, modelosItems);
+        ArrayAdapter<Marca> adapterMarcas = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, marcasItems);
+        ArrayAdapter<Modelo> adapterModelos = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, modelosItems);
         spinnerMarcas.setAdapter(adapterMarcas);
         spinnerModelos.setAdapter(adapterModelos);
         spinnerMarcas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -96,11 +94,11 @@ public class adicionarFragment extends Fragment implements onDataListener {
                 String spinnerValue = spinnerMarcas.getSelectedItem().toString();
                 marcaModelo.clear();
 
-                for (Marcas marca : marcasItems)
+                for (Marca marca : marcasItems)
                     if(spinnerValue.equals(marca.getMarca()))
                         idMarca = marca.getId();
 
-                for (Modelos modelo : modelosItems)
+                for (Modelo modelo : modelosItems)
                     if(idMarca == modelo.getIdMarca())
                         marcaModelo.add(modelo.getModelo());
 
@@ -111,7 +109,6 @@ public class adicionarFragment extends Fragment implements onDataListener {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
@@ -122,15 +119,21 @@ public class adicionarFragment extends Fragment implements onDataListener {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(s.length() == 2) {
-                editTextAdicionarMatricula.setText(editTextAdicionarMatricula.getText() + "-");
-                editTextAdicionarMatricula.setSelection(editTextAdicionarMatricula.getText().length());
+            String corInput = editTextAdicionarCor.getText().toString().trim();
+            if(myCount < start) {
+                myCount = start;
+                /*Log.println(Log.INFO, "START    :: ", String.valueOf(start));
+                Log.println(Log.INFO, "BEFORE   :: ", String.valueOf(before));
+                Log.println(Log.INFO, "COUNT    :: ", String.valueOf(count));
+                Log.println(Log.INFO, "MY COUNT :: ", String.valueOf(myCount));*/
+                if (s.length() == 2 || s.length() == 5) {
+                    editTextAdicionarMatricula.setText(s + "-");
+                    editTextAdicionarMatricula.setSelection(editTextAdicionarMatricula.getText().length());
+                }
+            }else{
+                myCount--;
             }
-            if(s.length() == 5){
-                editTextAdicionarMatricula.setText(editTextAdicionarMatricula.getText() + "-");
-                editTextAdicionarMatricula.setSelection(editTextAdicionarMatricula.getText().length());
-            }
-
+            buttonAdicionarAdicionar.setEnabled(!corInput.isEmpty() && s.length() == 8);
         }
 
         @Override
