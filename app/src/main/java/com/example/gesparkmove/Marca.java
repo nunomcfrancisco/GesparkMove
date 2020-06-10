@@ -7,10 +7,14 @@ public class Marca implements Parcelable{
 
     public static final Creator<Marca> CREATOR = new Creator<Marca>(){
         @Override
-        public Marca createFromParcel(Parcel in){return new Marca(in);}
+        public Marca createFromParcel(Parcel in){
+            return new Marca(in);
+        }
 
         @Override
-        public Marca[] newArray(int size) {return new Marca[size];}
+        public Marca[] newArray(int size) {
+            return new Marca[size];
+        }
     };
 
     private int id;
@@ -20,10 +24,10 @@ public class Marca implements Parcelable{
         this.id = id;
         this.marca = marca;
     }
-    public int getId() {
+    public int getId(){
         return id;
     }
-    public String getMarca() {
+    public String getMarca(){
         return marca;
     }
 
@@ -44,5 +48,7 @@ public class Marca implements Parcelable{
     }
 
     @Override
-    public int describeContents(){return 0;}
+    public int describeContents(){
+        return 0;
+    }
 }

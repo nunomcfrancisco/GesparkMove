@@ -33,7 +33,7 @@ public class dashboardFragment extends Fragment {
                 consultarFragment cFragment = new consultarFragment();
                 FragmentManager manager = getFragmentManager();
                 manager.beginTransaction()
-                        .replace(R.id.containerFragment, cFragment, cFragment.getTag())
+                        .replace(R.id.containerFragment, cFragment, "consultar")
                         .commit();
             }
         });

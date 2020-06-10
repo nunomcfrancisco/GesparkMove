@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity{
                             editTextMainPassword.getText().toString(),
                             "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \""
                             + editTextMainUtilizador.getText().toString() + "\")");
+                editTextMainUtilizador.setText("");
+                editTextMainPassword.setText("");
             }
         });
         //ação do botão de registar

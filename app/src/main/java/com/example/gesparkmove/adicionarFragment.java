@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +38,40 @@ public class adicionarFragment extends Fragment implements onMarcasModelosListen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_adicionar, container, false);
+        spinnerMarcas = view.findViewById(R.id.spinnerAdicionarMarca);
+        spinnerModelos = view.findViewById(R.id.spinnerAdicionarModelo);
         Bundle bundle = getActivity().getIntent().getExtras();
         user = bundle.getParcelable("USER");
-        new taskData(getActivity(), this, adicionarHandler).execute();
+        marcasItems = bundle.getParcelableArrayList("MARCA");
+        modelosItems = bundle.getParcelableArrayList("MODELO");
+        ArrayAdapter<Marca> adapterMarcas = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, marcasItems);
+        spinnerMarcas.setAdapter(adapterMarcas);
+        spinnerMarcas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String spinnerValue = spinnerMarcas.getSelectedItem().toString();
+                marcaModelo.clear();
+
+                for (Marca marca : marcasItems)
+                    if(spinnerValue.equals(marca.getMarca()))
+                        idMarca = marca.getId();
+
+                for (Modelo modelo : modelosItems)
+                    if(idMarca == modelo.getIdMarca())
+                        marcaModelo.add(modelo.getModelo());
+
+                spinnerMarcas.setSelection(position);
+                ArrayAdapter adapterModelos = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, marcaModelo);
+                spinnerModelos.setAdapter(adapterModelos);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        ArrayAdapter<Modelo> adapterModelo = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, modelosItems);
+
+        spinnerModelos.setAdapter(adapterModelo);
         editTextAdicionarMatricula = view.findViewById(R.id.editTextAdicionarMatricula);
         editTextAdicionarCor = view.findViewById(R.id.editTextAdicionarCor);
         editTextAdicionarMatricula.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
@@ -55,7 +87,6 @@ public class adicionarFragment extends Fragment implements onMarcasModelosListen
             int idMa, idMo;
             @Override
             public void onClick(View view){
-
                 for(Marca marca : marcasItems)
                     if(marca.getMarca().equals(spinnerMarcas.getSelectedItem().toString()))
                         idMa = marca.getId();
@@ -63,7 +94,7 @@ public class adicionarFragment extends Fragment implements onMarcasModelosListen
                     if(modelo.getModelo().equals(spinnerModelos.getSelectedItem().toString()))
                         idMo = modelo.getId();
 
-                taskAdicionarMatricula tam = new taskAdicionarMatricula(getActivity(), adicionarHandler);
+                taskAdicionarMatricula tam = new taskAdicionarMatricula(getActivity(), adicionarHandler, getActivity());
                 tam.execute(editTextAdicionarMatricula.getText().toString(),
                         String.valueOf(user.getId()),
                         String.valueOf(idMa),
@@ -80,7 +111,7 @@ public class adicionarFragment extends Fragment implements onMarcasModelosListen
 
     @Override
     public void onMarcasModelosCompleted(ArrayList<ArrayList> data) {
-        marcasItems = data.get(0);
+        /*marcasItems = data.get(0);
         modelosItems = data.get(1);
         spinnerMarcas = this.getView().findViewById(R.id.spinnerAdicionarMarca);
         spinnerModelos = this.getView().findViewById(R.id.spinnerAdicionarModelo);
@@ -110,7 +141,7 @@ public class adicionarFragment extends Fragment implements onMarcasModelosListen
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
-        });
+        });*/
     }
 
     private TextWatcher adicionarMatriculaTextWatcher = new TextWatcher() {

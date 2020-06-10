@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -42,7 +43,6 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
     FragmentTransaction fragmentTransaction;
     Globals g = new Globals();
     private Handler utilizadorHandler = new Handler();
-    private Bundle toFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +70,12 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
         navusername.setText(user.getNome());
         navusermail.setText(user.getMail());
 
-        Bundle toFrag = new Bundle();
-        toFrag.putParcelable("USER", data.getParcelable("USER"));
         Picasso.get().load(avatar).into(civ);
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        dashboardFragment dashFrag = new dashboardFragment();
-        dashFrag.setArguments(toFrag);
-        fragmentTransaction.add(R.id.containerFragment, dashFrag);
-        fragmentTransaction.commit();
+        fragmentTransaction.add(R.id.containerFragment, new dashboardFragment(), "dashboard").commit();
+        //fragmentTransaction.commit();
     }
 
     @Override
@@ -87,40 +83,28 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
         drawerLayout.closeDrawer(GravityCompat.START);
         switch(item.getItemId()){
             case R.id.menuItemDashboard:
-                fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new dashboardFragment());
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.containerFragment, new dashboardFragment(), "dashboard").commit();
             break;
             case R.id.menuItemAdicionar:
-                fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new adicionarFragment());
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.containerFragment, new adicionarFragment(), "adicionar").commit();
             break;
             case R.id.menuItemConsultar:
-                fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new consultarFragment());
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.containerFragment, new consultarFragment(), "consultar").commit();
             break;
             case R.id.menuItemEstacionamentos:
-                fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new estacionamentosFragment());
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.containerFragment, new estacionamentosFragment(), "estacionamento").commit();
             break;
             case R.id.menuItemInactivos:
-                fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new inactivosFragment());
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.containerFragment, new inactivosFragment(), "inactivos").commit();
             break;
             case R.id.menuItemPagamentos:
-                fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new pagamentosFragment());
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.containerFragment, new pagamentosFragment(), "pagamentos").commit();
             break;
             case R.id.menuItemLogout:
                 Intent intent = new Intent(this, MainActivity.class);
@@ -129,49 +113,5 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
             break;
         }
         return true;
-    }
-
-    private class loadUserTask extends AsyncTask<String, Integer, Void>{
-        @Override
-        protected Void doInBackground(String... params) {
-            try {
-                JSch jsch = new JSch();
-                Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
-                session.setPassword(g.getSshPass());
-                session.setPortForwardingL(g.getSshPFLPort(), g.getSshPFHost(), g.getSshPFRPort());
-                Properties prop = new Properties();
-                prop.put("StrictHostKeyChecking", "no");
-                session.setConfig(prop);
-                session.connect();
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
-                    Statement statement = (Statement) connection.createStatement();
-                    ResultSet rs = statement.executeQuery(params[0]);
-                    while(rs.next()){
-                        //user.setNif(rs.getInt(1));
-                        //user.setNome(rs.getString(2));
-                        //user.setMorada(rs.getString(3));
-                        //user.setCp(rs.getString(4));
-                        //user.setMail(rs.getString(5));
-                    }
-                    connection.close();
-                } catch (ClassNotFoundException | SQLException e) {
-                    e.printStackTrace();
-                }
-                session.disconnect();
-            } catch (JSchException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-        }
     }
 }

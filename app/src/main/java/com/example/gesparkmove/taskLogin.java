@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -16,7 +17,6 @@ import com.jcraft.jsch.Session;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
-import java.sql.Array;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +32,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
     AlertDialog ppm;
     ArrayList<Marca> marcas = new ArrayList<>();
     ArrayList<Modelo> modelos = new ArrayList<>();
+    ArrayList<Veiculo> veiculos = new ArrayList<>();
 
     taskLogin(Context ctx, Handler handler){
         this.ctx = ctx;
@@ -46,6 +47,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... params){
         StringBuilder queryResult = new StringBuilder();
+        int userId = 0;
         publishProgress(0);
             try {
                 JSch jsch = new JSch();
@@ -64,6 +66,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                     while (rs.next()) {
                         user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6), rs.getInt(7));
                         queryResult.append(rs.getString(5));
+                        userId = rs.getInt(1);
                     }
                     if (queryResult.length() > 0) {
                         rs = statement.executeQuery(params[2]);
@@ -73,9 +76,12 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                     rs = statement.executeQuery("SELECT * FROM marcas");
                     while(rs.next())
                         marcas.add(new Marca(rs.getInt(1), rs.getString(2)));
-                    rs = statement.executeQuery("SELECT * FROM modelos");
+                    rs = statement.executeQuery("SELECT * FROM modelo");
                     while(rs.next())
                         modelos.add(new Modelo(rs.getInt(1), rs.getString(2), rs.getInt(3)));
+                    rs = statement.executeQuery("SELECT veiculos.id, veiculos.matricula, marcas.marca, modelo.modelo, cor, estacionado, veiculos.activo FROM veiculos inner join marcas inner join modelo WHERE id_utilizador = " + userId + " AND veiculos.id_marca = marcas.id AND veiculos.id_modelo = modelo.id");
+                    while(rs.next())
+                        veiculos.add(new Veiculo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7)));
                     connection.close();
                 } catch (ClassNotFoundException | SQLException e) {
                     Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
@@ -134,10 +140,11 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(final String result){
         switch (result) {
             case "u":
-                if (ppm.isShowing()) ppm.dismiss();
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        if (ppm.isShowing())
+                            ppm.dismiss();
                         ppm = new AlertDialog.Builder(ctx)
                                 .setTitle("Erro!")
                                 .setMessage("Utilizador inválido!")
@@ -152,7 +159,9 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 });
                 break;
             case "a":
-                if (ppm.isShowing()) ppm.dismiss();
+                if (ppm.isShowing())
+                    ppm.dismiss();
+
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -170,7 +179,9 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 });
                 break;
             case "p":
-                if (ppm.isShowing()) ppm.dismiss();
+                if (ppm.isShowing())
+                    ppm.dismiss();
+
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -188,7 +199,9 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 });
                 break;
             case "y":
-                if (ppm.isShowing()) ppm.dismiss();
+                if (ppm.isShowing())
+                    ppm.dismiss();
+
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -196,6 +209,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                         intent.putExtra("USER", user);
                         intent.putExtra("MARCA", marcas);
                         intent.putExtra("MODELO", modelos);
+                        intent.putExtra("VEICULO", veiculos);
                         ctx.startActivity(intent);
                     }
                 });
