@@ -2,49 +2,63 @@ package com.example.gesparkmove;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 
-public class consultarFragment extends Fragment implements onConsultarListener{
-    Handler consultarHandler = new Handler();
+public class consultarFragment extends Fragment{
     Utilizador user;
     ArrayList<Veiculo> veiculos = new ArrayList<>();
+    ArrayAdapter adapterVeiculos;
     ListView listViewConsultar;
+    TextView textViewSemVeiculos;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_consultar, container, false);
         Bundle bundle = getActivity().getIntent().getExtras();
-
         user = bundle.getParcelable("USER");
         veiculos = bundle.getParcelableArrayList("VEICULO");
         listViewConsultar = view.findViewById(R.id.listViewConsultar);
-        ArrayAdapter adapterVeiculos = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, veiculos);
-        listViewConsultar.setAdapter(adapterVeiculos);
-        /*taskConsultar tc = new taskConsultar(getActivity(), this, consultarHandler);
-        tc.execute(String.valueOf(user.getId()));*/
+        textViewSemVeiculos = view.findViewById(R.id.textViewSemVeiculos);
+        if(veiculos.size() != 0){
+            textViewSemVeiculos.setVisibility(view.INVISIBLE);
+            listViewConsultar.setVisibility(view.VISIBLE);
+            adapterVeiculos = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, veiculos);
+            listViewConsultar.setAdapter(adapterVeiculos);
+        }else{
+            textViewSemVeiculos.setVisibility(view.VISIBLE);
+            listViewConsultar.setVisibility(view.INVISIBLE);
+        }
+
+
+        listViewConsultar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Veiculo data = (Veiculo) parent.getItemAtPosition(position);
+                Intent intent = getActivity().getIntent();
+                intent.putExtra("DATAVEICULO", data);
+
+                veiculoFragment vFragment = new veiculoFragment();
+                FragmentManager manager = getFragmentManager();
+                manager.beginTransaction()
+                        .replace(R.id.containerFragment, vFragment, "veiculo")
+                        .commit();
+                //Log.println(Log.INFO, "TOAST:  ", data.toString());
+                //Toast.makeText(getActivity(), data.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onConsultarCompleted(ArrayList<Veiculo> data) {
-        veiculos = data;
-        ArrayAdapter adapterVeiculos = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, veiculos);
-        listViewConsultar.setAdapter(adapterVeiculos);
     }
 }

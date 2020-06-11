@@ -15,4 +15,5 @@
     <string name="veiculos">Veículos</string>
     <string name="consultas">Consultas</string>
     <string name="consultar">Consultar</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

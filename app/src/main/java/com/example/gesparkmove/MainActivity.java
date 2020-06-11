@@ -37,9 +37,7 @@ public class MainActivity extends AppCompatActivity{
     Button buttonMainLogin;
     Button buttonMainRegistar;
     Button buttonMainRecuperar;
-    Globals g = new Globals();
     private Handler mainHandler = new Handler();
-    public static boolean taskFinish = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

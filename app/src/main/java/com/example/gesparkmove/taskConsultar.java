@@ -63,6 +63,7 @@ public class taskConsultar extends AsyncTask<String, Integer, ArrayList<Veiculo>
             }catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
+            session.disconnect();
             }catch (JSchException e){
             Log.println(Log.INFO, "JSCH EXCEPTION: ", e.toString());
         }

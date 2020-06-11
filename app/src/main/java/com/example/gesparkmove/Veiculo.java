@@ -47,6 +47,38 @@ public class Veiculo implements Parcelable{
         this.ativo = in.readInt();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public String getCor() {
+        return cor;
+    }
+
+    public int getEstacionado() {
+        return estacionado;
+    }
+
+    public int getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(int valor){
+        this.ativo = valor;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags){
         dest.writeInt(this.id);
