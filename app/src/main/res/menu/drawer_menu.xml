@@ -16,8 +16,9 @@
                 android:id="@+id/menuItemConsultar"
                 android:icon="@drawable/ic_menuteim_alterar"
                 android:title="@string/consultar"/>
+            //para apagar
             <item
-                android:id="@+id/menuItemInactivos"
+                android:id=" apagar@+id/menuItemInactivos"
                 android:icon="@drawable/ic_menuitem_inactivos"
                 android:title="@string/inactivos"/>
         </menu>

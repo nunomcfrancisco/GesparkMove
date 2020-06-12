@@ -1,10 +1,8 @@
 package com.example.gesparkmove;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -15,26 +13,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
 import com.squareup.picasso.Picasso;
-
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Properties;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UtilizadorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class activityUtilizador extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
@@ -74,7 +61,7 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.containerFragment, new dashboardFragment(), "dashboard").commit();
+        fragmentTransaction.add(R.id.containerFragment, new fragmentDashboard(), "dashboard").commit();
         //fragmentTransaction.commit();
     }
 
@@ -84,30 +71,30 @@ public class UtilizadorActivity extends AppCompatActivity implements NavigationV
         switch(item.getItemId()){
             case R.id.menuItemDashboard:
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new dashboardFragment(), "dashboard").commit();
+                fragmentTransaction.replace(R.id.containerFragment, new fragmentDashboard(), "dashboard").commit();
             break;
             case R.id.menuItemAdicionar:
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new adicionarFragment(), "adicionar").commit();
+                fragmentTransaction.replace(R.id.containerFragment, new fragmentAdicionar(), "adicionar").commit();
             break;
             case R.id.menuItemConsultar:
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new consultarFragment(), "consultar").commit();
+                fragmentTransaction.replace(R.id.containerFragment, new fragmentConsultar(), "consultar").commit();
             break;
             case R.id.menuItemEstacionamentos:
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new estacionamentosFragment(), "estacionamento").commit();
+                fragmentTransaction.replace(R.id.containerFragment, new fragmentEstacionamentos(), "estacionamento").commit();
             break;
             case R.id.menuItemInactivos:
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new inactivosFragment(), "inactivos").commit();
+                fragmentTransaction.replace(R.id.containerFragment, new fragmentInativos(), "inactivos").commit();
             break;
             case R.id.menuItemPagamentos:
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new pagamentosFragment(), "pagamentos").commit();
+                fragmentTransaction.replace(R.id.containerFragment, new fragmentPagamentos(), "pagamentos").commit();
             break;
             case R.id.menuItemLogout:
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, activityMain.class);
                 startActivity(intent);
                 finish();
             break;

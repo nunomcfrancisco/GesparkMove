@@ -31,6 +31,7 @@ public class taskApagarVeiculo extends AsyncTask<String, Integer, Void> {
     protected Void doInBackground(String... params) {
         publishProgress(0);
         try {
+            //abrir tunnel SSH
             JSch jsch = new JSch();
             Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
             session.setPassword(g.getSshPass());
@@ -40,9 +41,11 @@ public class taskApagarVeiculo extends AsyncTask<String, Integer, Void> {
             session.setConfig(prop);
             session.connect();
             try {
+                //abrir ligação para a base de dados
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
+                //query para apagar uma viatura da base de dados
                 statement.execute("DELETE FROM veiculos WHERE id = " + params[0]);
 
             } catch (ClassNotFoundException | SQLException e){

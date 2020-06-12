@@ -20,10 +20,10 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 
-public class veiculoFragment extends Fragment {
+public class fragmentVeiculo extends Fragment {
     Handler veiculoHandler = new Handler();
     Veiculo veiculo;
-    TextView textViewMatricula, textViewMarca, textViewModelo, textViewCor;
+    TextView textViewMatricula, textViewMarca, textViewModelo, textViewCor, textViewAviso;
     Button buttonApagarVeiculo;
     Switch switchAtivo;
     Spinner spinnerPlanoPagamento;
@@ -37,6 +37,7 @@ public class veiculoFragment extends Fragment {
         textViewMarca = view.findViewById(R.id.textViewMarcaVeiculoFragment);
         textViewModelo = view.findViewById(R.id.textViewModeloVeiculoFragment);
         textViewCor = view.findViewById(R.id.textViewCorVeiculoFragment);
+        textViewAviso = view.findViewById(R.id.textViewAvisoVeiculoFragment);
         switchAtivo = view.findViewById(R.id.switchAtivoVeiculoFragment);
         buttonApagarVeiculo = view.findViewById(R.id.buttonApagarVeiculoVeiculoFragment);
         spinnerPlanoPagamento = view.findViewById(R.id.spinnerPlanoPagamentoVeiculoFragment);
@@ -47,6 +48,7 @@ public class veiculoFragment extends Fragment {
             spinnerPlanoPagamento.setEnabled(false);
             switchAtivo.setEnabled(false);
             buttonApagarVeiculo.setEnabled(false);
+            textViewAviso.setVisibility(view.VISIBLE);
         }
 
         textViewMatricula.setText(veiculo.getMatricula());
@@ -99,7 +101,7 @@ public class veiculoFragment extends Fragment {
                 }
                 intent.putExtra("VEICULO", vArray);
                 new taskApagarVeiculo(getActivity(), veiculoHandler).execute(String.valueOf(veiculo.getId()));
-                consultarFragment cFragment = new consultarFragment();
+                fragmentConsultar cFragment = new fragmentConsultar();
                 FragmentManager manager = getFragmentManager();
                 manager.beginTransaction()
                         .replace(R.id.containerFragment, cFragment, "consultar")

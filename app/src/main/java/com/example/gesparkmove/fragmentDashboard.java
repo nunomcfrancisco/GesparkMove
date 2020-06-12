@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class dashboardFragment extends Fragment {
+public class fragmentDashboard extends Fragment {
     TextView textViewDashboardFragmentVeiculos;
     CardView cardViewDashboardFragmentVeiculos;
 
@@ -30,7 +30,7 @@ public class dashboardFragment extends Fragment {
         cardViewDashboardFragmentVeiculos.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                consultarFragment cFragment = new consultarFragment();
+                fragmentConsultar cFragment = new fragmentConsultar();
                 FragmentManager manager = getFragmentManager();
                 manager.beginTransaction()
                         .replace(R.id.containerFragment, cFragment, "consultar")

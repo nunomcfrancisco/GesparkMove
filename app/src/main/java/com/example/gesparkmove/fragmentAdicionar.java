@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class adicionarFragment extends Fragment {
+public class fragmentAdicionar extends Fragment {
     EditText editTextAdicionarMatricula, editTextAdicionarCor;
     Button buttonAdicionarAdicionar;
     Handler adicionarHandler = new Handler();

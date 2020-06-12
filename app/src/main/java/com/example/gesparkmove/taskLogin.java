@@ -49,6 +49,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
         int userId = 0;
         publishProgress(0);
             try {
+                //abrir tunnel SSH
                 JSch jsch = new JSch();
                 Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
                 session.setPassword(g.getSshPass());
@@ -58,10 +59,13 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 session.setConfig(prop);
                 session.connect();
                 try {
+                    //abrir ligação para a base de dados
                     Class.forName("com.mysql.jdbc.Driver");
                     Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                     Statement statement = (Statement) connection.createStatement();
-                    ResultSet rs = statement.executeQuery(params[0]);
+                    //ResultSet rs = statement.executeQuery(params[0]);
+                    //query para ir buscar / verificar o utilizador que está a fazer login
+                    ResultSet rs = statement.executeQuery("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = '" + params[0] + "'");
                     while (rs.next()) {
                         user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6), rs.getInt(7));
                         queryResult.append(rs.getString(5));
@@ -204,7 +208,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(ctx, UtilizadorActivity.class);
+                        Intent intent = new Intent(ctx, activityUtilizador.class);
                         intent.putExtra("USER", user);
                         intent.putExtra("MARCA", marcas);
                         intent.putExtra("MODELO", modelos);

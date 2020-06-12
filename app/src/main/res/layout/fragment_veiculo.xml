@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".veiculoFragment"
+    tools:context=".fragmentVeiculo"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <TextView
             android:id="@+id/textViewMatriculaVeiculoFragment"
             android:layout_width="match_parent"
@@ -25,7 +24,6 @@
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="42sp" />
-
         <TextView
             android:id="@+id/textViewMarcaVeiculoFragment"
             android:layout_width="match_parent"
@@ -34,7 +32,6 @@
             android:text="@string/marca"
             android:textColor="#000000"
             android:textSize="22sp" />
-
         <TextView
             android:id="@+id/textViewModeloVeiculoFragment"
             android:layout_width="match_parent"
@@ -43,7 +40,6 @@
             android:text="@string/modelo"
             android:textColor="#000000"
             android:textSize="22sp" />
-
         <TextView
             android:id="@+id/textViewCorVeiculoFragment"
             android:layout_width="match_parent"
@@ -52,7 +48,6 @@
             android:text="@string/cor"
             android:textColor="#000000"
             android:textSize="22sp" />
-
         <Switch
             android:id="@+id/switchAtivoVeiculoFragment"
             android:layout_width="match_parent"
@@ -60,20 +55,29 @@
             android:text="@string/ativo"
             android:textSize="22sp"
             android:layout_marginBottom="10dp"/>
-
         <Spinner
             android:id="@+id/spinnerPlanoPagamentoVeiculoFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            />
-
+            android:layout_marginBottom="10dp"/>
         <Button
             android:id="@+id/buttonApagarVeiculoVeiculoFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/apagar_veiculo"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/textViewAvisoVeiculoFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Não é possível ativar / destivar, alterar plano de pagamento ou apagar o veículo pois o mesmo encontra-se em estacionamento."
+            android:textAlignment="center"
+            android:textColor="#990000"
+            android:textSize="12sp"
+            android:visibility="invisible" />
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

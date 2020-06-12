@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 
-public class consultarFragment extends Fragment{
+public class fragmentConsultar extends Fragment{
     Utilizador user;
     ArrayList<Veiculo> veiculos = new ArrayList<>();
     ArrayAdapter adapterVeiculos;
@@ -63,7 +63,7 @@ public class consultarFragment extends Fragment{
                 Intent intent = getActivity().getIntent();
                 intent.putExtra("DATAVEICULO", data);
 
-                veiculoFragment vFragment = new veiculoFragment();
+                fragmentVeiculo vFragment = new fragmentVeiculo();
                 FragmentManager manager = getFragmentManager();
                 manager.beginTransaction()
                         .replace(R.id.containerFragment, vFragment, "veiculo")

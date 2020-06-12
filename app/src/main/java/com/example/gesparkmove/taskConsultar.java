@@ -52,13 +52,11 @@ public class taskConsultar extends AsyncTask<String, Integer, ArrayList<Veiculo>
             session.connect();
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                com.mysql.jdbc.Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
-                com.mysql.jdbc.Statement statement = (Statement) connection.createStatement();
+                Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
+                Statement statement = (Statement) connection.createStatement();
                 ResultSet rs = statement.executeQuery("SELECT veiculos.id, veiculos.matricula, marcas.marca, modelo.modelo, cor, estacionado, veiculos.activo FROM veiculos inner join marcas inner join modelo WHERE id_utilizador = " + params[0] + " AND veiculos.id_marca = marcas.id AND veiculos.id_modelo = modelo.id");
-                //ResultSet rs = statement.executeQuery("SELECT id, matricula, id_marca, id_modelo, cor, estacionado, activo FROM veiculos WHERE id_utilizador =" + params[0]);
                 while(rs.next())
                     data.add(new Veiculo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7)));
-                    Log.println(Log.INFO, "TESTE CONSULTAR:  ", rs.getString(2));
                 connection.close();
             }catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());

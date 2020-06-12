@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity{
+public class activityMain extends AppCompatActivity{
     EditText editTextMainUtilizador;
     EditText editTextMainPassword;
     Button buttonMainLogin;
@@ -40,21 +40,21 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 closeKeyboard();
-                taskLogin tl = new taskLogin(MainActivity.this, mainHandler);
-                tl.execute("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = \""
-                            + editTextMainUtilizador.getText().toString() + "\"",
-                            editTextMainPassword.getText().toString(),
+                taskLogin tl = new taskLogin(activityMain.this, mainHandler);
+                tl.execute(editTextMainUtilizador.getText().toString(), editTextMainPassword.getText().toString());
+
+                /*tl.execute("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = \"" + editTextMainUtilizador.getText().toString() + "\"", editTextMainPassword.getText().toString(),
                             "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \""
                             + editTextMainUtilizador.getText().toString() + "\")");
                 editTextMainPassword.setText("");
-                editTextMainUtilizador.setText("");
+                editTextMainUtilizador.setText("");*/
             }
         });
         //ação do botão de registar
         buttonMainRegistar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                startActivity(new Intent(MainActivity.this, RegistarActivity.class));
+                startActivity(new Intent(activityMain.this, activityRegistar.class));
                 finish();
             }
         });

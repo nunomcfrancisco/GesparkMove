@@ -1,7 +1,6 @@
 package com.example.gesparkmove;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -93,7 +92,7 @@ public class taskRegistar extends AsyncTask<String, Integer, Void> {
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(ctx, MainActivity.class);
+                                Intent intent = new Intent(ctx, activityMain.class);
                                 ctx.startActivity(intent);
                             }
                         })
