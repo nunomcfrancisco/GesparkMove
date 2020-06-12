@@ -2,20 +2,21 @@ package com.example.gesparkmove;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class veiculoFragment extends Fragment {
     TextView textViewMatricula, textViewMarca, textViewModelo, textViewCor;
     Button buttonApagarVeiculo;
     Switch switchAtivo;
+    Spinner spinnerPlanoPagamento;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,6 +39,15 @@ public class veiculoFragment extends Fragment {
         textViewCor = view.findViewById(R.id.textViewCorVeiculoFragment);
         switchAtivo = view.findViewById(R.id.switchAtivoVeiculoFragment);
         buttonApagarVeiculo = view.findViewById(R.id.buttonApagarVeiculoVeiculoFragment);
+        spinnerPlanoPagamento = view.findViewById(R.id.spinnerPlanoPagamentoVeiculoFragment);
+        String[] pp = new String[]{"Avença", "Fracção"};
+        ArrayAdapter<String> adapterPlano = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, pp);
+        spinnerPlanoPagamento.setAdapter(adapterPlano);
+        if(veiculo.getEstacionado() == 1){
+            spinnerPlanoPagamento.setEnabled(false);
+            switchAtivo.setEnabled(false);
+            buttonApagarVeiculo.setEnabled(false);
+        }
 
         textViewMatricula.setText(veiculo.getMatricula());
         textViewMarca.setText("Marca: " + veiculo.getMarca());

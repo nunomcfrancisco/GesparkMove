@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,6 +20,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Properties;
 
 public class taskAdicionarMatricula extends AsyncTask<String, Integer, Void> {
@@ -90,7 +90,8 @@ public class taskAdicionarMatricula extends AsyncTask<String, Integer, Void> {
             public void run() {
                 Intent intent = activity.getIntent();
                 intent.putExtra("VEICULO", veiculo);
-                Utilizador user = intent.getExtras().getParcelable("USER");
+                Utilizador user = Objects.requireNonNull(intent.getExtras()).getParcelable("USER");
+                assert user != null;
                 user.setCarros(user.getCarros() + 1);
                 intent.putExtra("USER", user);
                 Toast.makeText(ctx, "Matricula adicionada", Toast.LENGTH_SHORT).show();

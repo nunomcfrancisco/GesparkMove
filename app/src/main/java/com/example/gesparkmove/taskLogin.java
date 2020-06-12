@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -82,9 +81,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                     rs = statement.executeQuery("SELECT veiculos.id, veiculos.matricula, marcas.marca, modelo.modelo, cor, estacionado, veiculos.activo FROM veiculos inner join marcas inner join modelo WHERE id_utilizador = " + userId + " AND veiculos.id_marca = marcas.id AND veiculos.id_modelo = modelo.id");
                     while(rs.next())
                         veiculos.add(new Veiculo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7)));
-                    Log.println(Log.INFO, "BASE DE DADOS 1: ", String.valueOf(connection.isClosed()));
                     connection.close();
-                    Log.println(Log.INFO, "BASE DE DADOS 2: ", String.valueOf(connection.isClosed()));
                 } catch (ClassNotFoundException | SQLException e) {
                     Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
                 }

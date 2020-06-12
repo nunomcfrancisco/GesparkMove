@@ -16,4 +16,10 @@
     <string name="consultas">Consultas</string>
     <string name="consultar">Consultar</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="matricula">Matrícula</string>
+    <string name="marca">Marca:</string>
+    <string name="modelo">Modelo:</string>
+    <string name="cor">Cor:</string>
+    <string name="ativo">Ativo</string>
+    <string name="apagar_veiculo">Apagar Veículo</string>
 </resources>

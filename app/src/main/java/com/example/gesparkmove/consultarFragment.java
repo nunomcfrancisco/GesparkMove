@@ -1,6 +1,7 @@
 package com.example.gesparkmove;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,19 @@ public class consultarFragment extends Fragment{
         if(veiculos.size() != 0){
             textViewSemVeiculos.setVisibility(view.INVISIBLE);
             listViewConsultar.setVisibility(view.VISIBLE);
-            adapterVeiculos = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, veiculos);
+            adapterVeiculos = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, veiculos){
+                @NonNull
+                @Override
+                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    View itemView = super.getView(position, convertView, parent);
+                    if(veiculos.get(position).getAtivo() == 0){
+                        itemView.setBackgroundColor(Color.RED);
+                    }else{
+                        itemView.setBackgroundColor(Color.GREEN);
+                    }
+                    return itemView;
+                }
+            };
             listViewConsultar.setAdapter(adapterVeiculos);
         }else{
             textViewSemVeiculos.setVisibility(view.VISIBLE);
