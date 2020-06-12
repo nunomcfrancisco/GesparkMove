@@ -59,7 +59,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 session.setConfig(prop);
                 session.connect();
                 try {
-                    //abrir ligação para a base de dados
+                    //abrir ligação para a base de dados teste teste teste
                     Class.forName("com.mysql.jdbc.Driver");
                     Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                     Statement statement = (Statement) connection.createStatement();
