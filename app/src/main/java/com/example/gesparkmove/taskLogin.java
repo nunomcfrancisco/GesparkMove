@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class taskLogin extends AsyncTask<String, Integer, String> {
-    @SuppressLint("StaticFieldLeak")
     Context ctx;
     Handler handler;
     Globals g = new Globals();
@@ -59,11 +58,10 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 session.setConfig(prop);
                 session.connect();
                 try {
-                    //abrir ligação para a base de dados teste teste teste
+                    //abrir ligação para a base de dados
                     Class.forName("com.mysql.jdbc.Driver");
                     Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                     Statement statement = (Statement) connection.createStatement();
-                    //ResultSet rs = statement.executeQuery(params[0]);
                     //query para ir buscar / verificar o utilizador que está a fazer login
                     ResultSet rs = statement.executeQuery("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = '" + params[0] + "'");
                     while (rs.next()) {
@@ -72,16 +70,19 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                         userId = rs.getInt(1);
                     }
                     if (queryResult.length() > 0) {
-                        rs = statement.executeQuery(params[2]);
+                        rs = statement.executeQuery("SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = '" + params[0] + "')");
                         while (rs.next())
                             user.setCarros(rs.getInt(1));
                     }
+                    //query para ir buscar as marcas
                     rs = statement.executeQuery("SELECT * FROM marcas");
                     while(rs.next())
                         marcas.add(new Marca(rs.getInt(1), rs.getString(2)));
+                    //query para ir buscar os modelos
                     rs = statement.executeQuery("SELECT * FROM modelo");
                     while(rs.next())
                         modelos.add(new Modelo(rs.getInt(1), rs.getString(2), rs.getInt(3)));
+                    //query para ir buscar os veiculos do utilizador
                     rs = statement.executeQuery("SELECT veiculos.id, veiculos.matricula, marcas.marca, modelo.modelo, cor, estacionado, veiculos.activo FROM veiculos inner join marcas inner join modelo WHERE id_utilizador = " + userId + " AND veiculos.id_marca = marcas.id AND veiculos.id_modelo = modelo.id");
                     while(rs.next())
                         veiculos.add(new Veiculo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7)));

@@ -43,8 +43,9 @@ public class activityMain extends AppCompatActivity{
                 taskLogin tl = new taskLogin(activityMain.this, mainHandler);
                 tl.execute(editTextMainUtilizador.getText().toString(), editTextMainPassword.getText().toString());
 
-                /*tl.execute("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = \"" + editTextMainUtilizador.getText().toString() + "\"", editTextMainPassword.getText().toString(),
-                            "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \""
+                /*tl.execute("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = \"" + editTextMainUtilizador.getText().toString() + "\"",
+                 editTextMainPassword.getText().toString(),
+                 "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \""
                             + editTextMainUtilizador.getText().toString() + "\")");
                 editTextMainPassword.setText("");
                 editTextMainUtilizador.setText("");*/
