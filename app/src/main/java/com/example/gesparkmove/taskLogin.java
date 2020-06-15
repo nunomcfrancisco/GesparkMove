@@ -1,12 +1,13 @@
 package com.example.gesparkmove;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -28,13 +29,15 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
     Globals g = new Globals();
     Utilizador user;
     AlertDialog ppm;
+    Activity act;
     ArrayList<Marca> marcas = new ArrayList<>();
     ArrayList<Modelo> modelos = new ArrayList<>();
     ArrayList<Veiculo> veiculos = new ArrayList<>();
 
-    taskLogin(Context ctx, Handler handler){
+    taskLogin(Context ctx, Handler handler, Activity act){
         this.ctx = ctx;
         this.handler = handler;
+        this.act = act;
     }
 
     @Override
@@ -214,6 +217,10 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                         intent.putExtra("MARCA", marcas);
                         intent.putExtra("MODELO", modelos);
                         intent.putExtra("VEICULO", veiculos);
+                        EditText etUser = act.findViewById(R.id.editTextMainUtilizador);
+                        EditText etPassword = act.findViewById(R.id.editTextMainPassword);
+                        etUser.setText("");
+                        etPassword.setText("");
                         ctx.startActivity(intent);
                     }
                 });

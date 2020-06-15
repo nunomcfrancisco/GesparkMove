@@ -24,7 +24,7 @@ public class fragmentVeiculo extends Fragment {
     Handler veiculoHandler = new Handler();
     Veiculo veiculo;
     TextView textViewMatricula, textViewMarca, textViewModelo, textViewCor, textViewAviso;
-    Button buttonApagarVeiculo;
+    Button buttonApagarVeiculo, buttonGravarVeiculo;
     Switch switchAtivo;
     Spinner spinnerPlanoPagamento;
     @Nullable
@@ -40,6 +40,7 @@ public class fragmentVeiculo extends Fragment {
         textViewAviso = view.findViewById(R.id.textViewAvisoVeiculoFragment);
         switchAtivo = view.findViewById(R.id.switchAtivoVeiculoFragment);
         buttonApagarVeiculo = view.findViewById(R.id.buttonApagarVeiculoVeiculoFragment);
+        buttonGravarVeiculo = view.findViewById(R.id.buttonGravarVeiculoFragment);
         spinnerPlanoPagamento = view.findViewById(R.id.spinnerPlanoPagamentoVeiculoFragment);
         String[] pp = new String[]{"Avença", "Fracção"};
         ArrayAdapter<String> adapterPlano = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, pp);
@@ -48,6 +49,7 @@ public class fragmentVeiculo extends Fragment {
             spinnerPlanoPagamento.setEnabled(false);
             switchAtivo.setEnabled(false);
             buttonApagarVeiculo.setEnabled(false);
+            buttonGravarVeiculo.setEnabled(false);
             textViewAviso.setVisibility(view.VISIBLE);
         }
 

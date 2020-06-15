@@ -40,7 +40,7 @@ public class activityMain extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 closeKeyboard();
-                taskLogin tl = new taskLogin(activityMain.this, mainHandler);
+                taskLogin tl = new taskLogin(activityMain.this, mainHandler, activityMain.this);
                 tl.execute(editTextMainUtilizador.getText().toString(), editTextMainPassword.getText().toString());
 
                 /*tl.execute("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = \"" + editTextMainUtilizador.getText().toString() + "\"",
