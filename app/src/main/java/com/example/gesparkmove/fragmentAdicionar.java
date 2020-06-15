@@ -32,6 +32,35 @@ public class fragmentAdicionar extends Fragment {
     private List<String> marcaModelo = new ArrayList<>();
     int idMarca, sLengthNow, sLengthBefore;
     Spinner spinnerMarcas, spinnerModelos;
+    onMarcasModelosListener listener = new onMarcasModelosListener() {
+        @Override
+        public void onMarcasModelosCompleted(ArrayList<ArrayList> data) {
+            marcasItems = data.get(0);
+            modelosItems = data.get(1);
+            ArrayAdapter<Marca> adapterMarcas = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, marcasItems);
+            spinnerMarcas.setAdapter(adapterMarcas);
+            spinnerMarcas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String spinnerValue = spinnerMarcas.getSelectedItem().toString();
+                    marcaModelo.clear();
+                    for (Marca marca : marcasItems)
+                        if(spinnerValue.equals(marca.getMarca()))
+                            idMarca = marca.getId();
+                    for (Modelo modelo : modelosItems)
+                        if(idMarca == modelo.getIdMarca())
+                            marcaModelo.add(modelo.getModelo());
+                    spinnerMarcas.setSelection(position);
+                    ArrayAdapter adapterModelos = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, marcaModelo);
+                    spinnerModelos.setAdapter(adapterModelos);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {}
+            });
+            ArrayAdapter<Modelo> adapterModelo = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, modelosItems);
+            spinnerModelos.setAdapter(adapterModelo);
+        }
+    };
 
     @Nullable
     @Override
@@ -41,31 +70,6 @@ public class fragmentAdicionar extends Fragment {
         spinnerModelos = view.findViewById(R.id.spinnerAdicionarModelo);
         Bundle bundle = Objects.requireNonNull(getActivity()).getIntent().getExtras();
         user = Objects.requireNonNull(bundle).getParcelable("USER");
-        marcasItems = bundle.getParcelableArrayList("MARCA");
-        modelosItems = bundle.getParcelableArrayList("MODELO");
-        ArrayAdapter<Marca> adapterMarcas = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, marcasItems);
-        spinnerMarcas.setAdapter(adapterMarcas);
-        spinnerMarcas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String spinnerValue = spinnerMarcas.getSelectedItem().toString();
-                marcaModelo.clear();
-                for (Marca marca : marcasItems)
-                    if(spinnerValue.equals(marca.getMarca()))
-                        idMarca = marca.getId();
-                for (Modelo modelo : modelosItems)
-                    if(idMarca == modelo.getIdMarca())
-                        marcaModelo.add(modelo.getModelo());
-                spinnerMarcas.setSelection(position);
-                ArrayAdapter adapterModelos = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, marcaModelo);
-                spinnerModelos.setAdapter(adapterModelos);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-        ArrayAdapter<Modelo> adapterModelo = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, modelosItems);
-
-        spinnerModelos.setAdapter(adapterModelo);
         editTextAdicionarMatricula = view.findViewById(R.id.editTextAdicionarMatricula);
         editTextAdicionarCor = view.findViewById(R.id.editTextAdicionarCor);
         editTextAdicionarMatricula.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
@@ -75,7 +79,7 @@ public class fragmentAdicionar extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        new taskData(getActivity(), listener, adicionarHandler).execute();
         buttonAdicionarAdicionar = view.findViewById(R.id.buttonAdicionarAdicionar);
         buttonAdicionarAdicionar.setOnClickListener(new View.OnClickListener(){
             int idMa, idMo;

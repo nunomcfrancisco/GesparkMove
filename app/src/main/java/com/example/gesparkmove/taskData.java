@@ -27,11 +27,11 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
     ArrayList<ArrayList> data = new ArrayList<>();
     ArrayList<Marca> tempMarcas = new ArrayList<>();
     ArrayList<Modelo> tempModelos = new ArrayList<>();
-    private final onMarcasModelosListener mListener;
+    private final onMarcasModelosListener listener;
 
     taskData(Context ctx, onMarcasModelosListener listener, Handler handler){
         this.ctx = ctx;
-        mListener = listener;
+        this.listener = listener;
         this.handler = handler;
     }
 
@@ -89,7 +89,7 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
 
     @Override
     protected void onPostExecute(ArrayList<ArrayList> data) {
-        mListener.onMarcasModelosCompleted(data);
+        listener.onMarcasModelosCompleted(data);
         ppm.dismiss();
     }
 }
