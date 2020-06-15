@@ -24,8 +24,9 @@ public class Utilizador implements Parcelable {
     private int carros;
     private String avatar;
     private int ativo;
+    private double valor;
 
-    public Utilizador(int id, int nif, String nome, String mail, int carros, String avatar, int ativo){
+    public Utilizador(int id, int nif, String nome, String mail, int carros, String avatar, int ativo, double valor){
         this.id = id;
         this.nif = nif;
         this.nome = nome;
@@ -33,6 +34,7 @@ public class Utilizador implements Parcelable {
         this.carros = carros;
         this.avatar = avatar;
         this.ativo = ativo;
+        this.valor = valor;
     }
 
     public int getId() {
@@ -91,6 +93,10 @@ public class Utilizador implements Parcelable {
         this.ativo = ativo;
     }
 
+    public double getValor(){return valor;}
+
+    public void setValor(double valor){this.valor = valor;}
+
     protected Utilizador(Parcel in) {
         this.id = in.readInt();
         this.nif = in.readInt();
@@ -99,6 +105,7 @@ public class Utilizador implements Parcelable {
         this.carros = in.readInt();
         this.avatar = in.readString();
         this.ativo = in.readInt();
+        this.valor = in.readDouble();
     }
 
     @Override
@@ -110,6 +117,7 @@ public class Utilizador implements Parcelable {
         dest.writeInt(this.carros);
         dest.writeString(this.avatar);
         dest.writeInt(this.ativo);
+        dest.writeDouble(this.valor);
     }
 
     @Override

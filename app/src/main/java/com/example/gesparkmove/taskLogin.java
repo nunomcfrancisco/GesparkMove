@@ -30,9 +30,6 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
     Utilizador user;
     AlertDialog ppm;
     Activity act;
-    ArrayList<Marca> marcas = new ArrayList<>();
-    ArrayList<Modelo> modelos = new ArrayList<>();
-    ArrayList<Veiculo> veiculos = new ArrayList<>();
 
     taskLogin(Context ctx, Handler handler, Activity act){
         this.ctx = ctx;
@@ -48,7 +45,6 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... params){
         StringBuilder queryResult = new StringBuilder();
-        int userId = 0;
         publishProgress(0);
             try {
                 //abrir tunnel SSH
@@ -68,27 +64,14 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                     //query para ir buscar / verificar o utilizador que está a fazer login
                     ResultSet rs = statement.executeQuery("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = '" + params[0] + "'");
                     while (rs.next()) {
-                        user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6), rs.getInt(7));
+                        user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6), rs.getInt(7), 0);
                         queryResult.append(rs.getString(5));
-                        userId = rs.getInt(1);
                     }
                     if (queryResult.length() > 0) {
                         rs = statement.executeQuery("SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = '" + params[0] + "')");
                         while (rs.next())
                             user.setCarros(rs.getInt(1));
                     }
-                    //query para ir buscar as marcas
-                    rs = statement.executeQuery("SELECT * FROM marcas");
-                    while(rs.next())
-                        marcas.add(new Marca(rs.getInt(1), rs.getString(2)));
-                    //query para ir buscar os modelos
-                    rs = statement.executeQuery("SELECT * FROM modelo");
-                    while(rs.next())
-                        modelos.add(new Modelo(rs.getInt(1), rs.getString(2), rs.getInt(3)));
-                    //query para ir buscar os veiculos do utilizador
-                    rs = statement.executeQuery("SELECT veiculos.id, veiculos.matricula, marcas.marca, modelo.modelo, cor, estacionado, veiculos.activo FROM veiculos inner join marcas inner join modelo WHERE id_utilizador = " + userId + " AND veiculos.id_marca = marcas.id AND veiculos.id_modelo = modelo.id");
-                    while(rs.next())
-                        veiculos.add(new Veiculo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7)));
                     connection.close();
                 } catch (ClassNotFoundException | SQLException e) {
                     Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
@@ -116,6 +99,10 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                         Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                         Statement statement = (Statement) connection.createStatement();
                         statement.executeUpdate("UPDATE utilizadores SET dataUltimoAcesso = NOW() WHERE id = " + user.getId());
+                        ResultSet rs = statement.executeQuery("SELECT SUM(estacionamento.valor) AS Total FROM estacionamento INNER JOIN veiculos ON estacionamento.id_matricula = veiculos.id" +
+                                        "INNER JOIN utilizadores ON veiculos.id_utilizador = utilizadores.id WHERE utilizadores.id = 38");
+                        while(rs.next())
+                            user.setValor(rs.getDouble(1));
                         connection.close();
                     } catch (ClassNotFoundException | SQLException e) {
                         e.printStackTrace();
@@ -214,9 +201,6 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                     public void run() {
                         Intent intent = new Intent(ctx, activityUtilizador.class);
                         intent.putExtra("USER", user);
-                        intent.putExtra("MARCA", marcas);
-                        intent.putExtra("MODELO", modelos);
-                        intent.putExtra("VEICULO", veiculos);
                         EditText etUser = act.findViewById(R.id.editTextMainUtilizador);
                         EditText etPassword = act.findViewById(R.id.editTextMainPassword);
                         etUser.setText("");
