@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,8 @@ public class fragmentAdicionar extends Fragment {
                 for(Modelo modelo : modelosItems)
                     if(modelo.getModelo().equals(spinnerModelos.getSelectedItem().toString()))
                         idMo = modelo.getId();
-                taskAdicionarMatricula tam = new taskAdicionarMatricula(getActivity(), adicionarHandler, getActivity());
+                FragmentManager manager = getFragmentManager();
+                taskAdicionarMatricula tam = new taskAdicionarMatricula(getActivity(), adicionarHandler, getActivity(), manager);
                 tam.execute(editTextAdicionarMatricula.getText().toString(),
                         String.valueOf(user.getId()),
                         String.valueOf(idMa),

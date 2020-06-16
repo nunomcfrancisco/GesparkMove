@@ -16,10 +16,6 @@
                 android:id="@+id/menuItemConsultar"
                 android:icon="@drawable/ic_menuteim_alterar"
                 android:title="@string/consultar"/>
-            <item
-                android:id="@+id/menuItemInactivos"
-                android:icon="@drawable/ic_menuitem_inactivos"
-                android:title="@string/inactivos"/>
         </menu>
     </item>
     <item

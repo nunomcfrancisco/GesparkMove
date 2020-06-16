@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import java.util.ArrayList;
 
 public class fragmentConsultar extends Fragment{
+    //declaração de variaveis
     Handler consultarHandler = new Handler();
     Utilizador user;
     ArrayList<Veiculo> veiculos = new ArrayList<>();

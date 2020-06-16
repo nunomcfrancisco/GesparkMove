@@ -28,8 +28,6 @@ public class activityUtilizador extends AppCompatActivity implements NavigationV
     NavigationView navigationView;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    Globals g = new Globals();
-    private Handler utilizadorHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +60,6 @@ public class activityUtilizador extends AppCompatActivity implements NavigationV
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.containerFragment, new fragmentDashboard(), "dashboard").commit();
-        //fragmentTransaction.commit();
     }
 
     @Override
@@ -84,10 +81,6 @@ public class activityUtilizador extends AppCompatActivity implements NavigationV
             case R.id.menuItemEstacionamentos:
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerFragment, new fragmentEstacionamentos(), "estacionamento").commit();
-            break;
-            case R.id.menuItemInactivos:
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.containerFragment, new fragmentInativos(), "inactivos").commit();
             break;
             case R.id.menuItemPagamentos:
                 fragmentTransaction = fragmentManager.beginTransaction();

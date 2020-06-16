@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentManager;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -28,13 +29,15 @@ public class taskAdicionarMatricula extends AsyncTask<String, Integer, Void> {
     Context ctx;
     Handler handler;
     Activity activity;
+    FragmentManager manager;
     ArrayList<Veiculo> veiculo = new ArrayList<>();
     Globals g = new Globals();
 
-    taskAdicionarMatricula(Context ctx, Handler handler, Activity activity){
+    taskAdicionarMatricula(Context ctx, Handler handler, Activity activity, FragmentManager manager){
         this.ctx = ctx;
         this.handler = handler;
         this.activity = activity;
+        this.manager = manager;
     }
 
     @Override
@@ -98,6 +101,10 @@ public class taskAdicionarMatricula extends AsyncTask<String, Integer, Void> {
                 user.setCarros(user.getCarros() + 1);
                 intent.putExtra("USER", user);
                 Toast.makeText(ctx, "Matricula adicionada", Toast.LENGTH_SHORT).show();
+                fragmentConsultar cFragment = new fragmentConsultar();
+                manager.beginTransaction()
+                        .replace(R.id.containerFragment, cFragment, "consultar")
+                        .commit();
             }
         });
     }

@@ -98,7 +98,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                         Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                         Statement statement = (Statement) connection.createStatement();
                         statement.executeUpdate("UPDATE utilizadores SET dataUltimoAcesso = NOW() WHERE id = " + user.getId());
-                        ResultSet rs = statement.executeQuery("SELECT SUM(estacionamento.valor) AS Total FROM estacionamento INNER JOIN veiculos ON estacionamento.id_matricula = veiculos.id" +
+                        ResultSet rs = statement.executeQuery("SELECT SUM(estacionamento.valor) AS Total FROM estacionamento INNER JOIN veiculos ON estacionamento.id_matricula = veiculos.id " +
                                         "INNER JOIN utilizadores ON veiculos.id_utilizador = utilizadores.id WHERE utilizadores.id = " + user.getId());
                         while(rs.next())
                             user.setValor(rs.getDouble(1));

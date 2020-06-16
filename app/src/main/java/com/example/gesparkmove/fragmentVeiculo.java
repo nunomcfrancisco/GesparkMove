@@ -15,9 +15,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class fragmentVeiculo extends Fragment {
+    //declaração de variaveis
     Handler veiculoHandler = new Handler();
+    Utilizador user;
     Veiculo veiculo;
     TextView textViewMatricula, textViewMarca, textViewModelo, textViewCor, textViewAviso;
     Button buttonApagarVeiculo, buttonGravarVeiculo;
@@ -28,7 +31,7 @@ public class fragmentVeiculo extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_veiculo, container, false);
-        //inicialização dos elementos
+        //inicialização dos elementos visuais
         textViewMatricula = view.findViewById(R.id.textViewMatriculaVeiculoFragment);
         textViewMarca = view.findViewById(R.id.textViewMarcaVeiculoFragment);
         textViewModelo = view.findViewById(R.id.textViewModeloVeiculoFragment);
@@ -41,6 +44,7 @@ public class fragmentVeiculo extends Fragment {
         //Vai buscar a informação do veiculo selecionado
         Bundle bundle = getActivity().getIntent().getExtras();
         veiculo = bundle.getParcelable("DATAVEICULO");
+        user = bundle.getParcelable("USER");
         //elementos do spinner
         String[] pp = new String[]{"Avença", "Fracção"};
         ArrayAdapter<String> adapterPlano = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, pp);
@@ -82,65 +86,24 @@ public class fragmentVeiculo extends Fragment {
                 }
             }
         });
-
+        //clickar no botão gravar
         buttonGravarVeiculo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(spinnerPlanoPagamento.getSelectedItem().toString().equals("Avença")) plano = 1;
                 else plano = 2;
-                new taskGravarVeiculo(getActivity(), veiculoHandler).execute(String.valueOf(veiculo.getId()), String.valueOf(ativo), String.valueOf(plano));
+                FragmentManager manager = getFragmentManager();
+                new taskGravarVeiculo(getActivity(), veiculoHandler, manager).execute(String.valueOf(veiculo.getId()), String.valueOf(ativo), String.valueOf(plano), String.valueOf(user.getId()));
             }
         });
-
-
-        /*switchAtivo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        //clickar no boão apagar
+        buttonApagarVeiculo.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Intent intent = getActivity().getIntent();
-                Bundle bundle = intent.getExtras();
-                ArrayList<Veiculo> veiculos = bundle.getParcelableArrayList("VEICULO");
-                if(isChecked) {
-                    veiculo.setAtivo(1);
-                    new taskVeiculoAtivo(getActivity(), veiculoHandler).execute(String.valueOf(1), String.valueOf(veiculo.getId()));
-                    for(Veiculo v : veiculos){
-                        if(v.getId() == veiculo.getId())
-                            v.setAtivo(1);
-                    }
-                }
-                else {
-                    veiculo.setAtivo(0);
-                    new taskVeiculoAtivo(getActivity(), veiculoHandler).execute(String.valueOf(0), String.valueOf(veiculo.getId()));
-                    for(Veiculo v : veiculos){
-                        if(v.getId() == veiculo.getId())
-                            v.setAtivo(0);
-                    }
-                }
-                intent.putExtra("VEICULO", veiculos);
-            }
-        });*/
-        //listener para detetar a ação do botão "apagar"
-        /*buttonApagarVeiculo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = getActivity().getIntent();
-                Bundle bundle = getActivity().getIntent().getExtras();
-                Veiculo veiculo = bundle.getParcelable("DATAVEICULO");
-                ArrayList<Veiculo> vArray = bundle.getParcelableArrayList("VEICULO");
-                for(Veiculo vs : vArray){
-                    if(vs.getId() == veiculo.getId()){
-                        vArray.remove(vs);
-                    }
-                }
-                intent.putExtra("VEICULO", vArray);
-                new taskApagarVeiculo(getActivity(), veiculoHandler).execute(String.valueOf(veiculo.getId()));
-                fragmentConsultar cFragment = new fragmentConsultar();
+            public void onClick(View v){
                 FragmentManager manager = getFragmentManager();
-                manager.beginTransaction()
-                        .replace(R.id.containerFragment, cFragment, "consultar")
-                        .commit();
+                new taskApagarVeiculo(getActivity(), veiculoHandler, manager).execute(String.valueOf(veiculo.getId()));
             }
-        });*/
-
+        });
         return view;
     }
 }
