@@ -17,13 +17,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class taskVeiculoAtivo extends AsyncTask<String, Integer, Void> {
+public class taskGravarVeiculo extends AsyncTask<String, Integer, Void> {
     AlertDialog ppm;
     Context ctx;
     Handler handler;
     Globals g = new Globals();
 
-    taskVeiculoAtivo(Context ctx, Handler handler){
+    taskGravarVeiculo(Context ctx, Handler handler){
         this.ctx = ctx;
         this.handler = handler;
     }
@@ -44,7 +44,8 @@ public class taskVeiculoAtivo extends AsyncTask<String, Integer, Void> {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                statement.execute("UPDATE veiculos SET activo = " + params[0] + " WHERE id = " + params[1]);
+                statement.executeUpdate("UPDATE planoAcessoUtilizador SET id_plano = " + params[2] + " WHERE id_veiculo = " + params[0]);
+                statement.execute("UPDATE veiculos SET activo = " + params[1] + " WHERE id = " + params[0]);
 
             } catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,7 +13,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <androidx.cardview.widget.CardView
-                android:id="@+id/fragmentDashboardCardViewVeiculos"
+                android:id="@+id/cardViewFragmemtDashboardVeiculos"
                 android:layout_width="match_parent"
                 android:layout_marginRight="30dp"
                 app:cardCornerRadius="10dp"
@@ -47,12 +45,13 @@
                                 android:textSize="24dp">
                             </TextView>
                             <TextView
-                                android:id="@+id/textViewDashboardVeiculos"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/textViewFragmentDashboardVeiculos"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="0"
                                 android:textColor="#ffff"
-                                android:textSize="52dp">
+                                android:textSize="52dp"
+                                android:textAlignment="viewEnd">
                             </TextView>
                         </LinearLayout>
                         <RelativeLayout
@@ -69,6 +68,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewFragmentDashboardEstacionamentos"
                 android:layout_width="match_parent"
                 android:layout_marginRight="30dp"
                 app:cardCornerRadius="10dp"
@@ -100,12 +100,13 @@
                                 android:textSize="24dp">
                             </TextView>
                             <TextView
-                                android:id="@+id/textViewDashboardEstacionamentos"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/textViewFragmentDashboardEstacionamentos"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="0€"
+                                android:text="0"
                                 android:textColor="#ffff"
-                                android:textSize="52dp">
+                                android:textSize="52dp"
+                                android:textAlignment="viewEnd">
                             </TextView>
                         </LinearLayout>
                         <RelativeLayout

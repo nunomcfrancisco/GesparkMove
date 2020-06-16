@@ -1,6 +1,5 @@
 package com.example.gesparkmove;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -16,9 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
-import java.util.ArrayList;
 
 public class fragmentVeiculo extends Fragment {
     Handler veiculoHandler = new Handler();
@@ -27,12 +23,12 @@ public class fragmentVeiculo extends Fragment {
     Button buttonApagarVeiculo, buttonGravarVeiculo;
     Switch switchAtivo;
     Spinner spinnerPlanoPagamento;
+    int ativo, plano;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_veiculo, container, false);
-        Bundle bundle = getActivity().getIntent().getExtras();
-        veiculo = bundle.getParcelable("DATAVEICULO");
+        //inicialização dos elementos
         textViewMatricula = view.findViewById(R.id.textViewMatriculaVeiculoFragment);
         textViewMarca = view.findViewById(R.id.textViewMarcaVeiculoFragment);
         textViewModelo = view.findViewById(R.id.textViewModeloVeiculoFragment);
@@ -42,9 +38,14 @@ public class fragmentVeiculo extends Fragment {
         buttonApagarVeiculo = view.findViewById(R.id.buttonApagarVeiculoVeiculoFragment);
         buttonGravarVeiculo = view.findViewById(R.id.buttonGravarVeiculoFragment);
         spinnerPlanoPagamento = view.findViewById(R.id.spinnerPlanoPagamentoVeiculoFragment);
+        //Vai buscar a informação do veiculo selecionado
+        Bundle bundle = getActivity().getIntent().getExtras();
+        veiculo = bundle.getParcelable("DATAVEICULO");
+        //elementos do spinner
         String[] pp = new String[]{"Avença", "Fracção"};
         ArrayAdapter<String> adapterPlano = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, pp);
         spinnerPlanoPagamento.setAdapter(adapterPlano);
+        //Se o veiculo estiver estacionado bloqueia os botões, spinner e switch
         if(veiculo.getEstacionado() == 1){
             spinnerPlanoPagamento.setEnabled(false);
             switchAtivo.setEnabled(false);
@@ -52,18 +53,47 @@ public class fragmentVeiculo extends Fragment {
             buttonGravarVeiculo.setEnabled(false);
             textViewAviso.setVisibility(view.VISIBLE);
         }
-
+        //mostra a informação do veiculo
         textViewMatricula.setText(veiculo.getMatricula());
         textViewMarca.setText("Marca: " + veiculo.getMarca());
         textViewModelo.setText("Modelo: " + veiculo.getModelo());
         textViewCor.setText("Cor: " + veiculo.getCor());
-
-        if(veiculo.getAtivo() == 1)
+        //coloca o switch ativo ou não conforme a informação do veiculo.
+        if(veiculo.getAtivo() == 1) {
+            ativo = 1;
             switchAtivo.setChecked(true);
-        else
+            spinnerPlanoPagamento.setEnabled(true);
+        }
+        else{
+            ativo = 0;
             switchAtivo.setChecked(false);
-
+            spinnerPlanoPagamento.setEnabled(false);
+        }
+        //listener para ativar/desativar o spinner conforme a posição do switch
         switchAtivo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ativo = 1;
+                    spinnerPlanoPagamento.setEnabled(true);
+                }else{
+                    ativo = 0;
+                    spinnerPlanoPagamento.setEnabled(false);
+                }
+            }
+        });
+
+        buttonGravarVeiculo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(spinnerPlanoPagamento.getSelectedItem().toString().equals("Avença")) plano = 1;
+                else plano = 2;
+                new taskGravarVeiculo(getActivity(), veiculoHandler).execute(String.valueOf(veiculo.getId()), String.valueOf(ativo), String.valueOf(plano));
+            }
+        });
+
+
+        /*switchAtivo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Intent intent = getActivity().getIntent();
@@ -87,9 +117,9 @@ public class fragmentVeiculo extends Fragment {
                 }
                 intent.putExtra("VEICULO", veiculos);
             }
-        });
-
-        buttonApagarVeiculo.setOnClickListener(new View.OnClickListener() {
+        });*/
+        //listener para detetar a ação do botão "apagar"
+        /*buttonApagarVeiculo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = getActivity().getIntent();
@@ -109,7 +139,7 @@ public class fragmentVeiculo extends Fragment {
                         .replace(R.id.containerFragment, cFragment, "consultar")
                         .commit();
             }
-        });
+        });*/
 
         return view;
     }
