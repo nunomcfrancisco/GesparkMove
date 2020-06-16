@@ -16,21 +16,26 @@ import com.mysql.jdbc.Statement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
-public class taskMetodoPagamento extends AsyncTask<String, Integer, Void>{
+public class taskMetodoPagamento extends AsyncTask<String, Integer, List<String>>{
     AlertDialog ppm;
     Context ctx;
     Handler handler;
+    List<String> data = new ArrayList<>();
     Globals g = new Globals();
+    private final onPagamentosListener listener;
 
-    taskMetodoPagamento(Context ctx, Handler handler){
+    taskMetodoPagamento(Context ctx, Handler handler, onPagamentosListener listener){
         this.ctx = ctx;
         this.handler = handler;
+        this.listener = listener;
     }
 
     @Override
-    protected Void doInBackground(String... params) {
+    protected List<String> doInBackground(String... params) {
         publishProgress(0);
         try {
             JSch jsch = new JSch();
@@ -50,32 +55,52 @@ public class taskMetodoPagamento extends AsyncTask<String, Integer, Void>{
                 switch (rs.getString(1)){
                     case "1":
                         rs = statement.executeQuery("SELECT nomeCartaoCredito, numeroCartaoCredito, dataValidadeCartaoCredito FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[0]);
+                        rs.next();
+                        data.add(rs.getString(1));
+                        data.add(rs.getString(2));
+                        data.add(rs.getString(3));
                     break;
                     case "2":
                         rs = statement.executeQuery("SELECT telefoneMbway FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[0]);
+                        rs.next();
+                        data.add(rs.getString(1));
                     break;
                     case "3":
                         rs = statement.executeQuery("SELECT dDirectoNome, dDirectoIban FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[0]);
+                        rs.next();
+                        data.add(rs.getString(1));
+                        data.add(rs.getString(2));
                     break;
                 }
-
+                connection.close();
             }catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "SQL Exception: ", e.toString());
             }
-        return null;
+            session.disconnect();
         }catch (JSchException e){
             Log.println(Log.INFO, "JSch Exception: ", e.toString());
         }
-        return null;
+        return data;
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-        super.onProgressUpdate(values);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                ppm = new AlertDialog.Builder(ctx).setMessage("Loading").setCancelable(false).show();
+            }
+        });
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute(List<String> data) {
+        listener.onPagamentosCompleted(data);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if(ppm.isShowing()) ppm.dismiss();
+            }
+        });
     }
 }
