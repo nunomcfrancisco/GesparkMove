@@ -49,12 +49,19 @@ public class taskGravarVeiculo extends AsyncTask<String, Integer, Boolean> {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                ResultSet rs = statement.executeQuery("SELECT DISTINCT(id_utilizador), IF(id_utilizador = " + params[3] + ", 'TRUE', 'FALSE') FROM metodosPagamentoUtilizador");
-                //Log.println(Log.INFO, "RESULTADO T/F :::", rs.getString(2));
+                //verifica se o utilizar tem um metodo de pagamento configurado
+                ResultSet rs = statement.executeQuery("SELECT EXISTS(SELECT id_utilizador FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[3] + ")");
                 rs.next();
-                if(rs.getString(2).equals("TRUE")){
-                    statement.executeUpdate("UPDATE planoAcessoUtilizador SET id_plano = " + params[2] + " WHERE id_veiculo = " + params[0]);
+                if(rs.getString(1).equals("1")){
+                    //gravar o ativo/desativo
                     statement.execute("UPDATE veiculos SET activo = " + params[1] + " WHERE id = " + params[0]);
+                    //verifica se o carro já tem entrada na tabela planoAcessoUtilizador, se sim atualiza o plano, senão faz insert
+                    rs = statement.executeQuery("SELECT EXISTS(SELECT id_veiculo FROM planoAcessoUtilizador WHERE id_veiculo = " + params[0] + ")");
+                    rs.next();
+                    if(rs.getString(1).equals("1"))
+                        statement.executeUpdate("UPDATE planoAcessoUtilizador SET id_plano = " + params[2] + " WHERE id_veiculo = " + params[0]);
+                    else
+                        statement.execute("INSERT INTO planoAcessoUtilizador (id_utilizador, id_plano, id_veiculo, activo) VALUES (" + params[3] + ", " + params[2] + ", " + params[0] + ", 1)");
                     connection.close();
                 }else{
                     connection.close();
