@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class activityUtilizador extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    //declaração das variavies
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
@@ -36,16 +37,16 @@ public class activityUtilizador extends AppCompatActivity implements NavigationV
         toolbar = findViewById(R.id.drawertoolbar);
         setSupportActionBar(toolbar);
 
+        //inicialização dos elementos visuais
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
-
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
-
         Bundle data = getIntent().getExtras();
+        //inicialização de um objeto com a informação do utilizador logado
         Utilizador user = data.getParcelable("USER");
         String avatar = "https://gespark.pt/" + user.getAvatar();
         View headerView = navigationView.getHeaderView(0);
@@ -54,14 +55,14 @@ public class activityUtilizador extends AppCompatActivity implements NavigationV
         CircleImageView civ = headerView.findViewById(R.id.imageViewAvatar);
         navusername.setText(user.getNome());
         navusermail.setText(user.getMail());
-
         Picasso.get().load(avatar).into(civ);
-
+        //chamada do fragment dashboard
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.containerFragment, new fragmentDashboard(), "dashboard").commit();
     }
 
+    //ação de selecionar elementos no menu lateral
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawerLayout.closeDrawer(GravityCompat.START);

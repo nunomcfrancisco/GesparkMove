@@ -199,6 +199,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                     @Override
                     public void run() {
                         Intent intent = new Intent(ctx, activityUtilizador.class);
+                        //coloca "em memória" a informação do utilizador
                         intent.putExtra("USER", user);
                         EditText etUser = act.findViewById(R.id.editTextMainUtilizador);
                         EditText etPassword = act.findViewById(R.id.editTextMainPassword);

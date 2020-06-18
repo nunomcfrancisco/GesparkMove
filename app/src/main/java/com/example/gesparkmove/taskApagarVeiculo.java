@@ -1,10 +1,13 @@
 package com.example.gesparkmove;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 
@@ -16,24 +19,33 @@ import com.mysql.jdbc.Statement;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Properties;
 
 public class taskApagarVeiculo extends AsyncTask<String, Integer, Void> {
+    //declaração das variaveis
     AlertDialog ppm;
     Context ctx;
     Handler handler;
     Globals g = new Globals();
     FragmentManager manager;
+    Activity activity;
+    ArrayList<Veiculo> veiculo = new ArrayList<>();
+    String idVeiculo;
 
-    taskApagarVeiculo(Context ctx, Handler handler, FragmentManager manager){
+    //construtor
+    taskApagarVeiculo(Context ctx, Handler handler, FragmentManager manager, Activity activity){
         this.ctx = ctx;
         this.handler = handler;
         this.manager = manager;
+        this.activity = activity;
     }
 
     @Override
     protected Void doInBackground(String... params) {
         publishProgress(0);
+        idVeiculo = params[0];
         try {
             //abrir tunnel SSH
             JSch jsch = new JSch();
@@ -51,6 +63,7 @@ public class taskApagarVeiculo extends AsyncTask<String, Integer, Void> {
                 Statement statement = (Statement) connection.createStatement();
                 //query para apagar uma viatura da base de dados
                 statement.execute("DELETE FROM veiculos WHERE id = " + params[0]);
+                connection.close();
             } catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
@@ -80,6 +93,16 @@ public class taskApagarVeiculo extends AsyncTask<String, Integer, Void> {
             @Override
             public void run() {
                 if (ppm.isShowing()) ppm.dismiss();
+                Intent intent = activity.getIntent();
+                veiculo = Objects.requireNonNull(intent.getExtras()).getParcelableArrayList("VEICULO");
+                for(Veiculo v : veiculo)
+                    if(String.valueOf(v.getId()).equals(idVeiculo))
+                        veiculo.remove(v);
+                intent.putExtra("VEICULO", veiculo);
+                Utilizador user = Objects.requireNonNull(intent.getExtras()).getParcelable("USER");
+                user.setCarros(user.getCarros() - 1);
+                intent.putExtra("USER", user);
+                Toast.makeText(ctx, "Matricula adicionada", Toast.LENGTH_SHORT).show();
                 fragmentConsultar cFragment = new fragmentConsultar();
                 manager.beginTransaction()
                         .replace(R.id.containerFragment, cFragment, "consultar")

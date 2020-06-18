@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Objects;
 
 public class activityMain extends AppCompatActivity{
+    //declaração de variaveis
     EditText editTextMainUtilizador;
     EditText editTextMainPassword;
     Button buttonMainLogin;
@@ -27,6 +28,7 @@ public class activityMain extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //inicialização dos elementos visuais
         editTextMainUtilizador = findViewById(R.id.editTextMainUtilizador);
         editTextMainPassword = findViewById(R.id.editTextMainPassword);
         buttonMainLogin = findViewById(R.id.buttonMainLogin);
@@ -40,15 +42,8 @@ public class activityMain extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 closeKeyboard();
-                taskLogin tl = new taskLogin(activityMain.this, mainHandler, activityMain.this);
-                tl.execute(editTextMainUtilizador.getText().toString(), editTextMainPassword.getText().toString());
-
-                /*tl.execute("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = \"" + editTextMainUtilizador.getText().toString() + "\"",
-                 editTextMainPassword.getText().toString(),
-                 "SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = \""
-                            + editTextMainUtilizador.getText().toString() + "\")");
-                editTextMainPassword.setText("");
-                editTextMainUtilizador.setText("");*/
+                //asynctask para verificar a identidade do utilizador a fazer login
+                new taskLogin(activityMain.this, mainHandler, activityMain.this).execute(editTextMainUtilizador.getText().toString(), editTextMainPassword.getText().toString());
             }
         });
         //ação do botão de registar

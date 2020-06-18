@@ -27,6 +27,7 @@ public class fragmentConsultar extends Fragment{
     ArrayAdapter adapterVeiculos;
     ListView listViewConsultar;
     TextView textViewSemVeiculos;
+    //interface para trabalhar a informação recebida da taskConsultar
     onConsultarListener listener = new onConsultarListener() {
         @Override
         public void onConsultarCompleted(ArrayList<Veiculo> data) {
@@ -58,7 +59,7 @@ public class fragmentConsultar extends Fragment{
                     Veiculo data = (Veiculo) parent.getItemAtPosition(position);
                     Intent intent = getActivity().getIntent();
                     intent.putExtra("DATAVEICULO", data);
-
+                    //carrega o fragment veiculo
                     fragmentVeiculo vFragment = new fragmentVeiculo();
                     FragmentManager manager = getFragmentManager();
                     manager.beginTransaction()
@@ -73,17 +74,19 @@ public class fragmentConsultar extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_consultar, container, false);
+        //inicialização dos elementos visuais
+
         listViewConsultar = view.findViewById(R.id.listViewConsultar);
         textViewSemVeiculos = view.findViewById(R.id.textViewSemVeiculos);
         Bundle bundle = getActivity().getIntent().getExtras();
         user = bundle.getParcelable("USER");
-        //veiculos = bundle.getParcelableArrayList("VEICULO");
 
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        //asynctask para ir buscar à base de dados os veiculos do utilizador
         new taskConsultar(getActivity(), listener, consultarHandler).execute(String.valueOf(user.getId()));
     }
 }

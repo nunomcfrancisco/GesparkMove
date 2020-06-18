@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 public class taskAdicionarMatricula extends AsyncTask<String, Integer, Void> {
+    //declaração das variaveis
     AlertDialog ppm;
     Context ctx;
     Handler handler;
@@ -33,6 +34,7 @@ public class taskAdicionarMatricula extends AsyncTask<String, Integer, Void> {
     ArrayList<Veiculo> veiculo = new ArrayList<>();
     Globals g = new Globals();
 
+    //construtor
     taskAdicionarMatricula(Context ctx, Handler handler, Activity activity, FragmentManager manager){
         this.ctx = ctx;
         this.handler = handler;
@@ -96,6 +98,7 @@ public class taskAdicionarMatricula extends AsyncTask<String, Integer, Void> {
             @Override
             public void run() {
                 Intent intent = activity.getIntent();
+                //guarda "em memoria" a lista dos veiculos do utilizador
                 intent.putExtra("VEICULO", veiculo);
                 Utilizador user = Objects.requireNonNull(intent.getExtras()).getParcelable("USER");
                 user.setCarros(user.getCarros() + 1);

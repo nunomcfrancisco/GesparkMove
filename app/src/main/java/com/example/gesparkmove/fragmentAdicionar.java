@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class fragmentAdicionar extends Fragment {
+    //declaração de variaveis
     EditText editTextAdicionarMatricula, editTextAdicionarCor;
     Button buttonAdicionarAdicionar;
     Handler adicionarHandler = new Handler();
@@ -33,6 +34,8 @@ public class fragmentAdicionar extends Fragment {
     private List<String> marcaModelo = new ArrayList<>();
     int idMarca, sLengthNow, sLengthBefore;
     Spinner spinnerMarcas, spinnerModelos;
+
+    //interface para trabalhar a informação devolvida da taskData
     onMarcasModelosListener listener = new onMarcasModelosListener() {
         @Override
         public void onMarcasModelosCompleted(ArrayList<ArrayList> data) {
@@ -40,6 +43,7 @@ public class fragmentAdicionar extends Fragment {
             modelosItems = data.get(1);
             ArrayAdapter<Marca> adapterMarcas = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, marcasItems);
             spinnerMarcas.setAdapter(adapterMarcas);
+            //listener para colocar no spinner dos modelos apenas os modelos referentes à marca selecionada
             spinnerMarcas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -67,6 +71,7 @@ public class fragmentAdicionar extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_adicionar, container, false);
+        //inicialização dos elementos visuais
         spinnerMarcas = view.findViewById(R.id.spinnerAdicionarMarca);
         spinnerModelos = view.findViewById(R.id.spinnerAdicionarModelo);
         Bundle bundle = Objects.requireNonNull(getActivity()).getIntent().getExtras();
@@ -82,6 +87,7 @@ public class fragmentAdicionar extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         new taskData(getActivity(), listener, adicionarHandler).execute();
         buttonAdicionarAdicionar = view.findViewById(R.id.buttonAdicionarAdicionar);
+        //ação do botão Adicionar
         buttonAdicionarAdicionar.setOnClickListener(new View.OnClickListener(){
             int idMa, idMo;
             @Override
@@ -109,6 +115,7 @@ public class fragmentAdicionar extends Fragment {
         });
     }
 
+    //Textwatcher para acrescentar os traços da matricula
     private TextWatcher adicionarMatriculaTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

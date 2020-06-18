@@ -66,7 +66,6 @@ public class MailSender extends Authenticator {
 
         BodyPart messageBodyPart = new MimeBodyPart();
         InputStream is = context.getAssets().open("mail.html");
-        //Log.println(Log.INFO, "1", teste);
         int size = is.available();
         byte[] buffer = new byte[size];
         is.read(buffer);

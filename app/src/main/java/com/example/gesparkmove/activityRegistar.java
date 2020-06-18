@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class activityRegistar extends AppCompatActivity {
+    //declaração de variaveis
     TextView editTextRegistarNome, editTextRegistarMorada,
             editTextRegistarCodigoPostal, editTextRegistarContato,
             editTextRegistarNumeroFiscal, editTextRegistarMail,
@@ -26,6 +27,7 @@ public class activityRegistar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registar);
+        //inicialização dos elementos visuais
         editTextRegistarNome = findViewById(R.id.editTextRegistarNome);
         editTextRegistarNome.addTextChangedListener(registarTextWatcher);
         editTextRegistarMorada = findViewById(R.id.editTextRegistarMorada);
@@ -45,6 +47,7 @@ public class activityRegistar extends AppCompatActivity {
         buttonRegistarRegistar = findViewById(R.id.buttonRegistarRegistar);
         buttonRegistarVoltar = findViewById(R.id.buttonRegistarVoltar);
 
+        //ação do botão registar
         buttonRegistarRegistar.setOnClickListener(new View.OnClickListener(){
             AlertDialog ppm;
             @Override
@@ -58,14 +61,15 @@ public class activityRegistar extends AppCompatActivity {
                                 }
                             }).show();
                 }else {
-                    taskRegistar tr = new taskRegistar(activityRegistar.this, registarHandler);
-                    tr.execute(editTextRegistarNumeroFiscal.getText().toString(), editTextRegistarNome.getText().toString(),
+                    //asynctask para guardar os dados do novo utilizador
+                    new taskRegistar(activityRegistar.this, registarHandler)
+                    .execute(editTextRegistarNumeroFiscal.getText().toString(), editTextRegistarNome.getText().toString(),
                             editTextRegistarMorada.getText().toString(), editTextRegistarCodigoPostal.getText().toString(),
                             editTextRegistarMail.getText().toString(), editTextRegistarPassword01.getText().toString());
                 }
             }
         });
-
+        //ação do botão voltar
         buttonRegistarVoltar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -75,6 +79,7 @@ public class activityRegistar extends AppCompatActivity {
         });
     }
 
+    //Textwatcher faz enable to botão registar quando todos os campos estão preenchidos
     private TextWatcher registarTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

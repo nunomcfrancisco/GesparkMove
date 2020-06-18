@@ -93,6 +93,7 @@ public class fragmentVeiculo extends Fragment {
                 if(spinnerPlanoPagamento.getSelectedItem().toString().equals("Avença")) plano = 1;
                 else plano = 2;
                 FragmentManager manager = getFragmentManager();
+                //asynctask para adicionar o veiculo à base de dados
                 new taskGravarVeiculo(getActivity(), veiculoHandler, manager).execute(String.valueOf(veiculo.getId()), String.valueOf(ativo), String.valueOf(plano), String.valueOf(user.getId()));
             }
         });
@@ -101,7 +102,8 @@ public class fragmentVeiculo extends Fragment {
             @Override
             public void onClick(View v){
                 FragmentManager manager = getFragmentManager();
-                new taskApagarVeiculo(getActivity(), veiculoHandler, manager).execute(String.valueOf(veiculo.getId()));
+                //asynctask para apagar o veiculo da base de dados
+                new taskApagarVeiculo(getActivity(), veiculoHandler, manager, getActivity()).execute(String.valueOf(veiculo.getId()));
             }
         });
         return view;

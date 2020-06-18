@@ -15,10 +15,12 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 public class fragmentEstacionamentos extends Fragment{
+    //declaração de variaveis
     Utilizador user;
     ListView listViewEstacionamentos;
     TextView textViewFragmentEstacionamentosSemHistorico;
     Handler handlerEstacionados = new Handler();
+    //interface para trabalhar a informação recebida da taskVeiculosEstacionados
     onEstacionamentosListener listener = new onEstacionamentosListener() {
         @Override
         public void onEstacionamentosCompleted(ArrayList<Estacionamento> data) {
@@ -37,6 +39,7 @@ public class fragmentEstacionamentos extends Fragment{
         View view = inflater.inflate(R.layout.fragment_estacionamentos, container, false);
         Bundle bundle = getActivity().getIntent().getExtras();
         user = bundle.getParcelable("USER");
+        //inicialização dos elementos visuais
         listViewEstacionamentos = view.findViewById(R.id.listViewEstacionamentos);
         textViewFragmentEstacionamentosSemHistorico = view.findViewById(R.id.textViewFragmentEstacionamentosSemHistorico);
         return view;
@@ -44,6 +47,7 @@ public class fragmentEstacionamentos extends Fragment{
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        //asynctask para ir buscar à base de dados os veiculos estacionados
         new taskVeiculosEstacionados(getActivity(), handlerEstacionados, listener).execute(String.valueOf(user.getId()));
     }
 }
