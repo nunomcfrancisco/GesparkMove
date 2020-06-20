@@ -82,7 +82,7 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ppm = new AlertDialog.Builder(ctx).setMessage("Loading").setCancelable(false).show();
+                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }
@@ -90,6 +90,13 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
     @Override
     protected void onPostExecute(ArrayList<ArrayList> data) {
         listener.onMarcasModelosCompleted(data);
-        ppm.dismiss();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if(ppm.isShowing())
+                    ppm.dismiss();
+            }
+        });
+
     }
 }

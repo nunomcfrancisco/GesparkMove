@@ -1,13 +1,14 @@
 package com.example.gesparkmove;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -72,10 +73,7 @@ public class taskRegistar extends AsyncTask<String, Integer, Void> {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ppm = new AlertDialog.Builder(ctx)
-                        .setMessage("A registar!")
-                        .setCancelable(false)
-                        .show();
+                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }

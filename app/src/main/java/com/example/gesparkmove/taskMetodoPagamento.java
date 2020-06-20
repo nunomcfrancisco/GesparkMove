@@ -1,15 +1,15 @@
 package com.example.gesparkmove;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
@@ -88,7 +88,7 @@ public class taskMetodoPagamento extends AsyncTask<String, Integer, List<String>
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ppm = new AlertDialog.Builder(ctx).setMessage("Loading").setCancelable(false).show();
+                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }

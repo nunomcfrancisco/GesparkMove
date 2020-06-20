@@ -83,10 +83,7 @@ public class taskGravarVeiculo extends AsyncTask<String, Integer, Boolean> {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ppm = new AlertDialog.Builder(ctx)
-                        .setMessage("A gravar...")
-                        .setCancelable(false)
-                        .show();
+                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }

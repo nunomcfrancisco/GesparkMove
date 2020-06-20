@@ -73,10 +73,7 @@ public class taskConsultar extends AsyncTask<String, Integer, ArrayList<Veiculo>
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ppm = new AlertDialog.Builder(ctx)
-                        .setMessage("Loading")
-                        .setCancelable(false)
-                        .show();
+                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }

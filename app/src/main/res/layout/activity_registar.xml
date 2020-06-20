@@ -5,78 +5,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activityRegistar">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/gpmlogo"
+        android:alpha="0.3"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/gpmlogo" />
 
         <EditText
             android:id="@+id/editTextRegistarNome"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="Nome Completo"
-            android:inputType="text" />
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
 
         <EditText
             android:id="@+id/editTextRegistarMorada"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Morada"
-            android:inputType="text" />
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom" />
 
         <EditText
             android:id="@+id/editTextRegistarCodigoPostal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Código Postal"
-            android:inputType="text" />
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
 
         <EditText
             android:id="@+id/editTextRegistarContato"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Contato"
-            android:inputType="number" />
+            android:inputType="number"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
 
         <EditText
             android:id="@+id/editTextRegistarNumeroFiscal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Número Fiscal"
-            android:inputType="number" />
+            android:inputType="number"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
 
         <EditText
             android:id="@+id/editTextRegistarMail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Mail"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
 
         <EditText
             android:id="@+id/editTextRegistarPassword01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
 
         <EditText
             android:id="@+id/editTextRegistarPassword02"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/edittext_custom"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,13 +113,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:enabled="false"
-                android:text="Registar" />
+                android:text="Registar"
+                android:background="@drawable/button_custom"/>
             <Button
                 android:id="@+id/buttonRegistarVoltar"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="Voltar" />
+                android:text="Voltar"
+                android:background="@drawable/button_custom"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

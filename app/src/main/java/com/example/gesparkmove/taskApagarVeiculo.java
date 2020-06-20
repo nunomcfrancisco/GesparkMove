@@ -1,7 +1,6 @@
 package com.example.gesparkmove;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,6 +8,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
 
 import com.jcraft.jsch.JSch;
@@ -79,10 +79,7 @@ public class taskApagarVeiculo extends AsyncTask<String, Integer, Void> {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ppm = new AlertDialog.Builder(ctx)
-                        .setMessage("A apagar...")
-                        .setCancelable(false)
-                        .show();
+                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }
