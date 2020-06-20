@@ -41,9 +41,9 @@ public class fragmentConsultar extends Fragment{
                     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                         View itemView = super.getView(position, convertView, parent);
                         if(veiculos.get(position).getAtivo() == 0){
-                            itemView.setBackgroundColor(Color.RED);
+                            itemView.setBackgroundColor(Color.parseColor("#cc0000"));
                         }else{
-                            itemView.setBackgroundColor(Color.GREEN);
+                            itemView.setBackgroundColor(Color.parseColor("#009933"));
                         }
                         return itemView;
                     }

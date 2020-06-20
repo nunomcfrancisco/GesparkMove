@@ -27,6 +27,23 @@ public class fragmentVeiculo extends Fragment {
     Switch switchAtivo;
     Spinner spinnerPlanoPagamento;
     int ativo, plano;
+    onVeiculoListener listener = new onVeiculoListener() {
+        @Override
+        public void onVeiculoCompleted(Integer plano) {
+            switch (plano){
+                case 0:
+                    spinnerPlanoPagamento.setSelection(1);
+                break;
+                case 1:
+                    spinnerPlanoPagamento.setSelection(2);
+                break;
+                case 2:
+                    spinnerPlanoPagamento.setSelection(3);
+                break;
+            }
+        }
+    };
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,7 +63,7 @@ public class fragmentVeiculo extends Fragment {
         veiculo = bundle.getParcelable("DATAVEICULO");
         user = bundle.getParcelable("USER");
         //elementos do spinner
-        String[] pp = new String[]{"Avença", "Fracção"};
+        String[] pp = new String[]{"", "Avença", "Fracção"};
         ArrayAdapter<String> adapterPlano = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, pp);
         spinnerPlanoPagamento.setAdapter(adapterPlano);
         //Se o veiculo estiver estacionado bloqueia os botões, spinner e switch
@@ -66,12 +83,12 @@ public class fragmentVeiculo extends Fragment {
         if(veiculo.getAtivo() == 1) {
             ativo = 1;
             switchAtivo.setChecked(true);
-            spinnerPlanoPagamento.setEnabled(true);
+            //spinnerPlanoPagamento.setEnabled(true);
         }
         else{
             ativo = 0;
             switchAtivo.setChecked(false);
-            spinnerPlanoPagamento.setEnabled(false);
+            //spinnerPlanoPagamento.setEnabled(false);
         }
         //listener para ativar/desativar o spinner conforme a posição do switch
         switchAtivo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -79,10 +96,10 @@ public class fragmentVeiculo extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     ativo = 1;
-                    spinnerPlanoPagamento.setEnabled(true);
+                    //spinnerPlanoPagamento.setEnabled(true);
                 }else{
                     ativo = 0;
-                    spinnerPlanoPagamento.setEnabled(false);
+                    //spinnerPlanoPagamento.setEnabled(false);
                 }
             }
         });
@@ -107,5 +124,10 @@ public class fragmentVeiculo extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        new taskVeiculo(getActivity(), veiculoHandler, listener).execute(String.valueOf(veiculo.getId()));
     }
 }
