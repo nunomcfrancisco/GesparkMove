@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/spinner_costum"
+            android:background="@drawable/spinner_custom"
             android:spinnerMode="dialog" />
 
         <Spinner
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/spinner_costum"
+            android:background="@drawable/spinner_custom"
             android:spinnerMode="dialog" />
 
         <EditText

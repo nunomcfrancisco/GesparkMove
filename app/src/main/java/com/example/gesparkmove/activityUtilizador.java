@@ -2,7 +2,6 @@ package com.example.gesparkmove;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -48,14 +47,16 @@ public class activityUtilizador extends AppCompatActivity implements NavigationV
         Bundle data = getIntent().getExtras();
         //inicialização de um objeto com a informação do utilizador logado
         Utilizador user = data.getParcelable("USER");
-        String avatar = "https://gespark.pt/" + user.getAvatar();
         View headerView = navigationView.getHeaderView(0);
         TextView navusername = headerView.findViewById(R.id.textViewDrawerHeadName);
         TextView navusermail = headerView.findViewById(R.id.textViewDrawerHeadMail);
         CircleImageView civ = headerView.findViewById(R.id.imageViewAvatar);
         navusername.setText(user.getNome());
         navusermail.setText(user.getMail());
-        Picasso.get().load(avatar).into(civ);
+        if(user.getAvatar().equals(""))
+            Picasso.get().load("https://gespark.pt/imgs/users/avatar.png").into(civ);
+        else
+            Picasso.get().load("https://gespark.pt/" + user.getAvatar()).into(civ);
         //chamada do fragment dashboard
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();

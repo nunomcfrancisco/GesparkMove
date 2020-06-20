@@ -62,6 +62,7 @@ public class taskApagarVeiculo extends AsyncTask<String, Integer, Void> {
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
                 //query para apagar uma viatura da base de dados
+                statement.execute("DELETE FROM planoAcessoUtilizador WHERE id_veiculo = " + params[0]);
                 statement.execute("DELETE FROM veiculos WHERE id = " + params[0]);
                 connection.close();
             } catch (ClassNotFoundException | SQLException e){
@@ -91,15 +92,10 @@ public class taskApagarVeiculo extends AsyncTask<String, Integer, Void> {
             public void run() {
                 if (ppm.isShowing()) ppm.dismiss();
                 Intent intent = activity.getIntent();
-                veiculo = Objects.requireNonNull(intent.getExtras()).getParcelableArrayList("VEICULO");
-                for(Veiculo v : veiculo)
-                    if(String.valueOf(v.getId()).equals(idVeiculo))
-                        veiculo.remove(v);
-                intent.putExtra("VEICULO", veiculo);
                 Utilizador user = Objects.requireNonNull(intent.getExtras()).getParcelable("USER");
                 user.setCarros(user.getCarros() - 1);
                 intent.putExtra("USER", user);
-                Toast.makeText(ctx, "Matricula adicionada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, "Veiculo Apagado", Toast.LENGTH_SHORT).show();
                 fragmentConsultar cFragment = new fragmentConsultar();
                 manager.beginTransaction()
                         .replace(R.id.containerFragment, cFragment, "consultar")
