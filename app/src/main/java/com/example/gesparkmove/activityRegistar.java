@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class activityRegistar extends AppCompatActivity {
+public class  activityRegistar extends AppCompatActivity {
     //declaração de variaveis
     TextView editTextRegistarNome, editTextRegistarMorada,
             editTextRegistarCodigoPostal, editTextRegistarContato,
@@ -102,4 +102,8 @@ public class activityRegistar extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable s) {}
     };
+
+    @Override
+    public void onBackPressed() {
+    }
 }

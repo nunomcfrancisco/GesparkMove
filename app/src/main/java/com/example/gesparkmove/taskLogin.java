@@ -37,11 +37,6 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
     }
 
     @Override
-    protected void onPreExecute(){
-        super.onPreExecute();
-    }
-
-    @Override
     protected String doInBackground(String... params){
         StringBuilder queryResult = new StringBuilder();
         publishProgress(0);

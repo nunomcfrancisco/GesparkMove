@@ -96,4 +96,8 @@ public class activityUtilizador extends AppCompatActivity implements NavigationV
         }
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

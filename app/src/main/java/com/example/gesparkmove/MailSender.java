@@ -23,7 +23,6 @@ import javax.mail.util.ByteArrayDataSource;
 
 
 public class MailSender extends Authenticator {
-    private String mailhost = "ssl0.ovh.net";
     private String user;
     private String password;
     private Session session;
@@ -41,6 +40,7 @@ public class MailSender extends Authenticator {
 
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
+        String mailhost = "ssl0.ovh.net";
         props.setProperty("mail.host", mailhost);
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");

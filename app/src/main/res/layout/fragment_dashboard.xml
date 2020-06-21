@@ -42,7 +42,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Total de Veiculos"
                                 android:textColor="#ffff"
-                                android:textSize="24dp">
+                                android:textSize="24sp">
                             </TextView>
                             <TextView
                                 android:id="@+id/textViewFragmentDashboardVeiculos"
@@ -50,7 +50,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="0"
                                 android:textColor="#ffff"
-                                android:textSize="52dp"
+                                android:textSize="52sp"
                                 android:textAlignment="viewEnd">
                             </TextView>
                         </LinearLayout>
@@ -61,8 +61,9 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_alignParentRight="true"
-                                android:src="@drawable/ic_dashboard_car" />
+                                android:layout_alignParentEnd="true"
+                                android:src="@drawable/ic_dashboard_car"
+                                android:contentDescription="Simbolo do Veiculo"/>
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -97,7 +98,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Estacionamentos"
                                 android:textColor="#ffff"
-                                android:textSize="24dp">
+                                android:textSize="24sp">
                             </TextView>
                             <TextView
                                 android:id="@+id/textViewFragmentDashboardEstacionamentos"
@@ -105,7 +106,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="0"
                                 android:textColor="#ffff"
-                                android:textSize="52dp"
+                                android:textSize="52sp"
                                 android:textAlignment="viewEnd">
                             </TextView>
                         </LinearLayout>
@@ -116,8 +117,9 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_alignParentRight="true"
-                                android:src="@drawable/ic_dashboard_estacionamentos" />
+                                android:layout_alignParentEnd="true"
+                                android:src="@drawable/ic_dashboard_estacionamentos"
+                                android:contentDescription="Simbolo de Euro"/>
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>

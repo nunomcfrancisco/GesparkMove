@@ -49,13 +49,13 @@ public class taskVeiculo extends AsyncTask<String, Integer, Void> {
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
                 ResultSet rs = statement.executeQuery("SELECT id_plano FROM planoAcessoUtilizador WHERE id_veiculo = " + params[0]);
-                if(rs.next() == true)
+                if(rs.next())
                     while(rs.next())
                         plano = rs.getInt(1);
                 else
                     plano = 0;
                 rs = statement.executeQuery("SELECT * FROM estacionamento WHERE id_matricula = " + params[0] + " LIMIT 1");
-                if(rs.next() == true)
+                if(rs.next())
                     historico = 1;
                 else
                     historico = 0;

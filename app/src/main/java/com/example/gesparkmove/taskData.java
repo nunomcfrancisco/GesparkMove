@@ -36,11 +36,6 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
     }
 
     @Override
-    protected void onPreExecute(){
-        super.onPreExecute();
-    }
-
-    @Override
     protected ArrayList<ArrayList> doInBackground(Void... voids) {
         publishProgress(0);
         try {

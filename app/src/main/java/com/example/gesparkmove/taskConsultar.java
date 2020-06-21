@@ -34,11 +34,6 @@ public class taskConsultar extends AsyncTask<String, Integer, ArrayList<Veiculo>
     }
 
     @Override
-    protected void onPreExecute(){
-        super.onPreExecute();
-    }
-
-    @Override
     protected ArrayList<Veiculo> doInBackground(String... params) {
         publishProgress(0);
         try {

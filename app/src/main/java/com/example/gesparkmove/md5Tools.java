@@ -8,7 +8,7 @@ public class md5Tools {
     public String encode(String msg){
         try {
             MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            byte messageDigest[] = digest.digest(msg.getBytes());
+            byte[] messageDigest = digest.digest(msg.getBytes());
             BigInteger number = new BigInteger(1, messageDigest);
             return String.format("%032x", number);
         } catch (NoSuchAlgorithmException e) {

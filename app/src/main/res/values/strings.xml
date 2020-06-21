@@ -22,4 +22,12 @@
     <string name="cor">Cor:</string>
     <string name="ativo">Ativo</string>
     <string name="apagar_veiculo">Apagar Veículo</string>
+    <string name="gpm_logo">GPM Logo</string>
+    <string name="nome_completo">Nome Completo</string>
+    <string name="morada">Morada</string>
+    <string name="c_digo_postal">Código Postal</string>
+    <string name="contato">Contato</string>
+    <string name="n_mero_fiscal">Número Fiscal</string>
+    <string name="mail">Mail</string>
+    <string name="voltar">Voltar</string>
 </resources>
