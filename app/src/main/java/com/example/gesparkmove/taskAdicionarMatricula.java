@@ -64,9 +64,9 @@ public class taskAdicionarMatricula extends AsyncTask<String, Integer, Void> {
                 statement.execute("INSERT INTO veiculos (matricula, id_utilizador, id_marca, id_modelo, cor, activo, imagem) VALUES('"
                         + params[0] +  "', " + params[1] + "," + params[2] + ", " + params[3] +  ", '" + params[4] + "', 0, NULL)");
                 //query para ir buscar a lista de veiculos atualizada do utilizador
-                ResultSet rs = statement.executeQuery("SELECT veiculos.id, veiculos.matricula, marcas.marca, modelo.modelo, cor, estacionado, veiculos.activo FROM veiculos inner join marcas inner join modelo WHERE id_utilizador = " + params[1] + " AND veiculos.id_marca = marcas.id AND veiculos.id_modelo = modelo.id");
+                ResultSet rs = statement.executeQuery("SELECT veiculos.id, veiculos.matricula, marcas.marca, modelo.modelo, cor, estacionado, veiculos.activo, veiculos.imagem FROM veiculos inner join marcas inner join modelo WHERE id_utilizador = " + params[1] + " AND veiculos.id_marca = marcas.id AND veiculos.id_modelo = modelo.id");
                 while(rs.next())
-                    veiculo.add(new Veiculo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7)));
+                    veiculo.add(new Veiculo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getString(8)));
                 connection.close();
             } catch (ClassNotFoundException | SQLException e) {
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());

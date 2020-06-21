@@ -24,7 +24,7 @@ public class taskVeiculo extends AsyncTask<String, Integer, Void> {
     Context ctx;
     Handler handler;
     private final onVeiculoListener listener;
-    int plano;
+    int plano, historico;
 
     public taskVeiculo(Context ctx, Handler handler, onVeiculoListener listener) {
         this.ctx = ctx;
@@ -49,12 +49,16 @@ public class taskVeiculo extends AsyncTask<String, Integer, Void> {
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
                 ResultSet rs = statement.executeQuery("SELECT id_plano FROM planoAcessoUtilizador WHERE id_veiculo = " + params[0]);
-                if(rs.next() == true){
+                if(rs.next() == true)
                     while(rs.next())
                         plano = rs.getInt(1);
-                }else{
+                else
                     plano = 0;
-                }
+                rs = statement.executeQuery("SELECT * FROM estacionamento WHERE id_matricula = " + params[0] + " LIMIT 1");
+                if(rs.next() == true)
+                    historico = 1;
+                else
+                    historico = 0;
                 connection.close();
             }catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
@@ -78,7 +82,7 @@ public class taskVeiculo extends AsyncTask<String, Integer, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        listener.onVeiculoCompleted(plano);
+        listener.onVeiculoCompleted(plano, historico);
         handler.post(new Runnable() {
             @Override
             public void run() {

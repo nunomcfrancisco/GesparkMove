@@ -17,6 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class fragmentVeiculo extends Fragment {
     //declaração de variaveis
     Handler veiculoHandler = new Handler();
@@ -26,10 +30,11 @@ public class fragmentVeiculo extends Fragment {
     Button buttonApagarVeiculo, buttonGravarVeiculo;
     Switch switchAtivo;
     Spinner spinnerPlanoPagamento;
+    CircleImageView imageViewVeiculo;
     int ativo, plano;
     onVeiculoListener listener = new onVeiculoListener() {
         @Override
-        public void onVeiculoCompleted(Integer plano) {
+        public void onVeiculoCompleted(Integer plano, Integer historico) {
             switch (plano){
                 case 0:
                     spinnerPlanoPagamento.setSelection(1);
@@ -41,6 +46,8 @@ public class fragmentVeiculo extends Fragment {
                     spinnerPlanoPagamento.setSelection(3);
                 break;
             }
+            if(historico == 1)
+                buttonApagarVeiculo.setEnabled(false);
         }
     };
 
@@ -58,6 +65,7 @@ public class fragmentVeiculo extends Fragment {
         buttonApagarVeiculo = view.findViewById(R.id.buttonApagarVeiculoVeiculoFragment);
         buttonGravarVeiculo = view.findViewById(R.id.buttonGravarVeiculoFragment);
         spinnerPlanoPagamento = view.findViewById(R.id.spinnerPlanoPagamentoVeiculoFragment);
+        imageViewVeiculo = view.findViewById(R.id.imageViewVeiculoImagem);
         //Vai buscar a informação do veiculo selecionado
         Bundle bundle = getActivity().getIntent().getExtras();
         veiculo = bundle.getParcelable("DATAVEICULO");
@@ -75,6 +83,9 @@ public class fragmentVeiculo extends Fragment {
             textViewAviso.setVisibility(view.VISIBLE);
         }
         //mostra a informação do veiculo
+        if(veiculo.getAvatar() != null){
+            Picasso.get().load("https://gespark.pt/" + veiculo.getAvatar()).into(imageViewVeiculo);
+        }
         textViewMatricula.setText(veiculo.getMatricula());
         textViewMarca.setText("Marca: " + veiculo.getMarca());
         textViewModelo.setText("Modelo: " + veiculo.getModelo());
@@ -83,24 +94,19 @@ public class fragmentVeiculo extends Fragment {
         if(veiculo.getAtivo() == 1) {
             ativo = 1;
             switchAtivo.setChecked(true);
-            //spinnerPlanoPagamento.setEnabled(true);
         }
         else{
             ativo = 0;
             switchAtivo.setChecked(false);
-            //spinnerPlanoPagamento.setEnabled(false);
         }
         //listener para ativar/desativar o spinner conforme a posição do switch
         switchAtivo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if(isChecked)
                     ativo = 1;
-                    //spinnerPlanoPagamento.setEnabled(true);
-                }else{
+                else
                     ativo = 0;
-                    //spinnerPlanoPagamento.setEnabled(false);
-                }
             }
         });
         //clickar no botão gravar

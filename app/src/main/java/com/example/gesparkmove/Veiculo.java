@@ -26,8 +26,9 @@ public class Veiculo implements Parcelable{
     String cor;
     int estacionado;
     int ativo;
+    String avatar;
 
-    public Veiculo(int id, String matricula, String marca, String modelo, String cor, int estacionado, int ativo) {
+    public Veiculo(int id, String matricula, String marca, String modelo, String cor, int estacionado, int ativo, String avatar) {
         this.id = id;
         this.matricula = matricula;
         this.marca = marca;
@@ -35,6 +36,7 @@ public class Veiculo implements Parcelable{
         this.cor = cor;
         this.estacionado = estacionado;
         this.ativo = ativo;
+        this.avatar = avatar;
     }
 
     protected Veiculo(Parcel in){
@@ -45,6 +47,7 @@ public class Veiculo implements Parcelable{
         this.cor = in.readString();
         this.estacionado = in.readInt();
         this.ativo = in.readInt();
+        this.avatar = in.readString();
     }
 
     public int getId() {
@@ -79,6 +82,8 @@ public class Veiculo implements Parcelable{
         this.ativo = valor;
     }
 
+    public String getAvatar() {return avatar;}
+
     @Override
     public void writeToParcel(Parcel dest, int flags){
         dest.writeInt(this.id);
@@ -88,6 +93,7 @@ public class Veiculo implements Parcelable{
         dest.writeString(this.cor);
         dest.writeInt(this.estacionado);
         dest.writeInt(this.ativo);
+        dest.writeString(this.avatar);
     }
 
     @Override
