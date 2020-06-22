@@ -78,7 +78,7 @@ public class fragmentAdicionar extends Fragment {
         user = Objects.requireNonNull(bundle).getParcelable("USER");
         editTextAdicionarMatricula = view.findViewById(R.id.editTextAdicionarMatricula);
         editTextAdicionarCor = view.findViewById(R.id.editTextAdicionarCor);
-        editTextAdicionarMatricula.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+        editTextAdicionarMatricula.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(8)});
         editTextAdicionarMatricula.addTextChangedListener(adicionarMatriculaTextWatcher);
         return view;
     }
@@ -122,20 +122,20 @@ public class fragmentAdicionar extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            sLengthNow = editTextAdicionarMatricula.getText().length();
-            if(sLengthNow > sLengthBefore){
-                if(s.length() == 2 || s.length() == 5){
-                    editTextAdicionarMatricula.setText(s + "-");
-                    editTextAdicionarMatricula.setSelection(editTextAdicionarMatricula.getText().length());
-                    sLengthBefore = sLengthNow - 1;
-                }
-            }else{
-                sLengthBefore = sLengthBefore - 1;
-            }
             buttonAdicionarAdicionar.setEnabled(s.length() == 8);
         }
 
         @Override
-        public void afterTextChanged(Editable s) {}
+        public void afterTextChanged(Editable text) {
+            sLengthNow = text.length();
+            if(sLengthNow > sLengthBefore){
+                if(text.length() == 2 || text.length() == 5){
+                    text.append('-');
+                    sLengthBefore = sLengthNow - 1;
+                }
+            }else{
+                sLengthBefore = sLengthBefore -1;
+            }
+        }
     };
 }

@@ -23,7 +23,6 @@
             android:ems="10"
             android:hint="Matricula"
             android:inputType="textPersonName"
-            android:maxLength="8"
             android:padding="10dp" />
 
         <Spinner
