@@ -5,7 +5,12 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,8 +22,11 @@ import java.util.Objects;
 
 public class fragmentPagamentos extends Fragment {
     //declaração das variaveis
-    TextView editTextNomeMetodosPagamentos, editTextNumeroMetodosPagamentos, editTextDataMetodosPagamentos;
+    TextView textViewNomeMetodosPagamentos, textViewNumeroMetodosPagamentos, textViewDataMetodosPagamentos;
+    EditText editTextNomeMetodosPagamentos, editTextNumeroMetodosPagamentos, editTextCVMetodosPagamentos, editTextDataMetodosPagamentos;
     ImageView imageViewLogoMetodosPagamentos;
+    Button buttonGravarMetodosPagamentos;
+    Spinner spinnerMetodoMetodosPagamentos;
     Handler pagamentosHandler = new Handler();
     Utilizador user;
     //interface para trabalhar a informação recebida da taskMetodoPagamento
@@ -28,18 +36,18 @@ public class fragmentPagamentos extends Fragment {
             switch (data.size()){
                 case(1):
                     imageViewLogoMetodosPagamentos.setImageDrawable(getResources().getDrawable(R.drawable.mbway));
-                    editTextNomeMetodosPagamentos.setText(data.get(0));
+                    textViewNomeMetodosPagamentos.setText(data.get(0));
                 break;
                 case(2):
                     imageViewLogoMetodosPagamentos.setImageDrawable(getResources().getDrawable(R.drawable.db));
-                    editTextNomeMetodosPagamentos.setText(data.get(0));
-                    editTextNumeroMetodosPagamentos.setText(data.get(1));
+                    textViewNomeMetodosPagamentos.setText(data.get(0));
+                    textViewNumeroMetodosPagamentos.setText(data.get(1));
                 break;
                 case(3):
                     imageViewLogoMetodosPagamentos.setImageDrawable(getResources().getDrawable(R.drawable.visa));
-                    editTextNomeMetodosPagamentos.setText(data.get(0));
-                    editTextNumeroMetodosPagamentos.setText(data.get(1));
-                    editTextDataMetodosPagamentos.setText(data.get(2));
+                    textViewNomeMetodosPagamentos.setText(data.get(0));
+                    textViewNumeroMetodosPagamentos.setText(data.get(1));
+                    textViewDataMetodosPagamentos.setText(data.get(2));
                 break;
             }
         }
@@ -50,12 +58,71 @@ public class fragmentPagamentos extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pagamentos, container, false);
         //inicialização dos elementos visuais
-        editTextNomeMetodosPagamentos = view.findViewById(R.id.textViewNomeMetodosPagamentos);
-        editTextNumeroMetodosPagamentos = view.findViewById(R.id.textViewNumeroMetodosPagamentos);
-        editTextDataMetodosPagamentos = view.findViewById(R.id.textViewDataMetodosPagamentos);
+        textViewNomeMetodosPagamentos = view.findViewById(R.id.textViewNomeMetodosPagamentos);
+        textViewNumeroMetodosPagamentos = view.findViewById(R.id.textViewNumeroMetodosPagamentos);
+        textViewDataMetodosPagamentos = view.findViewById(R.id.textViewDataMetodosPagamentos);
         imageViewLogoMetodosPagamentos = view.findViewById(R.id.imageViewLogoMetodosPagamentos);
+        editTextNomeMetodosPagamentos = view.findViewById(R.id.editTextNomeMetodosPagamentos);
+        editTextNumeroMetodosPagamentos = view.findViewById(R.id.editTextNumeroMetodosPagamentos);
+        editTextCVMetodosPagamentos = view.findViewById(R.id.editTextCVMetodosPagamentos);
+        editTextDataMetodosPagamentos = view.findViewById(R.id.editTextDataMetodosPagamentos);
+        buttonGravarMetodosPagamentos = view.findViewById(R.id.buttonGravarMetodosPagamentos);
+        spinnerMetodoMetodosPagamentos = view.findViewById(R.id.spinnerMetodoMetodosPagamentos);
+        String[] pp = new String[]{"", "Cartão de Crédito", "Débito Direto", "MBWay"};
+        ArrayAdapter<String> adapterMetodo = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, pp);
         Bundle bundle = Objects.requireNonNull(getActivity()).getIntent().getExtras();
+        spinnerMetodoMetodosPagamentos.setAdapter(adapterMetodo);
         user = Objects.requireNonNull(bundle).getParcelable("USER");
+
+        spinnerMetodoMetodosPagamentos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        editTextNomeMetodosPagamentos.setVisibility(View.GONE);
+                        editTextNumeroMetodosPagamentos.setVisibility(View.GONE);
+                        editTextCVMetodosPagamentos.setVisibility(View.GONE);
+                        editTextDataMetodosPagamentos.setVisibility(View.GONE);
+                        buttonGravarMetodosPagamentos.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        editTextNomeMetodosPagamentos.setVisibility(View.VISIBLE);
+                        editTextNomeMetodosPagamentos.setHint("Nome");
+                        editTextNumeroMetodosPagamentos.setVisibility(View.VISIBLE);
+                        editTextNumeroMetodosPagamentos.setHint("Número");
+                        editTextCVMetodosPagamentos.setVisibility(View.VISIBLE);
+                        editTextCVMetodosPagamentos.setHint("CVV2/CVC2");
+                        editTextDataMetodosPagamentos.setVisibility(View.VISIBLE);
+                        editTextDataMetodosPagamentos.setHint("Data Validade");
+                        buttonGravarMetodosPagamentos.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        editTextNomeMetodosPagamentos.setVisibility(View.VISIBLE);
+                        editTextNomeMetodosPagamentos.setHint("Nome");
+                        editTextNumeroMetodosPagamentos.setVisibility(View.VISIBLE);
+                        editTextNumeroMetodosPagamentos.setHint("IBAN");
+                        editTextCVMetodosPagamentos.setVisibility(View.GONE);
+                        editTextDataMetodosPagamentos.setVisibility(View.GONE);
+                        buttonGravarMetodosPagamentos.setVisibility(View.VISIBLE);
+                        break;
+                    case 3:
+                        editTextNomeMetodosPagamentos.setVisibility(View.GONE);
+                        editTextNumeroMetodosPagamentos.setVisibility(View.VISIBLE);
+                        editTextNumeroMetodosPagamentos.setHint("Telemovel");
+                        editTextCVMetodosPagamentos.setVisibility(View.GONE);
+                        editTextDataMetodosPagamentos.setVisibility(View.GONE);
+                        buttonGravarMetodosPagamentos.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         return view;
     }
 

@@ -79,8 +79,7 @@ public class taskConsultar extends AsyncTask<String, Integer, ArrayList<Veiculo>
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if(ppm.isShowing())
-                    ppm.dismiss();
+                if(ppm.isShowing()) ppm.dismiss();
             }
         });
     }
