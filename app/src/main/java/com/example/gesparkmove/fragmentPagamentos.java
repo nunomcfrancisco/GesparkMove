@@ -34,16 +34,16 @@ public class fragmentPagamentos extends Fragment {
         @Override
         public void onPagamentosCompleted(List<String> data) {
             switch (data.size()){
-                case(1):
+                case 1:
                     imageViewLogoMetodosPagamentos.setImageDrawable(getResources().getDrawable(R.drawable.mbway));
                     textViewNomeMetodosPagamentos.setText(data.get(0));
                 break;
-                case(2):
+                case 2:
                     imageViewLogoMetodosPagamentos.setImageDrawable(getResources().getDrawable(R.drawable.db));
                     textViewNomeMetodosPagamentos.setText(data.get(0));
                     textViewNumeroMetodosPagamentos.setText(data.get(1));
                 break;
-                case(3):
+                case 3:
                     imageViewLogoMetodosPagamentos.setImageDrawable(getResources().getDrawable(R.drawable.visa));
                     textViewNomeMetodosPagamentos.setText(data.get(0));
                     textViewNumeroMetodosPagamentos.setText(data.get(1));
@@ -118,7 +118,6 @@ public class fragmentPagamentos extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
