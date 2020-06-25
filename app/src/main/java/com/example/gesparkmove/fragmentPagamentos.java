@@ -29,6 +29,7 @@ public class fragmentPagamentos extends Fragment {
     Spinner spinnerMetodoMetodosPagamentos;
     Handler pagamentosHandler = new Handler();
     Utilizador user;
+    Handler handler = new Handler();
     //interface para trabalhar a informação recebida da taskMetodoPagamento
     onPagamentosListener listener = new onPagamentosListener() {
         @Override
@@ -121,6 +122,17 @@ public class fragmentPagamentos extends Fragment {
             }
         });
 
+        buttonGravarMetodosPagamentos.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                switch (spinnerMetodoMetodosPagamentos.getSelectedItemPosition()){
+                    case 1:
+                        new taskGravarPagamento(getActivity(), handler).execute(String.valueOf(user.getId()), String.valueOf(spinnerMetodoMetodosPagamentos.getSelectedItemPosition()), editTextNomeMetodosPagamentos.getText().toString(), editTextNumeroMetodosPagamentos.getText().toString(),
+                                editTextDataMetodosPagamentos.getText().toString(), editTextCVMetodosPagamentos.getText().toString());
+                }
+
+            }
+        });
 
         return view;
     }

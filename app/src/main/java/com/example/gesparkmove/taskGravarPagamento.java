@@ -17,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class taskGravarPagamento extends AsyncTask<Void, Integer, String> {
+public class taskGravarPagamento extends AsyncTask<String, Integer, String> {
     AlertDialog ad;
     Context ctx;
     Handler handler;
@@ -80,5 +80,26 @@ public class taskGravarPagamento extends AsyncTask<Void, Integer, String> {
             Log.println(Log.INFO, "JSch Exception: ", e.toString());
         }
         return null;
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                ad = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (ad.isShowing())
+                    ad.dismiss();
+            }
+        });
     }
 }
