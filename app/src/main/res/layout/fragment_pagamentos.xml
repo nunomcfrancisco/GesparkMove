@@ -97,17 +97,38 @@
                 android:padding="10dp"
                 android:visibility="gone"/>
 
-            <EditText
-                android:id="@+id/editTextDataMetodosPagamentos"
+            <LinearLayout
+                android:id="@+id/linearLayoutDataMetodosPagamentos"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/edittext_custom"
-                android:ems="10"
-                android:hint="Matricula"
-                android:inputType="textPersonName"
-                android:padding="10dp"
-                android:visibility="gone"/>
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/textViewValidadeMetodosPagamentos"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Validade:"
+                    android:textSize="20sp" />
+                <Spinner
+                    android:id="@+id/spinnerDataMesMetodosPagamentos"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/spinner_custom"
+                    android:spinnerMode="dialog"/>
+                <Spinner
+                    android:id="@+id/spinnerDataAnoMetodosPagamentos"
+                    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/spinner_custom"
+                    android:spinnerMode="dialog"/>
+            </LinearLayout>
 
             <Button
                 android:id="@+id/buttonGravarMetodosPagamentos"

@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -21,11 +24,13 @@ public class taskGravarPagamento extends AsyncTask<String, Integer, String> {
     AlertDialog ad;
     Context ctx;
     Handler handler;
+    FragmentManager manager;
     Globals g = new Globals();
 
-    taskGravarPagamento(Context ctx, Handler handler){
+    taskGravarPagamento(Context ctx, Handler handler, FragmentManager manager){
         this.ctx = ctx;
         this.handler = handler;
+        this.manager = manager;
     }
 
     @Override
@@ -49,7 +54,7 @@ public class taskGravarPagamento extends AsyncTask<String, Integer, String> {
                     switch (params[1]) {
                         case "1":
                             statement.execute("INSERT INTO metodosPagamentoUtilizador (id_utilizador, id_metodoPagamento, nomeCartaoCredito, numeroCartaoCredito, dataValidadeCartaoCredito, codigoCvvCredito) VALUES (" + params[0] + ", " + params[1] + ", '"
-                                    + params[2] + "', " + params[3] + ", " + params[4] + ", " + params[5] + ")");
+                                    + params[2] + "', " + params[3] + ", '" + params[4] + "', " + params[5] + ")");
                             break;
                         case "2":
                             statement.execute("INSERT INTO metodosPagamentoUtilizador (id_utilizador, id_metodoPagamento, telefoneMbway) VALUES (" + params[0] + ", " + params[1] + ", " + params[2] + ")");
@@ -62,13 +67,13 @@ public class taskGravarPagamento extends AsyncTask<String, Integer, String> {
                     switch (params[1]) {
                         case "1":
                             statement.execute("UPDATE metodosPagamentoUtilizador SET id_metodoPagamento = " + params[1] + ", nomeCartaoCredito = '" + params[2] + "', numeroCartaoCredito = "
-                                    + params[3] + ", dataValidadeCartaoCredito = " + params[4] + ", codigoCvvCredito= " + params[5] + " WHERE id_utilizador = " + params[0]);
+                                    + params[3] + ", dataValidadeCartaoCredito = '" + params[4] + "', codigoCvvCredito= " + params[5] + " WHERE id_utilizador = " + params[0]);
                             break;
                         case "2":
                             statement.execute("UPDATE metodosPagamentoUtilizador SET id_metodoPagamento = " + params[1] + ", telefoneMbway = " + params[2] + " WHERE id_utilizador = " + params[0]);
                             break;
                         case "3":
-                            statement.execute("UPDATE metodosPagamentoUtilizador SET id_metodoPagamento = " + params[1] + ", dDirectoNome = '" + params[2] + "', dDirectoIban = " + params[3]);
+                            statement.execute("UPDATE metodosPagamentoUtilizador SET id_metodoPagamento = " + params[1] + ", dDirectoNome = '" + params[2] + "', dDirectoIban = '" + params[3] + "' WHERE id_utilizador = " + params[0]);
                             break;
                     }
                 }
@@ -76,6 +81,7 @@ public class taskGravarPagamento extends AsyncTask<String, Integer, String> {
             } catch (ClassNotFoundException | SQLException e) {
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
+            session.disconnect();
         }catch (JSchException e){
             Log.println(Log.INFO, "JSch Exception: ", e.toString());
         }
@@ -99,6 +105,10 @@ public class taskGravarPagamento extends AsyncTask<String, Integer, String> {
             public void run() {
                 if (ad.isShowing())
                     ad.dismiss();
+                fragmentPagamentos pFragment = new fragmentPagamentos();
+                manager.beginTransaction()
+                        .replace(R.id.containerFragment, pFragment, "pagamentos")
+                        .commit();
             }
         });
     }

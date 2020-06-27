@@ -99,8 +99,7 @@ public class fragmentAdicionar extends Fragment {
                     if(modelo.getModelo().equals(spinnerModelos.getSelectedItem().toString()))
                         idMo = modelo.getId();
                 FragmentManager manager = getFragmentManager();
-                taskAdicionarMatricula tam = new taskAdicionarMatricula(getActivity(), adicionarHandler, getActivity(), manager);
-                tam.execute(editTextAdicionarMatricula.getText().toString(),
+                new taskAdicionarMatricula(getActivity(), adicionarHandler, getActivity(), manager).execute(editTextAdicionarMatricula.getText().toString(),
                         String.valueOf(user.getId()),
                         String.valueOf(idMa),
                         String.valueOf(idMo),

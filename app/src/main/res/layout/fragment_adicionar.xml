@@ -36,6 +36,7 @@
 
         <Spinner
             android:id="@+id/spinnerAdicionarModelo"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
