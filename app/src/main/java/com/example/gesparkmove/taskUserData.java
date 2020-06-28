@@ -59,6 +59,10 @@ public class taskUserData extends AsyncTask<String, Integer, ArrayList<String>> 
                 while (rs.next()) {
                     data.add(rs.getString(1));
                 }
+                rs = statement.executeQuery("SELECT avatar FROM utilizadores WHERE id = " + params[0]);
+                while(rs.next()){
+                    data.add(rs.getString(1));
+                }
                 connection.close();
             } catch (ClassNotFoundException | SQLException e) {
                 Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));

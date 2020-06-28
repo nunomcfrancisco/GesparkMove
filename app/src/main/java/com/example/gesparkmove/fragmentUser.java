@@ -1,6 +1,7 @@
 package com.example.gesparkmove;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class fragmentUser extends Fragment {
     TextView textViewUserName, textViewUserAddress, textViewUserPostalCode, textViewUserContacts, textViewUserFiscalCode;
+    Handler userHandler = new Handler();
     User user;
+    CircleImageView imageViewUserAvatar;
+    onUserListener listener = new onUserListener() {
+        @Override
+        public void onUtilizadorCompleted(ArrayList<String> data) {
+            textViewUserName.setText(data.get(1));
+            textViewUserAddress.setText(data.get(2));
+            textViewUserPostalCode.setText(data.get(3));
+            textViewUserContacts.setText(data.get(4));
+            textViewUserFiscalCode.setText(data.get(0));
+            if(data.size() == 6)
+                Picasso.get().load("https://gespark.pt/" + data.get(5)).into(imageViewUserAvatar);
+        }
+    };
 
     @Nullable
     @Override
@@ -21,14 +42,16 @@ public class fragmentUser extends Fragment {
         Bundle bundle = getActivity().getIntent().getExtras();
         user = bundle.getParcelable("USER");
         textViewUserName = view.findViewById(R.id.textViewUserName);
-        textViewUserName.setText(user.getName());
         textViewUserAddress = view.findViewById(R.id.textViewUserAddress);
         textViewUserPostalCode = view.findViewById(R.id.textViewUserPostalCode);
         textViewUserContacts = view.findViewById(R.id.textViewUserContact);
         textViewUserFiscalCode = view.findViewById(R.id.textViewUserFiscalCode);
-        textViewUserFiscalCode.setText(String.valueOf(user.getNif()));
-
-
+        imageViewUserAvatar = view.findViewById(R.id.imageViewUserAvatar);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        new taskUserData(getActivity(), listener, userHandler).execute(String.valueOf(user.getId()));
     }
 }

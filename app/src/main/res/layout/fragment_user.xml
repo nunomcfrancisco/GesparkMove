@@ -16,6 +16,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewUserAvatar"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_default_avatar"
+            app:civ_border_color="#3C8DBC"
+            app:civ_border_width="2dp"
+            android:layout_marginBottom="10dp"/>
+
         <TextView
             android:id="@+id/textViewUserName"
             android:layout_width="match_parent"

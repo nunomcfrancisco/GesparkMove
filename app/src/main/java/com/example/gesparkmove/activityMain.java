@@ -17,11 +17,11 @@ import java.util.Objects;
 
 public class activityMain extends AppCompatActivity{
     //declaração de variaveis
-    EditText editTextMainUtilizador;
+    EditText editTextMainUser;
     EditText editTextMainPassword;
     Button buttonMainLogin;
-    Button buttonMainRegistar;
-    Button buttonMainRecuperar;
+    Button buttonMainRegister;
+    Button buttonMainRecover;
     private Handler mainHandler = new Handler();
 
     @Override
@@ -29,12 +29,12 @@ public class activityMain extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //inicialização dos elementos visuais
-        editTextMainUtilizador = findViewById(R.id.editTextMainUser);
+        editTextMainUser = findViewById(R.id.editTextMainUser);
         editTextMainPassword = findViewById(R.id.editTextMainPassword);
         buttonMainLogin = findViewById(R.id.buttonMainLogin);
-        buttonMainRegistar = findViewById(R.id.buttonMainRegister);
-        buttonMainRecuperar = findViewById(R.id.buttonMainRecover);
-        editTextMainUtilizador.addTextChangedListener(loginTextWatcher);
+        buttonMainRegister = findViewById(R.id.buttonMainRegister);
+        buttonMainRecover = findViewById(R.id.buttonMainRecover);
+        editTextMainUser.addTextChangedListener(loginTextWatcher);
         editTextMainPassword.addTextChangedListener(loginTextWatcher);
 
         //ação do botão de login
@@ -43,11 +43,11 @@ public class activityMain extends AppCompatActivity{
             public void onClick(View view){
                 closeKeyboard();
                 //asynctask para verificar a identidade do utilizador a fazer login
-                new taskLogin(activityMain.this, mainHandler, activityMain.this).execute(editTextMainUtilizador.getText().toString(), editTextMainPassword.getText().toString());
+                new taskLogin(activityMain.this, mainHandler, activityMain.this).execute(editTextMainUser.getText().toString(), editTextMainPassword.getText().toString());
             }
         });
         //ação do botão de registar
-        buttonMainRegistar.setOnClickListener(new View.OnClickListener(){
+        buttonMainRegister.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 startActivity(new Intent(activityMain.this, activityRegister.class));
@@ -71,7 +71,7 @@ public class activityMain extends AppCompatActivity{
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String usernameInput = editTextMainUtilizador.getText().toString().trim();
+            String usernameInput = editTextMainUser.getText().toString().trim();
             String passwordInput = editTextMainPassword.getText().toString().trim();
             buttonMainLogin.setEnabled(!usernameInput.isEmpty() && !passwordInput.isEmpty() && s.length() > 7);
         }
