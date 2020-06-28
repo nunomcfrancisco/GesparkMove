@@ -16,27 +16,24 @@ import com.mysql.jdbc.Statement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
 
-public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
-    AlertDialog ad;
+public class taskCar extends AsyncTask<String, Integer, Void> {
+    Globals g = new Globals();
+    AlertDialog ppm;
     Context ctx;
     Handler handler;
-    Globals g = new Globals();
-    ArrayList<ArrayList> data = new ArrayList<>();
-    ArrayList<Brand> tempMarcas = new ArrayList<>();
-    ArrayList<Model> tempModel = new ArrayList<>();
-    private final onBrandModelListener listener;
+    private final onCarListener listener;
+    int plano, historico;
 
-    taskData(Context ctx, onBrandModelListener listener, Handler handler){
+    public taskCar(Context ctx, Handler handler, onCarListener listener) {
         this.ctx = ctx;
-        this.listener = listener;
         this.handler = handler;
+        this.listener = listener;
     }
 
     @Override
-    protected ArrayList<ArrayList> doInBackground(Void... voids) {
+    protected Void doInBackground(String... params) {
         publishProgress(0);
         try {
             JSch jsch = new JSch();
@@ -51,25 +48,26 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                ResultSet rsMarcas = statement.executeQuery("SELECT * FROM marcas");
-                while (rsMarcas.next()){
-                    tempMarcas.add(new Brand(rsMarcas.getInt(1), rsMarcas.getString(2)));
-                }
-                data.add(tempMarcas);
-                ResultSet rsModel = statement.executeQuery("SELECT * FROM modelo");
-                while(rsModel.next()){
-                    tempModel.add(new Model(rsModel.getInt(1), rsModel.getString(2), rsModel.getInt(3)));
-                }
-                data.add(tempModel);
+                ResultSet rs = statement.executeQuery("SELECT id_plano FROM planoAcessoUtilizador WHERE id_veiculo = " + params[0]);
+                if(rs.next())
+                    while(rs.next())
+                        plano = rs.getInt(1);
+                else
+                    plano = 0;
+                rs = statement.executeQuery("SELECT * FROM estacionamento WHERE id_matricula = " + params[0] + " LIMIT 1");
+                if(rs.next())
+                    historico = 1;
+                else
+                    historico = 0;
                 connection.close();
             }catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
             }
             session.disconnect();
-        } catch (JSchException e){
+        } catch (JSchException e) {
             Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
         }
-        return data;
+        return null;
     }
 
     @Override
@@ -77,19 +75,19 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ad = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
+                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }
 
     @Override
-    protected void onPostExecute(ArrayList<ArrayList> data) {
-        listener.onBrandModelCompleted(data);
+    protected void onPostExecute(Void aVoid) {
+        listener.onVeiculoCompleted(plano, historico);
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if(ad.isShowing())
-                    ad.dismiss();
+                if(ppm.isShowing())
+                    ppm.dismiss();
             }
         });
     }

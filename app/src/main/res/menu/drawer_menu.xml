@@ -6,29 +6,29 @@
         android:id="@+id/menuItemDashboard"/>
     <item
         android:title="@string/veiculos"
-        android:icon="@drawable/ic_menuitem_veiculos">
+        android:icon="@drawable/ic_menuitem_car">
         <menu>
             <item
                 android:id="@+id/menuItemAdicionar"
-                android:icon="@drawable/ic_menuitem_adicionar"
+                android:icon="@drawable/ic_menuitem_add"
                 android:title="@string/adicionar"/>
             <item
                 android:id="@+id/menuItemConsultar"
-                android:icon="@drawable/ic_menuteim_alterar"
+                android:icon="@drawable/ic_menuteim_edit"
                 android:title="@string/consultar"/>
         </menu>
     </item>
     <item
         android:title="@string/consultas"
-        android:icon="@drawable/ic_menuitem_consultas">
+        android:icon="@drawable/ic_menuitem_listcar">
         <menu>
             <item
                 android:id="@+id/menuItemEstacionamentos"
-                android:icon="@drawable/ic_menuitem_estacionamentos"
+                android:icon="@drawable/ic_menuitem_parked"
                 android:title="@string/estacionamentos"/>
             <item
                 android:id="@+id/menuItemPagamentos"
-                android:icon="@drawable/ic_menuitem_pagamentos"
+                android:icon="@drawable/ic_menuitem_payment"
                 android:title="@string/pagamentos"/>
         </menu>
     </item>

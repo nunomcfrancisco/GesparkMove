@@ -29,11 +29,11 @@ public class activityMain extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //inicialização dos elementos visuais
-        editTextMainUtilizador = findViewById(R.id.editTextMainUtilizador);
+        editTextMainUtilizador = findViewById(R.id.editTextMainUser);
         editTextMainPassword = findViewById(R.id.editTextMainPassword);
         buttonMainLogin = findViewById(R.id.buttonMainLogin);
-        buttonMainRegistar = findViewById(R.id.buttonMainRegistar);
-        buttonMainRecuperar = findViewById(R.id.buttonMainRecuperar);
+        buttonMainRegistar = findViewById(R.id.buttonMainRegister);
+        buttonMainRecuperar = findViewById(R.id.buttonMainRecover);
         editTextMainUtilizador.addTextChangedListener(loginTextWatcher);
         editTextMainPassword.addTextChangedListener(loginTextWatcher);
 
@@ -50,7 +50,7 @@ public class activityMain extends AppCompatActivity{
         buttonMainRegistar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                startActivity(new Intent(activityMain.this, activityRegistar.class));
+                startActivity(new Intent(activityMain.this, activityRegister.class));
                 finish();
             }
         });

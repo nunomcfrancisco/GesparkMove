@@ -10,12 +10,10 @@
     <string name="registar">Registar</string>
     <string name="pagamentos">Pagamentos</string>
     <string name="estacionamentos">Estacionamentos</string>
-    <string name="inactivos">Inactivos</string>
     <string name="adicionar">Adicionar</string>
     <string name="veiculos">Veículos</string>
     <string name="consultas">Consultas</string>
     <string name="consultar">Consultar</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="matricula">Matrícula</string>
     <string name="marca">Marca:</string>
     <string name="modelo">Modelo:</string>

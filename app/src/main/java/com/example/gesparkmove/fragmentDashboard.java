@@ -14,8 +14,8 @@ import androidx.fragment.app.FragmentManager;
 
 public class fragmentDashboard extends Fragment {
     //declaração de variaveis
-    TextView textViewFragmentDashboardVeiculos, textViewFragmentDashboardEstacionamentos;
-    CardView cardViewFragmentDashboardVeiculos, cardViewFragmentDashboardEstacionamentos;
+    TextView textViewDashboardCar, textViewDashboardValue;
+    CardView cardViewDashboardCar, cardViewDashboardValue;
 
     @Nullable
     @Override
@@ -23,19 +23,19 @@ public class fragmentDashboard extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         //carregar a informação do utilizador logado
         Bundle bundle = getActivity().getIntent().getExtras();
-        Utilizador user = bundle.getParcelable("USER");
+        User user = bundle.getParcelable("USER");
         //inicialização dos elementos visuais
-        textViewFragmentDashboardVeiculos = view.findViewById(R.id.textViewFragmentDashboardVeiculos);
-        textViewFragmentDashboardEstacionamentos = view.findViewById(R.id.textViewFragmentDashboardEstacionamentos);
-        textViewFragmentDashboardVeiculos.setText(String.valueOf(user.getCarros()));
-        textViewFragmentDashboardEstacionamentos.setText(String.valueOf(user.getValor()));
-        cardViewFragmentDashboardVeiculos = view.findViewById(R.id.cardViewFragmemtDashboardVeiculos);
-        cardViewFragmentDashboardEstacionamentos = view.findViewById(R.id.cardViewFragmentDashboardEstacionamentos);
+        textViewDashboardCar = view.findViewById(R.id.textViewDashboardCar);
+        textViewDashboardValue = view.findViewById(R.id.textViewDashboardValue);
+        textViewDashboardCar.setText(String.valueOf(user.getCars()));
+        textViewDashboardValue.setText(String.valueOf(user.getValue()));
+        cardViewDashboardCar = view.findViewById(R.id.cardViewDashboardCar);
+        cardViewDashboardValue = view.findViewById(R.id.cardViewDashboardValue);
         //ao clickar nos veiculos abres o janela de consultar veiculos
-        cardViewFragmentDashboardVeiculos.setOnClickListener(new View.OnClickListener(){
+        cardViewDashboardCar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                fragmentConsultar cFragment = new fragmentConsultar();
+                fragmentListCar cFragment = new fragmentListCar();
                 FragmentManager manager = getFragmentManager();
                 manager.beginTransaction()
                         .replace(R.id.containerFragment, cFragment, "consultar")
@@ -43,10 +43,10 @@ public class fragmentDashboard extends Fragment {
             }
         });
         //ao clickar nos gastos abre o histórico dos estacionamentos
-        cardViewFragmentDashboardEstacionamentos.setOnClickListener(new View.OnClickListener(){
+        cardViewDashboardValue.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                fragmentEstacionamentos eFragment = new fragmentEstacionamentos();
+                fragmentParked eFragment = new fragmentParked();
                 FragmentManager manager = getFragmentManager();
                 manager.beginTransaction()
                         .replace(R.id.containerFragment, eFragment, "estacionamentos")

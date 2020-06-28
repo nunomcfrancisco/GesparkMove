@@ -1,6 +1,9 @@
 package com.example.gesparkmove;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
@@ -14,30 +17,28 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Random;
 
-public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
-    AlertDialog ad;
+public class taskRegister extends AsyncTask<String, Integer, Void> {
+    @SuppressLint("StaticFieldLeak")
     Context ctx;
+    AlertDialog ppm;
     Handler handler;
     Globals g = new Globals();
-    ArrayList<ArrayList> data = new ArrayList<>();
-    ArrayList<Brand> tempMarcas = new ArrayList<>();
-    ArrayList<Model> tempModel = new ArrayList<>();
-    private final onBrandModelListener listener;
+    mailHelper mh = new mailHelper();
+    int codAtiv;
 
-    taskData(Context ctx, onBrandModelListener listener, Handler handler){
+    taskRegister(Context ctx, Handler handler){
         this.ctx = ctx;
-        this.listener = listener;
         this.handler = handler;
     }
 
     @Override
-    protected ArrayList<ArrayList> doInBackground(Void... voids) {
+    protected Void doInBackground(String... params){
         publishProgress(0);
+        codAtiv = new Random().nextInt(99999999) + 10000001;
         try {
             JSch jsch = new JSch();
             Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
@@ -51,45 +52,49 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                ResultSet rsMarcas = statement.executeQuery("SELECT * FROM marcas");
-                while (rsMarcas.next()){
-                    tempMarcas.add(new Brand(rsMarcas.getInt(1), rsMarcas.getString(2)));
-                }
-                data.add(tempMarcas);
-                ResultSet rsModel = statement.executeQuery("SELECT * FROM modelo");
-                while(rsModel.next()){
-                    tempModel.add(new Model(rsModel.getInt(1), rsModel.getString(2), rsModel.getInt(3)));
-                }
-                data.add(tempModel);
+                statement.executeUpdate("INSERT INTO utilizadores (nif, nome, morada, codigoPostal, email, password, dataRegisto, nivelAcesso, activo, codigoActivacao) VALUES ("
+                        + params[0] + ", '" + params[1] + "', '" + params[2] + "', " + params[3] + ", '" + params[4] + "', '" + new md5Tools().encode(params[5])
+                        + "', NOW(), 0, 0, " + codAtiv + ")");
                 connection.close();
+                mh.mail = params[4];
+                mh.user = params[1];
             }catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
             }
+
             session.disconnect();
         } catch (JSchException e){
             Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
         }
-        return data;
+        return null;
     }
-
     @Override
-    protected void onProgressUpdate(Integer... values) {
+    protected void onProgressUpdate(Integer... values){
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ad = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
+                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }
-
     @Override
-    protected void onPostExecute(ArrayList<ArrayList> data) {
-        listener.onBrandModelCompleted(data);
+    protected void onPostExecute(Void aVoid){
+        taskMail tm = new taskMail(ctx);
+        tm.execute(mh.mail, mh.user, Integer.toString(codAtiv));
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if(ad.isShowing())
-                    ad.dismiss();
+                ppm = new AlertDialog.Builder(ctx)
+                        .setMessage("Consulte o seu email para ativar a conta.")
+                        .setCancelable(false)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(ctx, activityMain.class);
+                                ctx.startActivity(intent);
+                            }
+                        })
+                        .show();
             }
         });
     }

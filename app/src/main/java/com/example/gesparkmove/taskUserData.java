@@ -1,11 +1,10 @@
 package com.example.gesparkmove;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
-
-import androidx.appcompat.app.AlertDialog;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -19,24 +18,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
+public class taskUserData extends AsyncTask<String, Integer, ArrayList<String>> {
     AlertDialog ad;
-    Context ctx;
     Handler handler;
+    Context ctx;
     Globals g = new Globals();
-    ArrayList<ArrayList> data = new ArrayList<>();
-    ArrayList<Brand> tempMarcas = new ArrayList<>();
-    ArrayList<Model> tempModel = new ArrayList<>();
-    private final onBrandModelListener listener;
+    ArrayList<String> data = new ArrayList<>();
+    private final onUserListener listener;
 
-    taskData(Context ctx, onBrandModelListener listener, Handler handler){
+    taskUserData(Context ctx, onUserListener listener, Handler handler){
         this.ctx = ctx;
         this.listener = listener;
         this.handler = handler;
     }
 
     @Override
-    protected ArrayList<ArrayList> doInBackground(Void... voids) {
+    protected ArrayList<String> doInBackground(String... params) {
         publishProgress(0);
         try {
             JSch jsch = new JSch();
@@ -51,22 +48,23 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                ResultSet rsMarcas = statement.executeQuery("SELECT * FROM marcas");
-                while (rsMarcas.next()){
-                    tempMarcas.add(new Brand(rsMarcas.getInt(1), rsMarcas.getString(2)));
+                ResultSet rs = statement.executeQuery("SELECT nif, nome, morada, codigoPostal FROM utilizadores WHERE id = " + params[0]);
+                while (rs.next()) {
+                    data.add(String.valueOf(rs.getInt(1)));
+                    data.add(rs.getString(2));
+                    data.add(rs.getString(3));
+                    data.add(rs.getString(4));
                 }
-                data.add(tempMarcas);
-                ResultSet rsModel = statement.executeQuery("SELECT * FROM modelo");
-                while(rsModel.next()){
-                    tempModel.add(new Model(rsModel.getInt(1), rsModel.getString(2), rsModel.getInt(3)));
+                rs = statement.executeQuery("SELECT contacto FROM contactos WHERE id_utilizador = " + params[0]);
+                while (rs.next()) {
+                    data.add(rs.getString(1));
                 }
-                data.add(tempModel);
                 connection.close();
-            }catch (ClassNotFoundException | SQLException e){
+            } catch (ClassNotFoundException | SQLException e) {
                 Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
             }
             session.disconnect();
-        } catch (JSchException e){
+        }catch (JSchException e){
             Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
         }
         return data;
@@ -83,8 +81,8 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
     }
 
     @Override
-    protected void onPostExecute(ArrayList<ArrayList> data) {
-        listener.onBrandModelCompleted(data);
+    protected void onPostExecute(ArrayList<String> data) {
+        listener.onUtilizadorCompleted(data);
         handler.post(new Runnable() {
             @Override
             public void run() {

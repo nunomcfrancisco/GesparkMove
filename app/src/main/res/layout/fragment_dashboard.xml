@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewFragmemtDashboardVeiculos"
+                android:id="@+id/cardViewDashboardCar"
                 android:layout_width="match_parent"
                 android:layout_marginRight="30dp"
                 app:cardCornerRadius="10dp"
@@ -45,7 +45,7 @@
                                 android:textSize="24sp">
                             </TextView>
                             <TextView
-                                android:id="@+id/textViewFragmentDashboardVeiculos"
+                                android:id="@+id/textViewDashboardCar"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -69,7 +69,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewFragmentDashboardEstacionamentos"
+                android:id="@+id/cardViewDashboardValue"
                 android:layout_width="match_parent"
                 android:layout_marginRight="30dp"
                 app:cardCornerRadius="10dp"
@@ -101,7 +101,7 @@
                                 android:textSize="24sp">
                             </TextView>
                             <TextView
-                                android:id="@+id/textViewFragmentDashboardEstacionamentos"
+                                android:id="@+id/textViewDashboardValue"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="0"
@@ -118,7 +118,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentEnd="true"
-                                android:src="@drawable/ic_dashboard_estacionamentos"
+                                android:src="@drawable/ic_dashboard_parked"
                                 android:contentDescription="Simbolo de Euro"/>
                         </RelativeLayout>
                     </LinearLayout>

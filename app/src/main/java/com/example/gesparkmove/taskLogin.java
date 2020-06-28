@@ -26,8 +26,8 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
     Context ctx;
     Handler handler;
     Globals g = new Globals();
-    Utilizador user;
-    AlertDialog ppm;
+    User user;
+    AlertDialog ad;
     Activity act;
 
     taskLogin(Context ctx, Handler handler, Activity act){
@@ -58,13 +58,13 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                     //query para ir buscar / verificar o utilizador que está a fazer login
                     ResultSet rs = statement.executeQuery("SELECT id, nif, nome, email, password, avatar, activo FROM utilizadores WHERE email = '" + params[0] + "'");
                     while (rs.next()) {
-                        user = new Utilizador(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6), rs.getInt(7), 0);
+                        user = new User(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), 5, rs.getString(6), rs.getInt(7), 0);
                         queryResult.append(rs.getString(5));
                     }
                     if (queryResult.length() > 0) {
                         rs = statement.executeQuery("SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = '" + params[0] + "')");
                         while (rs.next())
-                            user.setCarros(rs.getInt(1));
+                            user.setCars(rs.getInt(1));
                     }
                     connection.close();
                 } catch (ClassNotFoundException | SQLException e) {
@@ -76,7 +76,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
             }
             if (queryResult.toString().equals(""))
                 return "u";
-            else if (user.getAtivo() == 0)
+            else if (user.getActive() == 0)
                 return "a";
             else if (queryResult.toString().equals(new md5Tools().encode(params[1]))) {
                 try {
@@ -96,7 +96,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                         ResultSet rs = statement.executeQuery("SELECT SUM(estacionamento.valor) AS Total FROM estacionamento INNER JOIN veiculos ON estacionamento.id_matricula = veiculos.id " +
                                         "INNER JOIN utilizadores ON veiculos.id_utilizador = utilizadores.id WHERE utilizadores.id = " + user.getId());
                         while(rs.next())
-                            user.setValor(rs.getDouble(1));
+                            user.setValue(rs.getDouble(1));
                         connection.close();
                     } catch (ClassNotFoundException | SQLException e) {
                         e.printStackTrace();
@@ -116,7 +116,7 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
+                ad = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }
@@ -128,9 +128,9 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (ppm.isShowing())
-                            ppm.dismiss();
-                        ppm = new AlertDialog.Builder(ctx)
+                        if (ad.isShowing())
+                            ad.dismiss();
+                        ad = new AlertDialog.Builder(ctx)
                                 .setTitle("Erro!")
                                 .setMessage("Utilizador inválido!")
                                 .setCancelable(false)
@@ -144,13 +144,13 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 });
                 break;
             case "a":
-                if (ppm.isShowing())
-                    ppm.dismiss();
+                if (ad.isShowing())
+                    ad.dismiss();
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ppm = new AlertDialog.Builder(ctx)
+                        ad = new AlertDialog.Builder(ctx)
                                 .setTitle("Erro!")
                                 .setMessage("Conta não ativa.")
                                 .setCancelable(false)
@@ -164,13 +164,13 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 });
                 break;
             case "p":
-                if (ppm.isShowing())
-                    ppm.dismiss();
+                if (ad.isShowing())
+                    ad.dismiss();
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ppm = new AlertDialog.Builder(ctx)
+                        ad = new AlertDialog.Builder(ctx)
                                 .setTitle("Erro!")
                                 .setMessage("Password inválida!")
                                 .setCancelable(false)
@@ -184,16 +184,16 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                 });
                 break;
             case "y":
-                if (ppm.isShowing())
-                    ppm.dismiss();
+                if (ad.isShowing())
+                    ad.dismiss();
 
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(ctx, activityUtilizador.class);
+                        Intent intent = new Intent(ctx, activityUser.class);
                         //coloca "em memória" a informação do utilizador
                         intent.putExtra("USER", user);
-                        EditText etUser = act.findViewById(R.id.editTextMainUtilizador);
+                        EditText etUser = act.findViewById(R.id.editTextMainUser);
                         EditText etPassword = act.findViewById(R.id.editTextMainPassword);
                         etUser.setText("");
                         etPassword.setText("");

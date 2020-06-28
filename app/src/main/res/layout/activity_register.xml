@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activityRegister">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/gpmlogo"
+        android:alpha="0.3"
+        android:contentDescription="@string/gpm_logo"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/editTextRegisterName"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/nome_completo"
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
+
+        <EditText
+            android:id="@+id/editTextRegisterAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/morada"
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom" />
+
+        <EditText
+            android:id="@+id/editTextRegisterPostalCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/c_digo_postal"
+            android:inputType="text"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
+
+        <EditText
+            android:id="@+id/editTextRegisterContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/contato"
+            android:inputType="number"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
+
+        <EditText
+            android:id="@+id/editTextRegisterFiscalCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/n_mero_fiscal"
+            android:inputType="number"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
+
+        <EditText
+            android:id="@+id/editTextRegisterMail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/mail"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
+
+        <EditText
+            android:id="@+id/editTextRegisterPassword01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_custom"/>
+
+        <EditText
+            android:id="@+id/editTextRegisterPassword02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/edittext_custom"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/buttonRegisterRegister"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:enabled="false"
+                android:text="@string/registar"
+                android:background="@drawable/button_custom"/>
+            <Button
+                android:id="@+id/buttonRegisterBack"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/voltar"
+                android:background="@drawable/button_custom"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
