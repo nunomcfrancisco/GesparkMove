@@ -17,6 +17,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Random;
@@ -38,6 +39,7 @@ public class taskRegister extends AsyncTask<String, Integer, Void> {
     @Override
     protected Void doInBackground(String... params){
         publishProgress(0);
+        int id = 0;
         codAtiv = new Random().nextInt(99999999) + 10000001;
         try {
             JSch jsch = new JSch();
@@ -55,13 +57,17 @@ public class taskRegister extends AsyncTask<String, Integer, Void> {
                 statement.executeUpdate("INSERT INTO utilizadores (nif, nome, morada, codigoPostal, email, password, dataRegisto, nivelAcesso, activo, codigoActivacao) VALUES ("
                         + params[0] + ", '" + params[1] + "', '" + params[2] + "', " + params[3] + ", '" + params[4] + "', '" + new md5Tools().encode(params[5])
                         + "', NOW(), 0, 0, " + codAtiv + ")");
-                connection.close();
                 mh.mail = params[4];
                 mh.user = params[1];
+                ResultSet rs = statement.executeQuery("SELECT id FROM utilizadores WHERE email = " + params[4]);
+                while(rs.next()){
+                    id = rs.getInt(1);
+                }
+                statement.executeUpdate("INSERT INTO contactos (id_utilizador, contacto) VALUES (" + id + ", " + params[6] + ")");
+                connection.close();
             }catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
             }
-
             session.disconnect();
         } catch (JSchException e){
             Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));

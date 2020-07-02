@@ -65,7 +65,8 @@ public class activityRegister extends AppCompatActivity {
                     new taskRegister(activityRegister.this, registarHandler)
                     .execute(editTextRegisterFiscalCode.getText().toString(), editTextRegisterName.getText().toString(),
                             editTextRegisterAddress.getText().toString(), editTextRegisterPostalCode.getText().toString(),
-                            editTextRegisterMail.getText().toString(), editTextRegisterPassword01.getText().toString());
+                            editTextRegisterMail.getText().toString(), editTextRegisterPassword01.getText().toString(),
+                            editTextRegisterContacto.getText().toString());
                 }
             }
         });
