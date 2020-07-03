@@ -24,7 +24,7 @@ public class taskCar extends AsyncTask<String, Integer, Void> {
     Context ctx;
     Handler handler;
     private final onCarListener listener;
-    int plano, historico;
+    int plan, history;
 
     public taskCar(Context ctx, Handler handler, onCarListener listener) {
         this.ctx = ctx;
@@ -51,14 +51,14 @@ public class taskCar extends AsyncTask<String, Integer, Void> {
                 ResultSet rs = statement.executeQuery("SELECT id_plano FROM planoAcessoUtilizador WHERE id_veiculo = " + params[0]);
                 if(rs.next())
                     while(rs.next())
-                        plano = rs.getInt(1);
+                        plan = rs.getInt(1);
                 else
-                    plano = 0;
+                    plan = 0;
                 rs = statement.executeQuery("SELECT * FROM estacionamento WHERE id_matricula = " + params[0] + " LIMIT 1");
                 if(rs.next())
-                    historico = 1;
+                    history = 1;
                 else
-                    historico = 0;
+                    history = 0;
                 connection.close();
             }catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
@@ -82,7 +82,7 @@ public class taskCar extends AsyncTask<String, Integer, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        listener.onVeiculoCompleted(plano, historico);
+        listener.onCarCompleted(plan, history);
         handler.post(new Runnable() {
             @Override
             public void run() {

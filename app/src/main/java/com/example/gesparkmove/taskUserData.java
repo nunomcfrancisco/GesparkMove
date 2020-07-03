@@ -86,7 +86,7 @@ public class taskUserData extends AsyncTask<String, Integer, ArrayList<String>> 
 
     @Override
     protected void onPostExecute(ArrayList<String> data) {
-        listener.onUtilizadorCompleted(data);
+        listener.onUserCompleted(data);
         handler.post(new Runnable() {
             @Override
             public void run() {

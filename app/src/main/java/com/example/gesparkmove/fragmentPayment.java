@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class fragmentPayment extends Fragment {
-    //declaração das variaveis
+    //declaração das variáveis
     TextView textViewPaymentName, textViewPaymentNumber, textViewPaymentDate;
     EditText editTextPaymentName, editTextPaymentNumber, editTextPaymentCV;
     Spinner spinnerPaymentMonth, spinnerPaymentYear, spinnerPaymentPayment;
@@ -64,7 +64,7 @@ public class fragmentPayment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_payment, container, false);
-        //inicialização dos elementos visuais
+        //associação das varáveis aos elementos visuais
         textViewPaymentName = view.findViewById(R.id.textViewPaymentName);
         textViewPaymentNumber = view.findViewById(R.id.textViewPaymentNumber);
         textViewPaymentDate = view.findViewById(R.id.textViewPaymentDate);
@@ -80,6 +80,7 @@ public class fragmentPayment extends Fragment {
         buttonPaymentSave = view.findViewById(R.id.buttonPaymentSave);
         spinnerPaymentPayment = view.findViewById(R.id.spinnerPaymentPayment);
         linearLayoutPaymentData = view.findViewById(R.id.linearLayoutPaymentData);
+        //declaração dos valores a apresentar nos spinners
         String[] pp = new String[]{"", "Cartão de Crédito", "MBWay", "Débito Direto"};
         String[] month = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
         int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -92,7 +93,7 @@ public class fragmentPayment extends Fragment {
         spinnerPaymentYear.setAdapter(adapterYear);
         Bundle bundle = Objects.requireNonNull(getActivity()).getIntent().getExtras();
         user = Objects.requireNonNull(bundle).getParcelable("USER");
-
+        //listener para esconder ou mostrar elementos conforme o novo modo de pagamento selecionado
         spinnerPaymentPayment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -144,7 +145,7 @@ public class fragmentPayment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
+        //ação do botão salvar
         buttonPaymentSave.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -168,7 +169,7 @@ public class fragmentPayment extends Fragment {
 
         return view;
     }
-
+    //textwatch para habilitar o botão de salvar caso os campos estejam todos completos
     private TextWatcher paymentTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

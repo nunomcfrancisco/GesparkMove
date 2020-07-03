@@ -21,7 +21,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
-
+//class que executa o envio de emails
 public class MailSender extends Authenticator {
     private String user;
     private String password;

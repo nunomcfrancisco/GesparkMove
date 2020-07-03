@@ -2,6 +2,7 @@ package com.example.gesparkmove;
 
 import android.app.Application;
 
+//class que guarda os paths e credenciais para a base de dados e o SSH
 public class Globals extends Application {
 
     public String getSshPass() {

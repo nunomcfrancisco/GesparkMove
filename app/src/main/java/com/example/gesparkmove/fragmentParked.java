@@ -15,12 +15,12 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 public class fragmentParked extends Fragment{
-    //declaração de variaveis
+    //declaração de variáveis
     User user;
     ListView listViewParked;
     TextView textViewParkedNoParked;
     Handler parkedHandler = new Handler();
-    //interface para trabalhar a informação recebida da taskVeiculosEstacionados
+    //interface para trabalhar a informação recebida da taskParked
     onParkingListener listener = new onParkingListener() {
         @Override
         public void onParkingCompleted(ArrayList<Parked> data) {
@@ -39,7 +39,7 @@ public class fragmentParked extends Fragment{
         View view = inflater.inflate(R.layout.fragment_parked, container, false);
         Bundle bundle = getActivity().getIntent().getExtras();
         user = bundle.getParcelable("USER");
-        //inicialização dos elementos visuais
+        //associação das varáveis aos elementos visuais
         listViewParked = view.findViewById(R.id.listViewParkedParked);
         textViewParkedNoParked = view.findViewById(R.id.textViewParkedNoParked);
         return view;

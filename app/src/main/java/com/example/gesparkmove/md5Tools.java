@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+//class para aplicar o MD5 nas passwords antes de serem guardadas na base de dados
 public class md5Tools {
     public String encode(String msg){
         try {

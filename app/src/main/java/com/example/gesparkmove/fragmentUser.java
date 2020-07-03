@@ -18,13 +18,15 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class fragmentUser extends Fragment {
+    //declaração de variáveis
     TextView textViewUserName, textViewUserAddress, textViewUserPostalCode, textViewUserContacts, textViewUserFiscalCode;
     Handler userHandler = new Handler();
     User user;
     CircleImageView imageViewUserAvatar;
+    //listener para tratar a informação devolvida pelo taskUserData
     onUserListener listener = new onUserListener() {
         @Override
-        public void onUtilizadorCompleted(ArrayList<String> data) {
+        public void onUserCompleted(ArrayList<String> data) {
             textViewUserName.setText(data.get(1));
             textViewUserAddress.setText(data.get(2));
             textViewUserPostalCode.setText(data.get(3));
@@ -41,6 +43,7 @@ public class fragmentUser extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         Bundle bundle = getActivity().getIntent().getExtras();
         user = bundle.getParcelable("USER");
+        //associação das variáveis aos elementos visuais
         textViewUserName = view.findViewById(R.id.textViewUserName);
         textViewUserAddress = view.findViewById(R.id.textViewUserAddress);
         textViewUserPostalCode = view.findViewById(R.id.textViewUserPostalCode);
@@ -52,6 +55,7 @@ public class fragmentUser extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        //asynctask para carregar os dados do utilizador.
         new taskUserData(getActivity(), listener, userHandler).execute(String.valueOf(user.getId()));
     }
 }

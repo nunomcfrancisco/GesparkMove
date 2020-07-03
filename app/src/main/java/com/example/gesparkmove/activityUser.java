@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class activityUser extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    //declaração das variavies
+    //declaração das variávies
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
@@ -35,8 +35,7 @@ public class activityUser extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_user);
         toolbar = findViewById(R.id.drawertoolbar);
         setSupportActionBar(toolbar);
-
-        //inicialização dos elementos visuais
+        //assiciação das varáveis aos elementos visuais
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
@@ -44,8 +43,8 @@ public class activityUser extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
+        //carrega um objeto user com a informação do utilizador logado
         Bundle data = getIntent().getExtras();
-        //inicialização de um objeto com a informação do utilizador logado
         User user = data.getParcelable("USER");
         View headerView = navigationView.getHeaderView(0);
         TextView navusername = headerView.findViewById(R.id.textViewDrawerHeadName);
@@ -61,7 +60,7 @@ public class activityUser extends AppCompatActivity implements NavigationView.On
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.containerFragment, new fragmentDashboard(), "dashboard").commit();
-
+        //ação de clickar o avatar do utilizador no menu
         civ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

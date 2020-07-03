@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class fragmentAddCar extends Fragment {
-    //declaração de variaveis
+    //declaração de variáveis
     EditText editTextAddLicensePlate, editTextAddColor;
     Button buttonAddAdd;
     Handler addHandler = new Handler();
@@ -71,7 +71,7 @@ public class fragmentAddCar extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add, container, false);
-        //inicialização dos elementos visuais
+        //associação das varáveis aos elementos visuais
         spinnerBrand = view.findViewById(R.id.spinnerAddBrand);
         spinnerModel = view.findViewById(R.id.spinnerAddModel);
         Bundle bundle = Objects.requireNonNull(getActivity()).getIntent().getExtras();
@@ -114,7 +114,7 @@ public class fragmentAddCar extends Fragment {
         });
     }
 
-    //Textwatcher para acrescentar os traços da matricula
+    //Textwatcher para acrescentar os traços da matrícula
     private TextWatcher addLicensePlateTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

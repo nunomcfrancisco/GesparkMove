@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 public class fragmentDashboard extends Fragment {
-    //declaração de variaveis
+    //declaração de variáveis
     TextView textViewDashboardCar, textViewDashboardValue;
     CardView cardViewDashboardCar, cardViewDashboardValue;
 
@@ -24,14 +24,14 @@ public class fragmentDashboard extends Fragment {
         //carregar a informação do utilizador logado
         Bundle bundle = getActivity().getIntent().getExtras();
         User user = bundle.getParcelable("USER");
-        //inicialização dos elementos visuais
+        //associação das variáveis aos elementos visuais
         textViewDashboardCar = view.findViewById(R.id.textViewDashboardCar);
         textViewDashboardValue = view.findViewById(R.id.textViewDashboardValue);
         textViewDashboardCar.setText(String.valueOf(user.getCars()));
         textViewDashboardValue.setText(String.valueOf(user.getValue()));
         cardViewDashboardCar = view.findViewById(R.id.cardViewDashboardCar);
         cardViewDashboardValue = view.findViewById(R.id.cardViewDashboardValue);
-        //ao clickar nos veiculos abres o janela de consultar veiculos
+        //ao clickar nos veículos abre a janela de consultar veículos
         cardViewDashboardCar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

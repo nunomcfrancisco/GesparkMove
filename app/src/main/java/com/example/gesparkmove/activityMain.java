@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Objects;
 
 public class activityMain extends AppCompatActivity{
-    //declaração de variaveis
+    //declaração de variáveis
     EditText editTextMainUser;
     EditText editTextMainPassword;
     Button buttonMainLogin;
@@ -28,7 +28,7 @@ public class activityMain extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //inicialização dos elementos visuais
+        //associação das variáveis aos elementos visuais
         editTextMainUser = findViewById(R.id.editTextMainUser);
         editTextMainPassword = findViewById(R.id.editTextMainPassword);
         buttonMainLogin = findViewById(R.id.buttonMainLogin);
@@ -42,7 +42,7 @@ public class activityMain extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 closeKeyboard();
-                //asynctask para verificar a identidade do utilizador a fazer login
+                //asynctask para verificar a identidade do utilizador e fazer login
                 new taskLogin(activityMain.this, mainHandler, activityMain.this).execute(editTextMainUser.getText().toString(), editTextMainPassword.getText().toString());
             }
         });

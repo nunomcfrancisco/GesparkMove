@@ -22,7 +22,7 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class fragmentCar extends Fragment {
-    //declaração de variaveis
+    //declaração de variáveis
     Handler carHandler = new Handler();
     User user;
     Car car;
@@ -31,11 +31,11 @@ public class fragmentCar extends Fragment {
     Switch switchActive;
     Spinner spinnerPayment;
     CircleImageView imageViewCar;
-    int active, plane;
+    int active, plan;
     onCarListener listener = new onCarListener() {
         @Override
-        public void onVeiculoCompleted(Integer plane, Integer history) {
-            switch (plane){
+        public void onCarCompleted(Integer plan, Integer history) {
+            switch (plan){
                 case 0:
                     spinnerPayment.setSelection(1);
                 break;
@@ -113,11 +113,11 @@ public class fragmentCar extends Fragment {
         buttonSaveCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(spinnerPayment.getSelectedItem().toString().equals("Avença")) plane = 1;
-                else plane = 2;
+                if(spinnerPayment.getSelectedItem().toString().equals("Avença")) plan = 1;
+                else plan = 2;
                 FragmentManager manager = getFragmentManager();
                 //asynctask para adicionar o veiculo à base de dados
-                new taskSaveCar(getActivity(), carHandler, manager).execute(String.valueOf(car.getId()), String.valueOf(active), String.valueOf(plane), String.valueOf(user.getId()));
+                new taskSaveCar(getActivity(), carHandler, manager).execute(String.valueOf(car.getId()), String.valueOf(active), String.valueOf(plan), String.valueOf(user.getId()));
             }
         });
         //clickar no boão apagar

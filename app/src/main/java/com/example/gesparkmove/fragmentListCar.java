@@ -20,7 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import java.util.ArrayList;
 
 public class fragmentListCar extends Fragment{
-    //declaração de variaveis
+    //declaração de variáveis
     Handler listCarHandler = new Handler();
     User user;
     ArrayList<Car> cars = new ArrayList<>();
@@ -74,8 +74,7 @@ public class fragmentListCar extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_listcar, container, false);
-        //inicialização dos elementos visuais
-
+        //associação das variáveis aos elementos visuais
         listViewListCar = view.findViewById(R.id.listViewListCarListCar);
         textViewListCarNoCar = view.findViewById(R.id.textViewListCarNoCar);
         Bundle bundle = getActivity().getIntent().getExtras();
@@ -86,7 +85,7 @@ public class fragmentListCar extends Fragment{
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //asynctask para ir buscar à base de dados os veiculos do utilizador
+        //asynctask para ir buscar à base de dados os veículos do utilizador
         new taskListCar(getActivity(), listener, listCarHandler).execute(String.valueOf(user.getId()));
     }
 }

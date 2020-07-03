@@ -20,14 +20,13 @@ public class activityRegister extends AppCompatActivity {
             editTextRegisterFiscalCode, editTextRegisterMail,
             editTextRegisterPassword01, editTextRegisterPassword02;
     Button buttonRegisterRegister, buttonRegisterBack;
-
     private Handler registarHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        //inicialização dos elementos visuais
+        //associação das varáveis aos elementos visuais
         editTextRegisterName = findViewById(R.id.editTextRegisterName);
         editTextRegisterName.addTextChangedListener(registerTextWatcher);
         editTextRegisterAddress = findViewById(R.id.editTextRegisterAddress);
@@ -52,6 +51,7 @@ public class activityRegister extends AppCompatActivity {
             AlertDialog ad;
             @Override
             public void onClick(View view){
+                //verifica se as duas passwords introduzidas são iguais
                 if(!editTextRegisterPassword01.getText().toString().equals(editTextRegisterPassword02.getText().toString())) {
                     ad = new AlertDialog.Builder(activityRegister.this).setTitle("Erro")
                             .setMessage("As password não são iguais!").setCancelable(false)
