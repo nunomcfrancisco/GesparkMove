@@ -86,7 +86,7 @@ public class taskRegister extends AsyncTask<String, Integer, Void> {
     @Override
     protected void onPostExecute(Void aVoid){
         taskMail tm = new taskMail(ctx);
-        tm.execute(mh.mail, mh.user, Integer.toString(codAtiv));
+        tm.execute(mh.mail, mh.user, Integer.toString(codAtiv), "1");
         handler.post(new Runnable() {
             @Override
             public void run() {

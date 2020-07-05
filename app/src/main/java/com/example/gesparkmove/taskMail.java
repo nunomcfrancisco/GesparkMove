@@ -17,8 +17,13 @@ public class taskMail extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params){
         try {
-            MailSender sender = new MailSender(ctx, g.getMailUsername(), g.getMailPass());
-            sender.sendActivateMail(params[0], params[1], params[0], params[2]);
+            if(params[3].equals("1")){
+                MailSender sender = new MailSender(ctx, g.getMailUsername(), g.getMailPass());
+                sender.sendActivateMail(params[0], params[1], params[0], params[2]);
+            }else{
+                MailSender sender = new MailSender(ctx, g.getMailUsername(), g.getMailPass());
+                sender.sendRecoveryMail(params[0], params[1], params[2]);
+            }
         }catch (Exception e){
             Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
         }

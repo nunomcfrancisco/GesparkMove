@@ -1,6 +1,7 @@
 package com.example.gesparkmove;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
@@ -19,6 +22,7 @@ public class activityMain extends AppCompatActivity{
     //declaração de variáveis
     EditText editTextMainUser;
     EditText editTextMainPassword;
+    String email;
     Button buttonMainLogin;
     Button buttonMainRegister;
     Button buttonMainRecover;
@@ -54,6 +58,37 @@ public class activityMain extends AppCompatActivity{
                 finish();
             }
         });
+        //ação do botão de recuperar
+        buttonMainRecover.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                AlertDialog.Builder ap = new AlertDialog.Builder(activityMain.this);
+                ap.setTitle("Recuperar Password");
+                ap.setMessage("Introduza email");
+                final EditText editTextRecover = new EditText(activityMain.this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                editTextRecover.setLayoutParams(lp);
+                ap.setView(editTextRecover);
+                ap.setPositiveButton("Enviar",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int which){
+                                email = editTextRecover.getText().toString();
+                                new taskRecovery(activityMain.this, mainHandler).execute(email);
+                            }
+                        });
+                ap.setNegativeButton("Voltar",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                ap.show();
+            }
+        });
+
     }
 
     //closeKeyboard fecha o teclado android quando chamado

@@ -65,16 +65,47 @@ public class MailSender extends Authenticator {
         message.setDataHandler(handler);
 
         BodyPart messageBodyPart = new MimeBodyPart();
-        InputStream is = context.getAssets().open("mail.html");
+        InputStream is = context.getAssets().open("register.html");
         int size = is.available();
         byte[] buffer = new byte[size];
         is.read(buffer);
         is.close();
         String str = new String(buffer);
         str = str.replace("%nome%", user);
-        Log.println(Log.INFO, "2", ativacao);
         str = str.replace("%mail%", mail);
         str = str.replace("%codigoActivacao%", ativacao);
+        messageBodyPart.setContent(str,"text/html; charset=utf-8");
+
+        _multipart.addBodyPart(messageBodyPart);
+
+        message.setContent(_multipart);
+
+
+        if (recipients.indexOf(',') > 0)
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
+        else
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
+
+        Transport.send(message);
+    }
+
+    public synchronized void sendRecoveryMail(String recipients, String user, String recoverypass) throws Exception {
+        MimeMessage message = new MimeMessage(session);
+        DataHandler handler = new DataHandler(new ByteArrayDataSource("Hi".getBytes(), "text/plain"));
+        message.setFrom(new InternetAddress("info.gespark@gespark.pt"));
+        message.setSender(new InternetAddress("GesPark-Move"));
+        message.setSubject("Recuperar senha Gespark Move");
+        message.setDataHandler(handler);
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        InputStream is = context.getAssets().open("recovery.html");
+        int size = is.available();
+        byte[] buffer = new byte[size];
+        is.read(buffer);
+        is.close();
+        String str = new String(buffer);
+        str = str.replace("%nome%", user);
+        str = str.replace("%recovery%", recoverypass);
         messageBodyPart.setContent(str,"text/html; charset=utf-8");
 
         _multipart.addBodyPart(messageBodyPart);
