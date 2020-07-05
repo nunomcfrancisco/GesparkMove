@@ -19,13 +19,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+//task para salvar o método de pagamento
 public class taskSavePayment extends AsyncTask<String, Integer, String> {
+    //declaração das variáveis
     AlertDialog ad;
     Context ctx;
     Handler handler;
     FragmentManager manager;
     Globals g = new Globals();
 
+    //construtor
     taskSavePayment(Context ctx, Handler handler, FragmentManager manager){
         this.ctx = ctx;
         this.handler = handler;
@@ -35,6 +38,7 @@ public class taskSavePayment extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... params) {
         publishProgress(0);
+        //abre o tunel SSH
         try {
             JSch jsch = new JSch();
             Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
@@ -44,10 +48,12 @@ public class taskSavePayment extends AsyncTask<String, Integer, String> {
             prop.put("StrictHostKeyChecking", "no");
             session.setConfig(prop);
             session.connect();
+            //abre a ligação à base de dados
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
+                //vai buscar o método de pagamento atual do utilizador
                 ResultSet rs = statement.executeQuery("SELECT * FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[0]);
                 if (!rs.next()) {
                     switch (params[1]) {

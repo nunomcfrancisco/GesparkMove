@@ -18,7 +18,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+//task para ir buscar à base de dados a informação de um utilizador
 public class taskUserData extends AsyncTask<String, Integer, ArrayList<String>> {
+    //declaração das variáveis
     AlertDialog ad;
     Handler handler;
     Context ctx;
@@ -26,6 +28,7 @@ public class taskUserData extends AsyncTask<String, Integer, ArrayList<String>> 
     ArrayList<String> data = new ArrayList<>();
     private final onUserListener listener;
 
+    //construtor
     taskUserData(Context ctx, onUserListener listener, Handler handler){
         this.ctx = ctx;
         this.listener = listener;
@@ -35,6 +38,7 @@ public class taskUserData extends AsyncTask<String, Integer, ArrayList<String>> 
     @Override
     protected ArrayList<String> doInBackground(String... params) {
         publishProgress(0);
+        //abre o tunel SSH
         try {
             JSch jsch = new JSch();
             Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
@@ -45,9 +49,11 @@ public class taskUserData extends AsyncTask<String, Integer, ArrayList<String>> 
             session.setConfig(prop);
             session.connect();
             try {
+                //abre a ligação à base de dados
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
+                //query para ir buscar o nif, nome, morada e condigoPostal do utilizador
                 ResultSet rs = statement.executeQuery("SELECT nif, nome, morada, codigoPostal FROM utilizadores WHERE id = " + params[0]);
                 while (rs.next()) {
                     data.add(String.valueOf(rs.getInt(1)));
@@ -55,10 +61,12 @@ public class taskUserData extends AsyncTask<String, Integer, ArrayList<String>> 
                     data.add(rs.getString(3));
                     data.add(rs.getString(4));
                 }
+                //query para ir buscar o contacto do utilizador
                 rs = statement.executeQuery("SELECT contacto FROM contactos WHERE id_utilizador = " + params[0]);
                 while (rs.next()) {
                     data.add(rs.getString(1));
                 }
+                //query para ir buscar o avatar do utilizador
                 rs = statement.executeQuery("SELECT avatar FROM utilizadores WHERE id = " + params[0]);
                 while(rs.next()){
                     data.add(rs.getString(1));

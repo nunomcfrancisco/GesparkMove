@@ -54,22 +54,25 @@ public class taskPayment extends AsyncTask<String, Integer, List<String>>{
                 rs.next();
                 switch (rs.getString(1)){
                     case "1":
-                        rs = statement.executeQuery("SELECT nomeCartaoCredito, numeroCartaoCredito, dataValidadeCartaoCredito FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[0]);
+                        rs = statement.executeQuery("SELECT nomeCartaoCredito, numeroCartaoCredito, dataValidadeCartaoCredito, activo FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[0]);
                         rs.next();
                         data.add(rs.getString(1));
                         data.add(rs.getString(2));
                         data.add(rs.getString(3));
+                        data.add(rs.getString(4));
                     break;
                     case "2":
-                        rs = statement.executeQuery("SELECT telefoneMbway FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[0]);
-                        rs.next();
-                        data.add(rs.getString(1));
-                    break;
-                    case "3":
-                        rs = statement.executeQuery("SELECT dDirectoNome, dDirectoIban FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[0]);
+                        rs = statement.executeQuery("SELECT telefoneMbway, activo FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[0]);
                         rs.next();
                         data.add(rs.getString(1));
                         data.add(rs.getString(2));
+                    break;
+                    case "3":
+                        rs = statement.executeQuery("SELECT dDirectoNome, dDirectoIban, activo FROM metodosPagamentoUtilizador WHERE id_utilizador = " + params[0]);
+                        rs.next();
+                        data.add(rs.getString(1));
+                        data.add(rs.getString(2));
+                        data.add(rs.getString(3));
                     break;
                 }
                 connection.close();

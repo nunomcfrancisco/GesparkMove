@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 //visualização costumizada de um elemento numa list view
-
 public class ParkingListAdapter extends ArrayAdapter<Parked> {
 
     private Context ctx;

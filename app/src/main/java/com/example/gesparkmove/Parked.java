@@ -19,39 +19,19 @@ public class Parked {
         return licensePlate;
     }
 
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
-
     public String getPark() {
         return park;
-    }
-
-    public void setPark(String park) {
-        this.park = park;
     }
 
     public String getEntrance() {
         return entrance;
     }
 
-    public void setEntrance(String entrance) {
-        this.entrance = entrance;
-    }
-
     public String getExit() {
         return exit;
     }
 
-    public void setExit(String exit) {
-        this.exit = exit;
-    }
-
     public double getValue() {
         return value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
     }
 }

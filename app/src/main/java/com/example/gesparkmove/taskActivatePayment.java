@@ -1,11 +1,13 @@
 package com.example.gesparkmove;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -14,23 +16,20 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class taskCar extends AsyncTask<String, Integer, Void> {
-    //declaração de variáveis
-    Globals g = new Globals();
-    AlertDialog ppm;
+public class taskActivatePayment extends AsyncTask<String, Integer, Void> {
+    AlertDialog ad;
     Context ctx;
     Handler handler;
-    private final onCarListener listener;
-    int plan, history;
-    //construtor
-    public taskCar(Context ctx, Handler handler, onCarListener listener) {
+    FragmentManager manager;
+    Globals g = new Globals();
+
+    taskActivatePayment(Context ctx, Handler handler, FragmentManager manager){
         this.ctx = ctx;
         this.handler = handler;
-        this.listener = listener;
+        this.manager = manager;
     }
 
     @Override
@@ -47,51 +46,43 @@ public class taskCar extends AsyncTask<String, Integer, Void> {
             session.setConfig(prop);
             session.connect();
             try {
-                //abre a ligação à base de dados
+                //abrir ligação para a base de dados
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                //obtem o plano de pagamento associado ao veículo
-                ResultSet rs = statement.executeQuery("SELECT id_plano FROM planoAcessoUtilizador WHERE id_veiculo = " + params[0]);
-                if(rs.next())
-                    while(rs.next())
-                        plan = rs.getInt(1);
-                else
-                    plan = 0;
-                rs = statement.executeQuery("SELECT * FROM estacionamento WHERE id_matricula = " + params[0] + " LIMIT 1");
-                if(rs.next())
-                    history = 1;
-                else
-                    history = 0;
+                statement.execute("UPDATE metodosPagamentoUtilizador SET activo = " + params[0] + " WHERE id_utilizador = " + params[1]);
                 connection.close();
-            }catch (ClassNotFoundException | SQLException e){
-                Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
+            } catch (ClassNotFoundException | SQLException e) {
+                Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
+            //fecha o tunel SSH
             session.disconnect();
-        } catch (JSchException e) {
-            Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
+        }catch (JSchException e){
+            Log.println(Log.INFO, "JSch Exception: ", e.toString());
         }
         return null;
     }
 
     @Override
-    protected void onProgressUpdate(Integer... values) {
+    protected void onProgressUpdate(Integer... values){
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
+                ad = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        listener.onCarCompleted(plan, history);
+        ad.dismiss();
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if(ppm.isShowing())
-                    ppm.dismiss();
+                fragmentPayment pFragment = new fragmentPayment();
+                manager.beginTransaction()
+                        .replace(R.id.containerFragment, pFragment, "pagamentos")
+                        .commit();
             }
         });
     }

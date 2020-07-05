@@ -26,7 +26,7 @@ import java.util.Properties;
 
 public class taskAddLicensePlate extends AsyncTask<String, Integer, Void> {
     //declaração das variaveis
-    AlertDialog ppm;
+    AlertDialog ad;
     Context ctx;
     Handler handler;
     Activity activity;
@@ -46,7 +46,7 @@ public class taskAddLicensePlate extends AsyncTask<String, Integer, Void> {
     protected Void doInBackground(String... params) {
         publishProgress(0);
         try {
-            //abrir tunnel SSH
+            //abre o tunel SSH
             JSch jsch = new JSch();
             Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
             session.setPassword(g.getSshPass());
@@ -66,11 +66,14 @@ public class taskAddLicensePlate extends AsyncTask<String, Integer, Void> {
                 //query para ir buscar a lista de veiculos atualizada do utilizador
                 ResultSet rs = statement.executeQuery("SELECT veiculos.id, veiculos.matricula, marcas.marca, modelo.modelo, cor, estacionado, veiculos.activo, veiculos.imagem FROM veiculos inner join marcas inner join modelo WHERE id_utilizador = " + params[1] + " AND veiculos.id_marca = marcas.id AND veiculos.id_modelo = modelo.id");
                 while(rs.next())
+                    //adiciona cada veículo do utilizador à lista de veículos
                     veiculo.add(new Car(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getString(8)));
+                //fecha a ligação à base de dados
                 connection.close();
             } catch (ClassNotFoundException | SQLException e) {
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
+            //fecha o tunel SSH
             session.disconnect();
         }catch (JSchException e){
             Log.println(Log.INFO, "JSch Exception: ", e.toString());
@@ -83,14 +86,14 @@ public class taskAddLicensePlate extends AsyncTask<String, Integer, Void> {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ppm = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
+                ad = new AlertDialog.Builder(ctx, R.style.AlertDialogCustom).setView(R.layout.progress_bar).setCancelable(false).show();
             }
         });
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        ppm.dismiss();
+        ad.dismiss();
         handler.post(new Runnable() {
             @Override
             public void run() {

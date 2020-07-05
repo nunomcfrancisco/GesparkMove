@@ -78,10 +78,6 @@ public class Car implements Parcelable{
         return active;
     }
 
-    public void setActive(int valor){
-        this.active = valor;
-    }
-
     public String getAvatar() {return avatar;}
 
     @Override

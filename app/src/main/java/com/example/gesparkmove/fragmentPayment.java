@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,10 +29,11 @@ import java.util.Objects;
 
 public class fragmentPayment extends Fragment {
     //declaração das variáveis
-    TextView textViewPaymentName, textViewPaymentNumber, textViewPaymentDate;
+    TextView textViewPaymentName, textViewPaymentNumber, textViewPaymentDate, textViewPaymentNoPayment, textViewPaymentActivate;
     EditText editTextPaymentName, editTextPaymentNumber, editTextPaymentCV;
     Spinner spinnerPaymentMonth, spinnerPaymentYear, spinnerPaymentPayment;
-    LinearLayout linearLayoutPaymentData;
+    Switch switchPaymentActivate;
+    LinearLayout linearLayoutPaymentData, linearLayoutPaymentActivate;
     ImageView imageViewLogoMetodosPagamentos;
     Button buttonPaymentSave;
     Handler paymentHandler = new Handler();
@@ -41,20 +44,41 @@ public class fragmentPayment extends Fragment {
         @Override
         public void onPagamentosCompleted(List<String> data) {
             switch (data.size()){
-                case 1:
-                    imageViewLogoMetodosPagamentos.setImageDrawable(getResources().getDrawable(R.drawable.mbway));
-                    textViewPaymentName.setText(data.get(0));
+                case 0:
+                    textViewPaymentNoPayment.setVisibility(View.VISIBLE);
                 break;
                 case 2:
+                    imageViewLogoMetodosPagamentos.setImageDrawable(getResources().getDrawable(R.drawable.mbway));
+                    textViewPaymentName.setText(data.get(0));
+                    linearLayoutPaymentActivate.setVisibility(View.VISIBLE);
+                    textViewPaymentNoPayment.setVisibility(View.GONE);
+                    if(data.get(1).equals("0"))
+                        switchPaymentActivate.setChecked(false);
+                    else
+                        switchPaymentActivate.setChecked(true);
+                break;
+                case 3:
                     imageViewLogoMetodosPagamentos.setImageDrawable(getResources().getDrawable(R.drawable.db));
                     textViewPaymentName.setText(data.get(0));
                     textViewPaymentNumber.setText(data.get(1));
+                    linearLayoutPaymentActivate.setVisibility(View.VISIBLE);
+                    textViewPaymentNoPayment.setVisibility(View.GONE);
+                    if(data.get(1).equals("0"))
+                        switchPaymentActivate.setChecked(false);
+                    else
+                        switchPaymentActivate.setChecked(true);
                 break;
-                case 3:
+                case 4:
                     imageViewLogoMetodosPagamentos.setImageDrawable(getResources().getDrawable(R.drawable.visa));
                     textViewPaymentName.setText(data.get(0));
                     textViewPaymentNumber.setText(data.get(1));
                     textViewPaymentDate.setText(data.get(2));
+                    linearLayoutPaymentActivate.setVisibility(View.VISIBLE);
+                    textViewPaymentNoPayment.setVisibility(View.GONE);
+                    if(data.get(1).equals("0"))
+                        switchPaymentActivate.setChecked(false);
+                    else
+                        switchPaymentActivate.setChecked(true);
                 break;
             }
         }
@@ -68,10 +92,12 @@ public class fragmentPayment extends Fragment {
         textViewPaymentName = view.findViewById(R.id.textViewPaymentName);
         textViewPaymentNumber = view.findViewById(R.id.textViewPaymentNumber);
         textViewPaymentDate = view.findViewById(R.id.textViewPaymentDate);
+        textViewPaymentNoPayment = view.findViewById(R.id.textViewPaymentNoPayment);
+        textViewPaymentActivate = view.findViewById(R.id.textViewPaymentActivate);
         imageViewLogoMetodosPagamentos = view.findViewById(R.id.imageViewPaymentLogo);
         editTextPaymentName = view.findViewById(R.id.editTextPaymentName);
         editTextPaymentName.addTextChangedListener(paymentTextWatcher);
-        editTextPaymentNumber = view.findViewById(R.id.editTextPaymentName);
+        editTextPaymentNumber = view.findViewById(R.id.editTextPaymentNumber);
         editTextPaymentNumber.addTextChangedListener(paymentTextWatcher);
         editTextPaymentCV = view.findViewById(R.id.editTextPaymentCV);
         editTextPaymentCV.addTextChangedListener(paymentTextWatcher);
@@ -80,6 +106,8 @@ public class fragmentPayment extends Fragment {
         buttonPaymentSave = view.findViewById(R.id.buttonPaymentSave);
         spinnerPaymentPayment = view.findViewById(R.id.spinnerPaymentPayment);
         linearLayoutPaymentData = view.findViewById(R.id.linearLayoutPaymentData);
+        linearLayoutPaymentActivate = view.findViewById(R.id.linearLayoutPaymentActivate);
+        switchPaymentActivate = view.findViewById(R.id.switchPaymentActivate);
         //declaração dos valores a apresentar nos spinners
         String[] pp = new String[]{"", "Cartão de Crédito", "MBWay", "Débito Direto"};
         String[] month = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
@@ -104,6 +132,7 @@ public class fragmentPayment extends Fragment {
                         editTextPaymentCV.setVisibility(View.GONE);
                         buttonPaymentSave.setVisibility(View.GONE);
                         linearLayoutPaymentData.setVisibility(View.GONE);
+                        linearLayoutPaymentActivate.setVisibility(View.VISIBLE);
                         break;
                     case 1:
                         editTextPaymentName.setVisibility(View.VISIBLE);
@@ -117,6 +146,7 @@ public class fragmentPayment extends Fragment {
                         editTextPaymentCV.setHint("CVV2/CVC2");
                         linearLayoutPaymentData.setVisibility(View.VISIBLE);
                         buttonPaymentSave.setVisibility(View.VISIBLE);
+                        linearLayoutPaymentActivate.setVisibility(View.GONE);
                         break;
                     case 2:
                         editTextPaymentName.setVisibility(View.GONE);
@@ -126,6 +156,7 @@ public class fragmentPayment extends Fragment {
                         editTextPaymentCV.setVisibility(View.GONE);
                         linearLayoutPaymentData.setVisibility(View.GONE);
                         buttonPaymentSave.setVisibility(View.VISIBLE);
+                        linearLayoutPaymentActivate.setVisibility(View.GONE);
                         break;
                     case 3:
                         editTextPaymentName.setVisibility(View.VISIBLE);
@@ -137,6 +168,7 @@ public class fragmentPayment extends Fragment {
                         editTextPaymentCV.setVisibility(View.GONE);
                         linearLayoutPaymentData.setVisibility(View.GONE);
                         buttonPaymentSave.setVisibility(View.VISIBLE);
+                        linearLayoutPaymentActivate.setVisibility(View.GONE);
                         break;
                 }
             }
@@ -166,6 +198,28 @@ public class fragmentPayment extends Fragment {
 
             }
         });
+
+        switchPaymentActivate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                if(switchPaymentActivate.isChecked())
+                    new taskActivatePayment(getActivity(), paymentHandler, manager).execute("1", String.valueOf(user.getId()));
+                else
+                    new taskActivatePayment(getActivity(), paymentHandler, manager).execute("0", String.valueOf(user.getId()));
+            }
+        });
+        /*switchPaymentActivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                FragmentManager manager = getFragmentManager();
+                if(isChecked){
+                    new taskActivatePayment(getActivity(), paymentHandler, manager).execute("1", String.valueOf(user.getId()));
+                }else{
+                    new taskActivatePayment(getActivity(), paymentHandler, manager).execute("0", String.valueOf(user.getId()));
+                }
+            }
+        });*/
 
         return view;
     }
