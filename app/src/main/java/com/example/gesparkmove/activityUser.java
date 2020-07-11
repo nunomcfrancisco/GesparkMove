@@ -80,21 +80,25 @@ public class activityUser extends AppCompatActivity implements NavigationView.On
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerFragment, new fragmentDashboard(), "dashboard").commit();
             break;
-            case R.id.menuItemAdicionar:
+            case R.id.menuItemAdd:
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerFragment, new fragmentAddCar(), "adicionar").commit();
             break;
-            case R.id.menuItemConsultar:
+            case R.id.menuItemListCar:
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerFragment, new fragmentListCar(), "consultar").commit();
             break;
-            case R.id.menuItemEstacionamentos:
+            case R.id.menuItemParking:
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerFragment, new fragmentParked(), "estacionamento").commit();
             break;
-            case R.id.menuItemPagamentos:
+            case R.id.menuItemPayment:
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.containerFragment, new fragmentPayment(), "pagamentos").commit();
+            break;
+            case R.id.menuItemContacts:
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.containerFragment, new fragmentContacts(), "contactos").commit();
             break;
             case R.id.menuItemLogout:
                 Intent intent = new Intent(this, activityMain.class);

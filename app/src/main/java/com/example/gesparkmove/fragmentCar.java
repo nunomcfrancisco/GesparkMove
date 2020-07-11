@@ -1,5 +1,7 @@
 package com.example.gesparkmove;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -89,7 +91,7 @@ public class fragmentCar extends Fragment {
         textViewLicensePlate.setText(car.getLicensePlate());
         textViewBrand.setText("Marca: " + car.getBrand());
         textViewModel.setText("Modelo: " + car.getModel());
-        textViewColor.setText("Cor: " + car.getColor());
+        textViewColor.setBackgroundColor(Color.parseColor(car.getColor()));
         //coloca o switch ativo ou não conforme a informação do veiculo.
         if(car.getActive() == 1) {
             active = 1;

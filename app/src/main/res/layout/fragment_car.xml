@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -50,14 +51,27 @@
             android:text="@string/modelo"
             android:textColor="#000000"
             android:textSize="22sp" />
-        <TextView
-            android:id="@+id/textViewCarColor"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/cor"
-            android:textColor="#000000"
-            android:textSize="22sp" />
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:text="@string/cor"
+                android:textColor="#000000"
+                android:textSize="22sp"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/textViewCarColor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
         <Switch
             android:id="@+id/switchCarActive"
             android:layout_width="match_parent"

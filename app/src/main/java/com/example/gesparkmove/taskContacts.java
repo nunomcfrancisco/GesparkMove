@@ -1,11 +1,10 @@
 package com.example.gesparkmove;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
-
-import androidx.appcompat.app.AlertDialog;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -19,22 +18,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class taskParked extends AsyncTask<String, Integer, ArrayList<Parked>> {
+public class taskContacts extends AsyncTask<Void, Integer, ArrayList<Park>>{
     AlertDialog ad;
     Context ctx;
     Handler handler;
     Globals g = new Globals();
-    ArrayList<Parked> data = new ArrayList<>();
-    private final onParkingListener listener;
+    ArrayList<Park> data = new ArrayList<>();
+    private final onContactsListener listener;
 
-    taskParked(Context ctx, Handler handler, onParkingListener listener) {
+    taskContacts(Context ctx, Handler handler, onContactsListener listener){
         this.ctx = ctx;
         this.handler = handler;
         this.listener = listener;
     }
 
     @Override
-    protected ArrayList<Parked> doInBackground(String... params) {
+    protected ArrayList<Park> doInBackground(Void... voids) {
         publishProgress(0);
         try {
             //abrir tunnel SSH
@@ -51,18 +50,11 @@ public class taskParked extends AsyncTask<String, Integer, ArrayList<Parked>> {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                //query para ir buscar / verificar o utilizador que está a fazer login
-                ResultSet rs = statement.executeQuery("SELECT DISTINCT veiculos.matricula, parque.nome, parque.localizacao, estacionamento.dataEntrada, estacionamento.dataSaida, plano.tipo, estacionamento.valor, estacionamento.id " +
-                                "FROM plano INNER JOIN planoAcessoUtilizador ON plano.id = planoAcessoUtilizador.id_plano " +
-                                "INNER JOIN utilizadores ON planoAcessoUtilizador.id_utilizador = utilizadores.id " +
-                                "INNER JOIN veiculos ON utilizadores.id = veiculos.id_utilizador " +
-                                "INNER JOIN estacionamento ON veiculos.id = estacionamento.id_matricula " +
-                                "INNER JOIN parque ON estacionamento.id_parque = parque.id " +
-                                "WHERE utilizadores.id = " + params[0] + " ORDER BY estacionamento.id DESC");
-                while(rs.next())
-                    data.add(new Parked(rs.getString(1), rs.getString(2) + " - " + rs.getString(3), rs.getString(4), rs.getString(5), rs.getDouble(7)));
+                ResultSet rs = statement.executeQuery("SELECT nome, localizacao, telefone, email, latitude, longitude FROM parque");
+                while (rs.next())
+                    data.add(new Park(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)));
                 connection.close();
-            } catch (ClassNotFoundException | SQLException e) {
+            }catch (ClassNotFoundException | SQLException e) {
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
             session.disconnect();
@@ -83,8 +75,8 @@ public class taskParked extends AsyncTask<String, Integer, ArrayList<Parked>> {
     }
 
     @Override
-    protected void onPostExecute(final ArrayList<Parked> data) {
-        listener.onParkingCompleted(data);
+    protected void onPostExecute(final ArrayList<Park> data) {
+        listener.onContactsCompleted(data);
         handler.post(new Runnable() {
             @Override
             public void run() {

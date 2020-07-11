@@ -1,10 +1,12 @@
 package com.example.gesparkmove;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -23,10 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import yuku.ambilwarna.AmbilWarnaDialog;
+
 public class fragmentAddCar extends Fragment {
     //declaração de variáveis
-    EditText editTextAddLicensePlate, editTextAddColor;
-    Button buttonAddAdd;
+    EditText editTextAddLicensePlate;
+    Button buttonAddAdd, buttonColorPick;
     Handler addHandler = new Handler();
     User user;
     ArrayList<Brand> brandItems = new ArrayList<>();
@@ -34,6 +39,9 @@ public class fragmentAddCar extends Fragment {
     private List<String> brandModel = new ArrayList<>();
     int idBrand, sLengthNow, sLengthBefore;
     Spinner spinnerBrand, spinnerModel;
+    ConstraintLayout colorPicker;
+    private int currentColor;
+    String colorPicked;
 
     //interface para trabalhar a informação devolvida da taskData
     onBrandModelListener listener = new onBrandModelListener() {
@@ -77,9 +85,10 @@ public class fragmentAddCar extends Fragment {
         Bundle bundle = Objects.requireNonNull(getActivity()).getIntent().getExtras();
         user = Objects.requireNonNull(bundle).getParcelable("USER");
         editTextAddLicensePlate = view.findViewById(R.id.editTextAddLicensePlate);
-        editTextAddColor = view.findViewById(R.id.editTextAddColor);
         editTextAddLicensePlate.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(8)});
         editTextAddLicensePlate.addTextChangedListener(addLicensePlateTextWatcher);
+        colorPicker = view.findViewById(R.id.colorPicker);
+        buttonColorPick = view.findViewById(R.id.buttonColorPick);
         return view;
     }
 
@@ -103,15 +112,35 @@ public class fragmentAddCar extends Fragment {
                         String.valueOf(user.getId()),
                         String.valueOf(idBr),
                         String.valueOf(idMo),
-                        editTextAddColor.getText().toString());
+                        "#" + colorPicked);
                 editTextAddLicensePlate.setText("");
-                editTextAddColor.setText("");
                 spinnerBrand.setSelection(0);
                 spinnerModel.setSelection(0);
                 sLengthNow = 0;
                 sLengthBefore = 0;
             }
         });
+        buttonColorPick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog(false);
+            }
+        });
+    }
+
+    private void openDialog(boolean supportAlpha){
+        AmbilWarnaDialog dialog = new AmbilWarnaDialog(getActivity(), currentColor, supportAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {}
+
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                currentColor = color;
+                buttonColorPick.setBackgroundColor(color);
+                colorPicked = Integer.toHexString(color).substring(2);
+            }
+        });
+        dialog.show();
     }
 
     //Textwatcher para acrescentar os traços da matrícula
