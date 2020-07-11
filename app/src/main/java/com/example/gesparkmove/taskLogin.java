@@ -22,14 +22,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+//asyncTask para fazer o login do utilizador
 public class taskLogin extends AsyncTask<String, Integer, String> {
+    //declaração de variáveis
     Context ctx;
     Handler handler;
     Globals g = new Globals();
     User user;
     AlertDialog ad;
     Activity act;
-
+    //contrutor
     taskLogin(Context ctx, Handler handler, Activity act){
         this.ctx = ctx;
         this.handler = handler;
@@ -62,24 +64,30 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                         queryResult.append(rs.getString(5));
                     }
                     if (queryResult.length() > 0) {
+                        //query para ir buscar o número de veículos do utilizador
                         rs = statement.executeQuery("SELECT COUNT(matricula) FROM veiculos WHERE id_utilizador = (SELECT id FROM utilizadores WHERE email = '" + params[0] + "')");
                         while (rs.next())
                             user.setCars(rs.getInt(1));
                     }
+                    //fechar ligação à base de dados
                     connection.close();
                 } catch (ClassNotFoundException | SQLException e) {
                     Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
                 }
+                //fechar tunel SSH
                 session.disconnect();
             } catch (JSchException e) {
                 Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
             }
             if (queryResult.toString().equals(""))
+                //faz return u se o utilizador for inválido
                 return "u";
             else if (user.getActive() == 0)
+                //faz return a se a conta não estiver ativa
                 return "a";
             else if (queryResult.toString().equals(new md5Tools().encode(params[1]))) {
                 try {
+                    //abrir tunel SSH
                     JSch jsch = new JSch();
                     Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
                     session.setPassword(g.getSshPass());
@@ -89,18 +97,23 @@ public class taskLogin extends AsyncTask<String, Integer, String> {
                     session.setConfig(prop);
                     session.connect();
                     try {
+                        //abrir ligação à base de dados
                         Class.forName("com.mysql.jdbc.Driver");
                         Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                         Statement statement = (Statement) connection.createStatement();
+                        //query para atualizar a data do ultimo acesso
                         statement.executeUpdate("UPDATE utilizadores SET dataUltimoAcesso = NOW() WHERE id = " + user.getId());
+                        //query para obter o valor gasto em estacionamentos
                         ResultSet rs = statement.executeQuery("SELECT SUM(estacionamento.valor) AS Total FROM estacionamento INNER JOIN veiculos ON estacionamento.id_matricula = veiculos.id " +
                                         "INNER JOIN utilizadores ON veiculos.id_utilizador = utilizadores.id WHERE utilizadores.id = " + user.getId());
                         while(rs.next())
                             user.setValue(rs.getDouble(1));
+                        //fechar ligação à base de dados
                         connection.close();
                     } catch (ClassNotFoundException | SQLException e) {
                         e.printStackTrace();
                     }
+                    //fechar tunel SSH
                     session.disconnect();
                 } catch (JSchException e) {
                     e.printStackTrace();

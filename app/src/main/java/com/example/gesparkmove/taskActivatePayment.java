@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.jcraft.jsch.JSch;
@@ -18,14 +17,16 @@ import com.mysql.jdbc.Statement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-
+//asyncTask para ativar/destaivar método de pagamento
 public class taskActivatePayment extends AsyncTask<String, Integer, Void> {
+    //declaração de variáveis
     AlertDialog ad;
     Context ctx;
     Handler handler;
     FragmentManager manager;
     Globals g = new Globals();
 
+    //contrutor
     taskActivatePayment(Context ctx, Handler handler, FragmentManager manager){
         this.ctx = ctx;
         this.handler = handler;
@@ -50,7 +51,9 @@ public class taskActivatePayment extends AsyncTask<String, Integer, Void> {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
+                //query para ativar/desativar o método de pagamento
                 statement.execute("UPDATE metodosPagamentoUtilizador SET activo = " + params[0] + " WHERE id_utilizador = " + params[1]);
+                //fecha ligação à base de dados
                 connection.close();
             } catch (ClassNotFoundException | SQLException e) {
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());

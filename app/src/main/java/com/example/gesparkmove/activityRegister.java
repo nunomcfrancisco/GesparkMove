@@ -99,11 +99,9 @@ public class activityRegister extends AppCompatActivity {
                 && !contactoInput.isEmpty() && !fiscalCodeInput.isEmpty() && !mailInput.isEmpty() && !password01Input.isEmpty()
                 && !password02Input.isEmpty());
         }
-
         @Override
         public void afterTextChanged(Editable s) {}
     };
-
     @Override
     public void onBackPressed() {
     }

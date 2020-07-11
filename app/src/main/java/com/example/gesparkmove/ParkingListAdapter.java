@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-//visualização costumizada de um elemento numa list view
+//Lista customizada de estacionamentos
 public class ParkingListAdapter extends ArrayAdapter<Parked> {
 
     private Context ctx;
@@ -33,8 +33,6 @@ public class ParkingListAdapter extends ArrayAdapter<Parked> {
         String entrance = getItem(position).getEntrance();
         String exit = getItem(position).getExit();
         double value = getItem(position).getValue();
-
-        Parked parked = new Parked(licensePlate, park, entrance, exit, value);
 
         LayoutInflater inflater = LayoutInflater.from(ctx);
         convertView = inflater.inflate(mResource, parent, false);

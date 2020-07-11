@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Properties;
 
-public class taskAddLicensePlate extends AsyncTask<String, Integer, Void> {
+//asynTask para adicionar um veículo à base de dados
+public class taskAddCar extends AsyncTask<String, Integer, Void> {
     //declaração das variaveis
     AlertDialog ad;
     Context ctx;
@@ -35,7 +36,7 @@ public class taskAddLicensePlate extends AsyncTask<String, Integer, Void> {
     Globals g = new Globals();
 
     //construtor
-    taskAddLicensePlate(Context ctx, Handler handler, Activity activity, FragmentManager manager){
+    taskAddCar(Context ctx, Handler handler, Activity activity, FragmentManager manager){
         this.ctx = ctx;
         this.handler = handler;
         this.activity = activity;

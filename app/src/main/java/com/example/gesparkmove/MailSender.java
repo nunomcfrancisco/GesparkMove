@@ -55,7 +55,7 @@ public class MailSender extends Authenticator {
     protected PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication(user, password);
     }
-
+    //método para enviar o email de ativação de conta
     public synchronized void sendActivateMail(String recipients, String user, String mail, String ativacao) throws Exception {
         MimeMessage message = new MimeMessage(session);
         DataHandler handler = new DataHandler(new ByteArrayDataSource("Hi".getBytes(), "text/plain"));
@@ -88,7 +88,7 @@ public class MailSender extends Authenticator {
 
         Transport.send(message);
     }
-
+    //método para enviar o email de recuperação de password
     public synchronized void sendRecoveryMail(String recipients, String user, String recoverypass) throws Exception {
         MimeMessage message = new MimeMessage(session);
         DataHandler handler = new DataHandler(new ByteArrayDataSource("Hi".getBytes(), "text/plain"));
@@ -111,7 +111,6 @@ public class MailSender extends Authenticator {
         _multipart.addBodyPart(messageBodyPart);
 
         message.setContent(_multipart);
-
 
         if (recipients.indexOf(',') > 0)
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));

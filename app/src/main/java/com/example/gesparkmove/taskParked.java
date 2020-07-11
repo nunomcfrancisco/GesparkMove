@@ -19,14 +19,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+//asyncTask para obter o historico de estacionamentos de um determinado utilizador
 public class taskParked extends AsyncTask<String, Integer, ArrayList<Parked>> {
+    //declaração de variáveis
     AlertDialog ad;
     Context ctx;
     Handler handler;
     Globals g = new Globals();
     ArrayList<Parked> data = new ArrayList<>();
     private final onParkingListener listener;
-
+    //contrutor
     taskParked(Context ctx, Handler handler, onParkingListener listener) {
         this.ctx = ctx;
         this.handler = handler;
@@ -51,7 +53,7 @@ public class taskParked extends AsyncTask<String, Integer, ArrayList<Parked>> {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                //query para ir buscar / verificar o utilizador que está a fazer login
+                //query para obter o histórico de estacionamentos de um determinado utilizador
                 ResultSet rs = statement.executeQuery("SELECT DISTINCT veiculos.matricula, parque.nome, parque.localizacao, estacionamento.dataEntrada, estacionamento.dataSaida, plano.tipo, estacionamento.valor, estacionamento.id " +
                                 "FROM plano INNER JOIN planoAcessoUtilizador ON plano.id = planoAcessoUtilizador.id_plano " +
                                 "INNER JOIN utilizadores ON planoAcessoUtilizador.id_utilizador = utilizadores.id " +
@@ -61,10 +63,12 @@ public class taskParked extends AsyncTask<String, Integer, ArrayList<Parked>> {
                                 "WHERE utilizadores.id = " + params[0] + " ORDER BY estacionamento.id DESC");
                 while(rs.next())
                     data.add(new Parked(rs.getString(1), rs.getString(2) + " - " + rs.getString(3), rs.getString(4), rs.getString(5), rs.getDouble(7)));
+                //fechar ligação à base de dados
                 connection.close();
             } catch (ClassNotFoundException | SQLException e) {
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
+            //fechar tunel SSH
             session.disconnect();
         } catch (JSchException e) {
             Log.println(Log.INFO, "JSCH EXCEPTION: ", e.toString());

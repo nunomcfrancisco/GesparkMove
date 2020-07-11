@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Properties;
 
+//asyncTask para apagar veículo
 public class taskDeleteCar extends AsyncTask<String, Integer, Void> {
     //declaração das variaveis
     AlertDialog ppm;
@@ -63,10 +64,12 @@ public class taskDeleteCar extends AsyncTask<String, Integer, Void> {
                 //query para apagar uma viatura da base de dados
                 statement.execute("DELETE FROM planoAcessoUtilizador WHERE id_veiculo = " + params[0]);
                 statement.execute("DELETE FROM veiculos WHERE id = " + params[0]);
+                //fechar ligação base de dados
                 connection.close();
             } catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
+            //fechar tunel SSH
             session.disconnect();
         }catch (JSchException e){
             Log.println(Log.INFO, "JSCH EXCEPTION: ", e.toString());

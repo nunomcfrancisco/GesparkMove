@@ -71,10 +71,12 @@ public class taskUserData extends AsyncTask<String, Integer, ArrayList<String>> 
                 while(rs.next()){
                     data.add(rs.getString(1));
                 }
+                //fechar ligação à base de dados
                 connection.close();
             } catch (ClassNotFoundException | SQLException e) {
                 Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
             }
+            //fechar tunel SSH
             session.disconnect();
         }catch (JSchException e){
             Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));

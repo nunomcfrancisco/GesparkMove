@@ -34,6 +34,7 @@ public class fragmentCar extends Fragment {
     Spinner spinnerPayment;
     CircleImageView imageViewCar;
     int active, plan;
+    //interface para trabalhar a informação devolvida da taskPayment
     onCarListener listener = new onCarListener() {
         @Override
         public void onCarCompleted(Integer plan, Integer history) {
@@ -57,7 +58,7 @@ public class fragmentCar extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_car, container, false);
-        //inicialização dos elementos visuais
+        //associação das varáveis aos elementos visuais
         textViewLicensePlate = view.findViewById(R.id.textViewCarLicensePlate);
         textViewBrand = view.findViewById(R.id.textViewCarBrand);
         textViewModel = view.findViewById(R.id.textViewCarModel);

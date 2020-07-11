@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-
+//Lista customizada de contactos e localizações dos parques de estacionamento
 public class ContactsListAdapter extends ArrayAdapter<Park>{
     private Context ctx;
     int mResource;

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -185,42 +184,35 @@ public class fragmentPayment extends Fragment {
                 switch (spinnerPaymentPayment.getSelectedItemPosition()){
                     case 1:
                         String data = spinnerPaymentMonth.getSelectedItem().toString() + "/" + spinnerPaymentYear.getSelectedItem().toString().substring(2);
+                        //task para salvar o novo método de pagamento
                         new taskSavePayment(getActivity(), handler, manager).execute(String.valueOf(user.getId()), String.valueOf(spinnerPaymentPayment.getSelectedItemPosition()), editTextPaymentName.getText().toString(), editTextPaymentNumber.getText().toString(),
                                 data, editTextPaymentCV.getText().toString());
                     break;
                     case 2:
+                        //task para salvar o novo método de pagamento
                         new taskSavePayment(getActivity(), handler, manager).execute(String.valueOf(user.getId()), String.valueOf(spinnerPaymentPayment.getSelectedItemPosition()), editTextPaymentNumber.getText().toString());
                     break;
                     case 3:
+                        //task para salvar o novo método de pagamento
                         new taskSavePayment(getActivity(), handler, manager).execute(String.valueOf(user.getId()), String.valueOf(spinnerPaymentPayment.getSelectedItemPosition()), editTextPaymentName.getText().toString(), editTextPaymentNumber.getText().toString());
                     break;
                 }
 
             }
         });
-
+        //listener para a ação do switch de ativar / desativar o método de pagamento
         switchPaymentActivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
                 if(switchPaymentActivate.isChecked())
+                    //task para ativar / desativar o método de pagamento
                     new taskActivatePayment(getActivity(), paymentHandler, manager).execute("1", String.valueOf(user.getId()));
                 else
+                    //task para ativar / desativar o método de pagamento
                     new taskActivatePayment(getActivity(), paymentHandler, manager).execute("0", String.valueOf(user.getId()));
             }
         });
-        /*switchPaymentActivate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FragmentManager manager = getFragmentManager();
-                if(isChecked){
-                    new taskActivatePayment(getActivity(), paymentHandler, manager).execute("1", String.valueOf(user.getId()));
-                }else{
-                    new taskActivatePayment(getActivity(), paymentHandler, manager).execute("0", String.valueOf(user.getId()));
-                }
-            }
-        });*/
-
         return view;
     }
     //textwatch para habilitar o botão de salvar caso os campos estejam todos completos

@@ -19,16 +19,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+//asyncTask para ir buscar as marcas e modelos de veículos
 public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
+    //declaração de variáveis
     AlertDialog ad;
     Context ctx;
     Handler handler;
     Globals g = new Globals();
     ArrayList<ArrayList> data = new ArrayList<>();
-    ArrayList<Brand> tempMarcas = new ArrayList<>();
+    ArrayList<Brand> tempBrands = new ArrayList<>();
     ArrayList<Model> tempModel = new ArrayList<>();
     private final onBrandModelListener listener;
-
+    //contrutor
     taskData(Context ctx, onBrandModelListener listener, Handler handler){
         this.ctx = ctx;
         this.listener = listener;
@@ -39,6 +41,7 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
     protected ArrayList<ArrayList> doInBackground(Void... voids) {
         publishProgress(0);
         try {
+            //abrir tunel SSH
             JSch jsch = new JSch();
             Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
             session.setPassword(g.getSshPass());
@@ -48,23 +51,28 @@ public class taskData extends AsyncTask<Void, Integer, ArrayList<ArrayList>>{
             session.setConfig(prop);
             session.connect();
             try {
+                //abrir ligação à base de dados
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
-                ResultSet rsMarcas = statement.executeQuery("SELECT * FROM marcas");
-                while (rsMarcas.next()){
-                    tempMarcas.add(new Brand(rsMarcas.getInt(1), rsMarcas.getString(2)));
+                //obter as marcas
+                ResultSet rsBrands = statement.executeQuery("SELECT * FROM marcas");
+                while (rsBrands.next()){
+                    tempBrands.add(new Brand(rsBrands.getInt(1), rsBrands.getString(2)));
                 }
-                data.add(tempMarcas);
+                data.add(tempBrands);
+                //obter os modelos
                 ResultSet rsModel = statement.executeQuery("SELECT * FROM modelo");
                 while(rsModel.next()){
                     tempModel.add(new Model(rsModel.getInt(1), rsModel.getString(2), rsModel.getInt(3)));
                 }
                 data.add(tempModel);
+                //fechar ligação à base de dados
                 connection.close();
             }catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));
             }
+            //fechar tunel SSH
             session.disconnect();
         } catch (JSchException e){
             Log.println(Log.INFO, "ErrorMessage", String.valueOf(e));

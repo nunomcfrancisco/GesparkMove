@@ -20,13 +20,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+//asyncTask para gravar alterações feitas em um veículo
 public class taskSaveCar extends AsyncTask<String, Integer, Boolean> {
+    //declaração de variáveis
     AlertDialog ppm;
     Context ctx;
     Handler handler;
     Globals g = new Globals();
     FragmentManager manager;
-
+    //contrutor
     taskSaveCar(Context ctx, Handler handler, FragmentManager manager){
         this.ctx = ctx;
         this.handler = handler;
@@ -37,6 +39,7 @@ public class taskSaveCar extends AsyncTask<String, Integer, Boolean> {
     protected Boolean doInBackground(String... params) {
         publishProgress(0);
         try {
+            //abrir tunel SSH
             JSch jsch = new JSch();
             Session session = jsch.getSession(g.getSshUsername(), g.getSshHost(), g.getSshPort());
             session.setPassword(g.getSshPass());
@@ -46,6 +49,7 @@ public class taskSaveCar extends AsyncTask<String, Integer, Boolean> {
             session.setConfig(prop);
             session.connect();
             try {
+                //abrir ligação à base de dados
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
@@ -59,18 +63,24 @@ public class taskSaveCar extends AsyncTask<String, Integer, Boolean> {
                     rs = statement.executeQuery("SELECT EXISTS(SELECT id_veiculo FROM planoAcessoUtilizador WHERE id_veiculo = " + params[0] + ")");
                     rs.next();
                     if(rs.getString(1).equals("1"))
+                        //atualiza o plano de pagamento para um determinado veículo
                         statement.executeUpdate("UPDATE planoAcessoUtilizador SET id_plano = " + params[2] + " WHERE id_veiculo = " + params[0]);
                     else
+                        //grava o plano de pagamento para um determinado veículo
                         statement.execute("INSERT INTO planoAcessoUtilizador (id_utilizador, id_plano, id_veiculo, activo) VALUES (" + params[3] + ", " + params[2] + ", " + params[0] + ", 1)");
+                    //fechar ligação à base de dados
                     connection.close();
                 }else{
+                    //fechar ligação à base de dados
                     connection.close();
+                    //fechar tunel SSH
                     session.disconnect();
                     return false;
                 }
             } catch (ClassNotFoundException | SQLException e){
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
+            //fechar tunel SSH
             session.disconnect();
         }catch (JSchException e){
             Log.println(Log.INFO, "JSCH EXCEPTION: ", e.toString());

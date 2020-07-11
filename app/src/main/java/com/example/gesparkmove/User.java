@@ -3,6 +3,7 @@ package com.example.gesparkmove;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//classe que representa um utilizador
 public class User implements Parcelable {
 
     public static final Creator<User> CREATOR = new Creator<User>() {

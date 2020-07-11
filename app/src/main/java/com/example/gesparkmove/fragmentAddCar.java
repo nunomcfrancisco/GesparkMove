@@ -1,12 +1,10 @@
 package com.example.gesparkmove;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +106,7 @@ public class fragmentAddCar extends Fragment {
                     if(model.getModel().equals(spinnerModel.getSelectedItem().toString()))
                         idMo = model.getId();
                 FragmentManager manager = getFragmentManager();
-                new taskAddLicensePlate(getActivity(), addHandler, getActivity(), manager).execute(editTextAddLicensePlate.getText().toString(),
+                new taskAddCar(getActivity(), addHandler, getActivity(), manager).execute(editTextAddLicensePlate.getText().toString(),
                         String.valueOf(user.getId()),
                         String.valueOf(idBr),
                         String.valueOf(idMo),
@@ -128,6 +126,7 @@ public class fragmentAddCar extends Fragment {
         });
     }
 
+    //Seletor de cores
     private void openDialog(boolean supportAlpha){
         AmbilWarnaDialog dialog = new AmbilWarnaDialog(getActivity(), currentColor, supportAlpha, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override

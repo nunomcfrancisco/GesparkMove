@@ -3,6 +3,7 @@ package com.example.gesparkmove;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//classe que representa um modelo de veículo
 public class Model implements Parcelable {
 
     public static final Creator<Model> CREATOR = new Creator<Model>() {

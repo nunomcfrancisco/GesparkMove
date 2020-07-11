@@ -2,7 +2,7 @@ package com.example.gesparkmove;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
+//Classe representa uma marca de veículo
 public class Brand implements Parcelable{
 
     public static final Creator<Brand> CREATOR = new Creator<Brand>(){

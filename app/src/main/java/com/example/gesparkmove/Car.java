@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-
+//Classe que representa um veículo
 public class Car implements Parcelable{
 
     public static final Creator<Car> CREATOR = new Creator<Car>(){

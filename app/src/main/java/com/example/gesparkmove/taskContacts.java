@@ -18,14 +18,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+//task para ir buscar contatos/localização dos parques de estacionamento
 public class taskContacts extends AsyncTask<Void, Integer, ArrayList<Park>>{
+    //declaração de varáveis
     AlertDialog ad;
     Context ctx;
     Handler handler;
     Globals g = new Globals();
     ArrayList<Park> data = new ArrayList<>();
     private final onContactsListener listener;
-
+    //contrutor
     taskContacts(Context ctx, Handler handler, onContactsListener listener){
         this.ctx = ctx;
         this.handler = handler;
@@ -50,13 +52,16 @@ public class taskContacts extends AsyncTask<Void, Integer, ArrayList<Park>>{
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = (Connection) DriverManager.getConnection(g.getMySqlUrl(), g.getMySqlUsername(), g.getMySqlPass());
                 Statement statement = (Statement) connection.createStatement();
+                //obter a informação dos parques
                 ResultSet rs = statement.executeQuery("SELECT nome, localizacao, telefone, email, latitude, longitude FROM parque");
                 while (rs.next())
                     data.add(new Park(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)));
+                //fechar ligação à base de dados
                 connection.close();
             }catch (ClassNotFoundException | SQLException e) {
                 Log.println(Log.INFO, "SQL EXCEPTION: ", e.toString());
             }
+            //fechar tunel SSH
             session.disconnect();
         } catch (JSchException e) {
             Log.println(Log.INFO, "JSCH EXCEPTION: ", e.toString());

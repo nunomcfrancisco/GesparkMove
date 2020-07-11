@@ -1,5 +1,5 @@
 package com.example.gesparkmove;
-
+//Classe que representa um parque de estacionamento
 public class Park {
     private String name;
     private String location;
