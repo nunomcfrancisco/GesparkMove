@@ -10,13 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-
 import java.util.ArrayList;
 
 public class ContactsListAdapter extends ArrayAdapter<Park>{
-    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private Context ctx;
     int mResource;
 
@@ -35,8 +31,6 @@ public class ContactsListAdapter extends ArrayAdapter<Park>{
         String email = getItem(position).getEmail();
         String latitude = getItem(position).getLatitude();
         String longitude = getItem(position).getLongitude();
-
-        Park park = new Park(name, location, phone, email, latitude, longitude);
 
         LayoutInflater inflater = LayoutInflater.from(ctx);
         convertView = inflater.inflate(mResource, parent, false);
