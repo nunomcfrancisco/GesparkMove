@@ -12,6 +12,8 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import java.text.DecimalFormat;
+
 public class fragmentDashboard extends Fragment {
     //declaração de variáveis
     TextView textViewDashboardCar, textViewDashboardValue;
@@ -28,7 +30,7 @@ public class fragmentDashboard extends Fragment {
         textViewDashboardCar = view.findViewById(R.id.textViewDashboardCar);
         textViewDashboardValue = view.findViewById(R.id.textViewDashboardValue);
         textViewDashboardCar.setText(String.valueOf(user.getCars()));
-        textViewDashboardValue.setText(String.valueOf(user.getValue()));
+        textViewDashboardValue.setText(new DecimalFormat("0.00").format(user.getValue() + user.getValue() * 0.23));
         cardViewDashboardCar = view.findViewById(R.id.cardViewDashboardCar);
         cardViewDashboardValue = view.findViewById(R.id.cardViewDashboardValue);
         //ao clickar nos veículos abre a janela de consultar veículos

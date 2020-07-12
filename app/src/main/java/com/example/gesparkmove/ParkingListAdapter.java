@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 //Lista customizada de estacionamentos
@@ -32,7 +33,7 @@ public class ParkingListAdapter extends ArrayAdapter<Parked> {
         String park = getItem(position).getPark();
         String entrance = getItem(position).getEntrance();
         String exit = getItem(position).getExit();
-        double value = getItem(position).getValue();
+        String value = new DecimalFormat("0.00").format(getItem(position).getValue() + getItem(position).getValue() * 0.23);
 
         LayoutInflater inflater = LayoutInflater.from(ctx);
         convertView = inflater.inflate(mResource, parent, false);

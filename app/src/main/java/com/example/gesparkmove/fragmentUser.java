@@ -27,11 +27,11 @@ public class fragmentUser extends Fragment {
     onUserListener listener = new onUserListener() {
         @Override
         public void onUserCompleted(ArrayList<String> data) {
-            textViewUserName.setText(data.get(1));
-            textViewUserAddress.setText(data.get(2));
-            textViewUserPostalCode.setText(data.get(3));
-            textViewUserContacts.setText(data.get(4));
-            textViewUserFiscalCode.setText(data.get(0));
+            textViewUserName.setText("Nome: " + data.get(1));
+            textViewUserAddress.setText("Morada: " + data.get(2));
+            textViewUserPostalCode.setText("Código Postal: " + data.get(3));
+            textViewUserContacts.setText("Telefone: " + data.get(4));
+            textViewUserFiscalCode.setText("Contribuinte: " + data.get(0));
             if(data.size() == 6)
                 Picasso.get().load("https://gespark.pt/" + data.get(5)).into(imageViewUserAvatar);
         }
