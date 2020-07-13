@@ -88,7 +88,6 @@ public class activityMain extends AppCompatActivity{
                 ap.show();
             }
         });
-
     }
 
     //closeKeyboard fecha o teclado android quando chamado
